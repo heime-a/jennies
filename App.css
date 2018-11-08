@@ -5,8 +5,7 @@
 .App-header {
   background-color: white;
   /*  min-height: 100vh; */
-   display: grid;
-   grid-template-columns: 1fr;
+   display: inline-block;
   
   justify-content: center;
   /* font-size: calc(5px + 2vmin);
@@ -16,7 +15,6 @@
 .ingredientList {
   margin: 2px;
   border: 1px groove rgb(221, 224, 215);
-
 }
 .inputForm { 
   float: left;
@@ -37,7 +35,8 @@
 }
 .ingredientGrid {
     display:grid;
-    grid-template-columns: 2fr 4fr;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
 }
 .ingredientList {
   list-style-type: none;
@@ -47,21 +46,6 @@
 }
 
 .ingButtons {
-  grid-row-start: 2;
+  
 }
 
-.newIngredient {
-    margin: 10px;
-}
-
-#poListGrid {
-  display:grid;
-  grid-template-columns: 1fr 2fr;
-}
-
-.newPO { 
-  margin: 2px;
-}
-.poButtons { 
-  grid-row-start: 2;
-}

@@ -1,28 +1,51 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
+import { IngredientList } from './components/IngredientList';
+import { PurchaseOrderList } from './components/PurchaseOrderList';
+import {
+  Collapse,
+  Navbar,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink } from 'reactstrap';
+
 
 class App extends Component {
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    const menuItems = ['Ingredients','Purchasing','Inventory','Manufacturing','Customer Orders']
+    return <div className="App">
+        <div className="App-header">
+          <MyApp items={menuItems} />
+        </div>
+      </div>;
   }
 }
+
+
+const MyApp = ({items}) => {
+  return (
+    <Router>
+      <div>   
+        <Navbar color="light" expand="md">
+          <NavbarBrand href="/">
+              <img src={require('./assets/jennies.jpg')} alt="Jennies Logo"/>
+          </NavbarBrand>
+          <Collapse  navbar>
+            <Nav className="ml-auto" navbar>
+                {items.map(item=>(<NavItem key={item}><Link className="nav-link" to={item}> {item}</Link></NavItem>))}
+            </Nav>
+          </Collapse>
+        </Navbar>
+      <Route path="/Ingredients" exact component={IngredientList}/>
+      <Route path="/Purchasing" exact component={PurchaseOrderList}/>
+      </div>
+</Router>
+  );
+};
+
+
+
 
 export default App;
