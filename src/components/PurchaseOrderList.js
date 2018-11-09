@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 
 function postOrPutData(url = ``, data = {}, method = "POST") {
-  // Default options are marked with *
+  // Default options are marked with * Function for posting data
   return fetch(url, {
     method: method,
     mode: "cors",

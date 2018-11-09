@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
-//import { Col, Form, FormGroup, Label, Input } from 'reactstrap';
+//import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
 export default function PurchaseOrderForm({ item, onChange, onAddLine }) {
   return (
