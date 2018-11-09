@@ -1,3 +1,4 @@
+'use strict;'
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms

@@ -1,3 +1,4 @@
+'use strict;'
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
