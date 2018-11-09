@@ -1,4 +1,4 @@
-
+'use strict;'
 const express = require('express'),
         router = express.Router(),
         Ingredient = require('../models/ingredient');

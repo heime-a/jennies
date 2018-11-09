@@ -1,3 +1,4 @@
+'use strict;'
 const express = require("express"),
   router = express.Router(),
   PurchaseOrder = require("../models/purchaseorders"),
@@ -5,7 +6,7 @@ const express = require("express"),
 
 /* GET purchaseOrders listing. */
 router.get("/", async function(req, res, next) {
-  allPos = await PurchaseOrder.find({}).populate("ingredients.ingredient");
+  const allPos = await PurchaseOrder.find({}).populate("ingredients.ingredient");
   res.json({
     message: "All Purchase Orders",
     content: allPos
@@ -14,7 +15,7 @@ router.get("/", async function(req, res, next) {
 
 router.post("/", async (req, res, next) => {
   const { poNumber, supplier, ingredients } = req.body;
-  purchaseorder = new PurchaseOrder();
+  const purchaseorder = new PurchaseOrder();
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
 
@@ -52,7 +53,8 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
-  purchaseorder = {};
+  console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${ingredients}`)
+  const  purchaseorder = {};
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
   purchaseorder.ingredients = [];
@@ -73,11 +75,12 @@ router.put("/:id", async (req, res) => {
     }
   }
   try {
-    purchaseorder = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
+    const updatedPO = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
 
+    console.log(JSON.stringify(updatedPO));
     res.json({
       message: `Updated new record`,
-      data: JSON.stringify(purchaseorder)
+      data: JSON.stringify(updatedPO)
     });
   }
   catch(err) { 
