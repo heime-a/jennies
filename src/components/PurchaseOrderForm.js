@@ -1,9 +1,11 @@
 'use strict;'
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
+import { Typeahead } from 'react-bootstrap-typeahead';
+
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
-export default function PurchaseOrderForm({ item, onChange, onAddLine }) {
+export default function PurchaseOrderForm({ item, onChange, onAddLine, ingNames }) {
   return (
     <div id="purchaseOrderGrid">
       <div>PO Number: {item.poNumber}</div>
@@ -36,11 +38,12 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine }) {
                 />{" "}
               </td>
               <td width="40%">
-                <Input
+                <Typeahead
+                  options={ingNames}
                   type="text"
                   name="name"
-                  value={ing.ingredient.name}
-                  onChange={(e)=>onChange(e,ing)}
+                  defaultInputValue={ing.ingredient.name}
+                  onChange={(val)=>onChange({target:{name:'name',value: val[0]}},ing)}
                 />
               </td>
               <td width="15%">{ing.ingredient.unit}</td>

@@ -29,14 +29,26 @@ export class PurchaseOrderList extends Component {
     this.handleChangePO = this.handleChangePO.bind(this);
     console.log("Bound");
   }
-  componentDidMount() {
-    fetch("http://127.0.0.1:3001/purchaseOrders")
-      .then(response => {
-        return response.json();
-      })
-      .then(jsonMessage => {
-        this.setState({ content: jsonMessage.content });
-      });
+  async componentDidMount() {
+    const newState = { ...this.state};
+
+    let response = await fetch("http://127.0.0.1:3001/purchaseOrders");
+    let jsonMessage = await response.json();
+    if (jsonMessage) {
+      newState.content = jsonMessage.content;
+    } else {
+      console.log("json message failed");
+    }
+
+    response = await fetch("http://127.0.0.1:3001/ingredients");
+    jsonMessage = await response.json();
+    if (jsonMessage) {
+      newState.ingNames = jsonMessage.content.map(item=>item.name);
+      this.setState(newState);
+    } else {
+      console.log("json message failed");
+    }
+ 
   }
 
   newPurchaseOrder(event) {
@@ -89,9 +101,8 @@ export class PurchaseOrderList extends Component {
   }
 
   handleChangePO(event, ing) {
+    console.log(event.target.value);
     const newState = { ...this.state };
-
-    console.log(`this: ${this}`);
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
@@ -139,6 +150,7 @@ export class PurchaseOrderList extends Component {
               item={foundItem}
               onChange={this.handleChangePO}
               onAddLine={e => this.handleAddPoLine(e)}
+              ingNames={this.state.ingNames}
             />
           )}
           <div className="poButtons">
