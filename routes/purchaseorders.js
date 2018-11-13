@@ -5,7 +5,7 @@ const express = require("express"),
   Ingredient = require("../models/ingredient");
 
 /* GET purchaseOrders listing. */
-router.get("/", async function(req, res, next) {
+router.get("/", async (req, res, next) => {
   const allPos = await PurchaseOrder.find({}).populate("ingredients.ingredient");
   res.json({
     message: "All Purchase Orders",
