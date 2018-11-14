@@ -7,9 +7,25 @@ const express = require('express'),
 router.get('/' , async (req,res,next)=> {
 
     response = await PurchaseOrder.aggregate([
-        { $unwind: "$ingredients" },
-        { $group: { _id: "$ingredients.ingredient", 
-        total: { $sum: "$ingredients.quantity" } } }
+        {
+            '$unwind': {
+                'path': '$ingredients'
+            }
+        }, {
+            '$lookup': {
+                'from': 'ingredients',
+                'localField': 'ingredients.ingredient',
+                'foreignField': '_id',
+                'as': 'ingredients.ingredient'
+            }
+        }, {
+            '$group': {
+                '_id': '$ingredients.ingredient.name',
+                'total': {
+                    '$sum': '$ingredients.quantity'
+                }
+            }
+        }
     ]);
     
     res.json({
