@@ -30,7 +30,7 @@ router.get('/' , async (req,res,next)=> {
     
     res.json({
         message: 'Inventory ',
-        content: response
+        content: response.map(({_id,total})=>{return {name: _id[0],quantity: total}})
     });
 });
 
