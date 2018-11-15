@@ -26,7 +26,9 @@ export class PurchaseOrderList extends Component {
       ],
       selectedId: -1
     };
-    this.handleChangePO = this.handleChangePO.bind(this);
+    this.handleAddPoLine = this.handleAddPoLine.bind(this);
+    this.handleRemovePoLine = this.handleRemovePoLine.bind(this);
+
     console.log("Bound");
   }
   async componentDidMount() {
@@ -51,7 +53,7 @@ export class PurchaseOrderList extends Component {
  
   }
 
-  newPurchaseOrder(event) {
+  newPurchaseOrder(e) {
     const newState = { ...this.state };
     newState.content.push({
       _id: `new001`,
@@ -67,7 +69,7 @@ export class PurchaseOrderList extends Component {
     this.setState(newState);
   }
 
-  saveModifiedPOs(e) {
+  saveModifiedPOs = (e) => {
     async function saveItem(item) {
       if (item._id.includes("new")) {
         const data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders`, {
@@ -94,28 +96,41 @@ export class PurchaseOrderList extends Component {
     }
   }
 
-  handleItemSelect(event) {
+  handleItemSelect = (event) => {
     const newState = { ...this.state };
     newState.selectedId = event.target.value;
     this.setState(newState);
   }
 
-  handleChangePO(event, ing) {
+  handleChangePO = (event, idx) => {
     console.log(event.target.value);
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-    const foundIng = foundItem.ingredients.find(i => i === ing);
+    
     if (event.target.name === "quantity")
-      foundIng.quantity = event.target.value;
+      foundItem.ingredients[idx].quantity = event.target.value;
     if (event.target.name === "name")
-      foundIng.ingredient.name = event.target.value;
+      foundItem.ingredients[idx].ingredient.name = event.target.value;
+    this.setState(newState);
+  }
+  handleRemovePoLine = (event,idx) => {
+
+    const newState = { ...this.state };
+
+    const foundItem = newState.content.find(
+      el => el._id === newState.selectedId
+    );
+
+    foundItem.ingredients = [ ...foundItem.ingredients];
+    foundItem.ingredients.splice(idx,1);
     this.setState(newState);
   }
 
-  handleAddPoLine(event) {
+
+  handleAddPoLine = (event) => {
     const newState = { ...this.state };
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
@@ -149,7 +164,8 @@ export class PurchaseOrderList extends Component {
             <PurchaseOrderForm
               item={foundItem}
               onChange={this.handleChangePO}
-              onAddLine={e => this.handleAddPoLine(e)}
+              onAddLine={this.handleAddPoLine}
+              onRemoveLine={this.handleRemovePoLine}
               ingNames={this.state.ingNames}
             />
           )}

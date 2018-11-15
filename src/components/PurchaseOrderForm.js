@@ -5,7 +5,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
-export default function PurchaseOrderForm({ item, onChange, onAddLine, ingNames }) {
+export default function PurchaseOrderForm({ item, onChange, onAddLine,onRemoveLine, ingNames }) {
   return (
     <div id="purchaseOrderGrid">
       <div>PO Number: {item.poNumber}</div>
@@ -34,7 +34,7 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine, ingNames 
                   type="text"
                   name="quantity"
                   value={ing.quantity}
-                  onChange={(e)=>onChange(e,ing)}
+                  onChange={(e)=>onChange(e,idx)}
                 />{" "}
               </td>
               <td width="40%">
@@ -43,12 +43,13 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine, ingNames 
                   type="text"
                   name="name"
                   defaultInputValue={ing.ingredient.name}
-                  onChange={(val)=>onChange({target:{name:'name',value: val[0]}},ing)}
+                  onChange={(val)=>onChange({target:{name:'name',value: val[0]}},idx)}
                 />
               </td>
               <td width="15%">{ing.ingredient.unit}</td>
               <td width="15%">{9.99}</td>
               <td width="15%">{9.99}</td>
+              <td><Button onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
             </tr>
           ))}
         </tbody>

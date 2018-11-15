@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { IngredientList } from './components/IngredientList';
-import { PurchaseOrderList } from './components/PurchaseOrderList';
+import { PurchaseOrderList } from "./components/PurchaseOrderList";
+import Inventory  from "./components/Inventory";
 import {
   Collapse,
   Navbar,
@@ -39,8 +40,9 @@ const MyApp = ({items}) => {
             </Nav>
           </Collapse>
         </Navbar>
-      <Route path="/Ingredients" exact component={IngredientList}/>
-      <Route path="/Purchasing" exact component={PurchaseOrderList}/>
+        <Route path="/Ingredients" exact component={IngredientList}/>
+        <Route path="/Purchasing" exact component={PurchaseOrderList} />
+        <Route path="/Inventory" exact component={Inventory} />
       </div>
 </Router>
   );
