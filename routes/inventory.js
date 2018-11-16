@@ -1,10 +1,11 @@
-'use strict;'
+'use strict;';
+
 const express = require('express'),
     router = express.Router(),
     PurchaseOrder = require("../models/purchaseorders"),
     Ingredient = require('../models/ingredient');
 
-router.get('/' , async (req,res,next)=> {
+router.get('/' , async (req,res,next) => {
 
     response = await PurchaseOrder.aggregate([
         {

@@ -1,11 +1,12 @@
-'use strict;'
+'use strict;';
+
 const express = require('express'),
         router = express.Router(),
         Ingredient = require('../models/ingredient');
 
 
 /* GET ingredients listing. */
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
 
     ings = await Ingredient.find({});
     res.json({

@@ -1,4 +1,5 @@
-'use strict;'
+'use strict;';
+
 const createError = require('http-errors');
 const express = require('express');
 const cors = require('cors');
@@ -7,9 +8,9 @@ const mongoose = require('mongoose');
 
 
 const indexRouter = require('./routes/index');
-const purchaseOrdersRouter = require("./routes/purchaseorders");
-const ingredientsRouter = require("./routes/ingredients");
-const inventoryRouter = require("./routes/inventory");
+const purchaseOrdersRouter = require('./routes/purchaseorders');
+const ingredientsRouter = require('./routes/ingredients');
+const inventoryRouter = require('./routes/inventory');
 
 const app = express();
 
@@ -18,20 +19,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect("mongodb://localhost/jennies");
+mongoose.connect('mongodb://localhost/jennies');
 
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
-app.use('/ingredients',    ingredientsRouter);
-app.use('/inventory' ,inventoryRouter);
+app.use('/ingredients', ingredientsRouter);
+app.use('/inventory', inventoryRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -43,4 +44,4 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-app.listen(3001,'localhost',()=> console.log('app listening on 3001'));
+app.listen(3001, 'localhost', () => console.log('app listening on 3001'));
