@@ -1,26 +1,27 @@
 'use strict;';
 
-const express = require("express"),
-  router = express.Router(),
-  PurchaseOrder = require("../models/purchaseorders"),
-  Ingredient = require("../models/ingredient");
+const express = require('express');
+const PurchaseOrder = require('../models/purchaseorders');
+const Ingredient = require('../models/ingredient');
+
+const router = express.Router();
 
 /* GET purchaseOrders listing. */
-router.get("/", async (req, res, next) => {
-  const allPos = await PurchaseOrder.find({}).populate("ingredients.ingredient");
+router.get('/', async (req, res) => {
+  const allPos = await PurchaseOrder.find({}).populate('ingredients.ingredient');
   res.json({
-    message: "All Purchase Orders",
-    content: allPos
+    message: 'All Purchase Orders',
+    content: allPos,
   });
 });
 
-router.post("/", async (req, res, next) => {
+router.post('/', async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
   const purchaseorder = new PurchaseOrder();
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
 
-  for (i of ingredients) {
+  for (let i of ingredients) {
     const ingredient = await Ingredient.findOne({ name: i.ingredient.name });
     if (ingredient) {
       purchaseorder.ingredients.push({
@@ -38,13 +39,13 @@ router.post("/", async (req, res, next) => {
   try {
     await purchaseorder.save();
     res.json({
-      message: `Saved new record`,
+      message: 'Saved new record',
       data: JSON.stringify(purchaseorder)
     });
   }
   catch(err) { 
     res.json({
-      message: `Record not saved`,
+      message: 'Record not saved',
       data: JSON.stringify(purchaseorder)
     });
 
@@ -60,7 +61,8 @@ router.put("/:id", async (req, res) => {
   purchaseorder.supplier = supplier;
   purchaseorder.ingredients = [];
 
-  for (i of ingredients) {
+  for (let i of ingredients) {
+    
     const ingredient = await Ingredient.findOne({ name: i.ingredient.name });
     if (ingredient) {
       purchaseorder.ingredients.push({
@@ -76,9 +78,9 @@ router.put("/:id", async (req, res) => {
     }
   }
   try {
+    console.log('before save ' + JSON.stringify(purchaseorder.ingredients));
     const updatedPO = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
-
-    console.log(JSON.stringify(updatedPO));
+    console.log('after  save ' + JSON.stringify(updatedPO));
     res.json({
       message: `Updated new record`,
       data: JSON.stringify(updatedPO)
