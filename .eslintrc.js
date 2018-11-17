@@ -1,13 +1,9 @@
 module.exports = {
-    "parserOptions": {
-        "ecmaVersion": 7,
-        "sourceType": "module",
+    "parserOptions" : {
+        "ecmaVersion": 8
     },
-
-    "env": {
-        "es6": true,
-        "node": true
-    },
-
     "extends": "airbnb-base",
-}
+    "rules":{
+        "linebreak-style": 0
+      }
+};

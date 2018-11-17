@@ -21,18 +21,19 @@ router.post('/', async (req, res) => {
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
 
-  for (let i of ingredients) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const i of ingredients) {
+    // eslint-disable-next-line no-await-in-loop
     const ingredient = await Ingredient.findOne({ name: i.ingredient.name });
     if (ingredient) {
       purchaseorder.ingredients.push({
-        ingredient: ingredient,
-        quantity: i.quantity
+        ingredient,
+        quantity: i.quantity,
       });
-    }
-    else {
+    } else {
       res.json({
-        message: `ingredient not found`,
-        data: JSON.stringify(req.body)
+        message: 'ingredient not found',
+        data: JSON.stringify(req.body),
       });
     }
   }
@@ -40,60 +41,54 @@ router.post('/', async (req, res) => {
     await purchaseorder.save();
     res.json({
       message: 'Saved new record',
-      data: JSON.stringify(purchaseorder)
+      data: JSON.stringify(purchaseorder),
     });
-  }
-  catch(err) { 
+  } catch (err) {
     res.json({
       message: 'Record not saved',
-      data: JSON.stringify(purchaseorder)
+      data: JSON.stringify(purchaseorder),
     });
-
   }
-
 });
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
-  console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${ingredients}`)
-  const  purchaseorder = {};
+  console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${ingredients}`);
+  const purchaseorder = {};
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
   purchaseorder.ingredients = [];
 
-  for (let i of ingredients) {
-    
+  // eslint-disable-next-line no-restricted-syntax
+  for (const i of ingredients) {
+    // eslint-disable-next-line no-await-in-loop
     const ingredient = await Ingredient.findOne({ name: i.ingredient.name });
     if (ingredient) {
       purchaseorder.ingredients.push({
-        ingredient: ingredient,
-        quantity: i.quantity
+        ingredient,
+        quantity: i.quantity,
       });
-    }
-    else {
+    } else {
       res.json({
-        message: `ingredient not found`,
-        data: JSON.stringify(req.body)
+        message: 'ingredient not found',
+        data: JSON.stringify(req.body),
       });
     }
   }
   try {
-    console.log('before save ' + JSON.stringify(purchaseorder.ingredients));
+    console.log(`before save ${JSON.stringify(purchaseorder.ingredients)}`);
     const updatedPO = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
-    console.log('after  save ' + JSON.stringify(updatedPO));
+    console.log(`after  save ${JSON.stringify(updatedPO)}`);
     res.json({
-      message: `Updated new record`,
-      data: JSON.stringify(updatedPO)
+      message: 'Updated new record',
+      data: JSON.stringify(updatedPO),
+    });
+  } catch (err) {
+    res.json({
+      message: 'Record not updated',
+      data: JSON.stringify(purchaseorder),
     });
   }
-  catch(err) { 
-    res.json({
-      message: `Record not updated`,
-      data: JSON.stringify(purchaseorder)
-    });
-
-  }
-
 });
 
 module.exports = router;

@@ -1,9 +1,11 @@
-'use strict;'
-const mongoose = require("mongoose");
+'use strict;';
+
+
+const mongoose = require('mongoose');
 
 const supplierSchema = new mongoose.Schema({
   name: String,
-  address: String
+  address: String,
 });
 
 const purchaseOrderSchema = new mongoose.Schema({
@@ -12,14 +14,14 @@ const purchaseOrderSchema = new mongoose.Schema({
     {
       ingredient: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Ingredient"
+        ref: 'Ingredient',
       },
-      quantity: Number
-    }
+      quantity: Number,
+    },
   ],
   supplier: supplierSchema,
   poStatus: String,
-  enum: ["Pending", "Delivered"]
+  enum: ['Pending', 'Delivered'],
 });
 
 
