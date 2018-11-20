@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 'use strict;';
 
 const createError = require('http-errors');
@@ -11,6 +13,7 @@ const indexRouter = require('./routes/index');
 const purchaseOrdersRouter = require('./routes/purchaseorders');
 const ingredientsRouter = require('./routes/ingredients');
 const inventoryRouter = require('./routes/inventory');
+const recipesRouter = require('./routes/recipes');
 
 const app = express();
 
@@ -25,6 +28,7 @@ app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
 app.use('/ingredients', ingredientsRouter);
 app.use('/inventory', inventoryRouter);
+app.use('/recipes', recipesRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
