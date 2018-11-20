@@ -87,7 +87,7 @@ router.put('/:id', async (req, res) => {
     });
   } catch (err) {
     res.json({
-      message: 'Record not updated',
+      message: `Record not updated: ${err.stack}`,
       data: JSON.stringify(purchaseorder),
     });
   }
