@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 
 
@@ -89,6 +90,58 @@ async function run() {
   for (const i of foo.ingredients) {
     console.log(`quantity: ${i.quantity} ingredient name: ${i.ingredient.name}`);
   }
+
+  const recipeSchema = new mongoose.Schema({
+    name: String,
+    ingredients: [{
+      ingredient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingredient',
+      },
+      quantity: Number,
+    }],
+    manHours: Number,
+  });
+
+  const Recipe = mongoose.model('Recipe', recipeSchema);
+
+  const recipe = new Recipe();
+  recipe.name = 'Vanilla Macaroons';
+  recipe.manHours = 10;
+  recipe.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Eggs' }),
+    quantity: 5,
+  });
+  recipe.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Flour' }),
+    quantity: 5,
+  });
+  recipe.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Coconut Shredded' }),
+    quantity: 10,
+  });
+  await recipe.save();
+
+  const recipe2 = new Recipe();
+  recipe2.name = 'Chocolate Macaroons';
+  recipe2.manHours = 10;
+  recipe2.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Eggs' }),
+    quantity: 5,
+  });
+  recipe2.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Flour' }),
+    quantity: 5,
+  });
+  recipe2.ingredients.push({
+    ingredient: await Ingredient.findOne({ name: 'Coconut Shredded' }),
+    quantity: 10,
+  });
+  await recipe2.save();
+
+  console.log('Seed Data created correctly exiting express...');
+  process.exit();
 }
+
 
 run().catch((error) => { console.error(error.stack); });
