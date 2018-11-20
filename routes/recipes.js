@@ -7,7 +7,7 @@ const Recipe = require('../models/recipe');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const allrecipes = await Recipe.find({});
+  const allrecipes = await Recipe.find({}).populate('ingredients.ingredient');
 
   res.json({
     message: 'All Recipes',
