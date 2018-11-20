@@ -5,6 +5,8 @@ import './App.css';
 import { IngredientList } from './components/IngredientList';
 import { PurchaseOrderList } from "./components/PurchaseOrderList";
 import Inventory  from "./components/Inventory";
+import { RecipeList } from "./components/RecipeList";
+
 import {
   Collapse,
   Navbar,
@@ -16,7 +18,7 @@ import {
 
 class App extends Component {
   render() {
-    const menuItems = ['Ingredients','Purchasing','Inventory','Manufacturing','Customer Orders']
+    const menuItems = ['Ingredients','Purchasing','Inventory','Recipe','Manufacturing','Customer Orders']
     return <div className="App">
         <div className="App-header">
           <MyApp items={menuItems} />
@@ -43,6 +45,7 @@ const MyApp = ({items}) => {
         <Route path="/Ingredients" exact component={IngredientList}/>
         <Route path="/Purchasing" exact component={PurchaseOrderList} />
         <Route path="/Inventory" exact component={Inventory} />
+        <Route path="/Recipe" exact component={RecipeList} />
       </div>
 </Router>
   );
