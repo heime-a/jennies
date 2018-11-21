@@ -49,7 +49,9 @@
 .ingButtons {
   grid-row-start: 2;
 }
-
+.newRecipe {
+  margin: 5px;
+}
 .newIngredient {
     margin: 10px;
 }
@@ -63,5 +65,14 @@
   margin: 2px;
 }
 .poButtons { 
+  grid-row-start: 2;
+}
+
+#recipeListGrid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.recipeButtons {
   grid-row-start: 2;
 }
