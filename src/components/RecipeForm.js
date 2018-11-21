@@ -1,4 +1,5 @@
 'use strict;'
+//@ts-check
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
 import { Typeahead } from 'react-bootstrap-typeahead';

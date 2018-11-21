@@ -1,4 +1,5 @@
 'use strict;'
+//@ts-check
 import React from 'react';
 import { Col,  Form, FormGroup, Label, Input } from 'reactstrap';
 
