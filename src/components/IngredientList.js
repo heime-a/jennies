@@ -2,19 +2,7 @@
 import React, { Component } from "react";
 import IngredientForm from "./IngredientForm";
 import { Button } from "reactstrap";
-
-function postOrPutData(url = ``, data = {}, method = "POST") {
-  // Default options are marked with *
-  return fetch(url, {
-    method: method,
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    referrer: "no-referrer", // no-referrer, *client
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  }).then(response => response.json()); // returns a promise
-}
+import postOrPutData from "../common/postOrPutData";
 
 export class IngredientList extends Component {
   constructor(props) {

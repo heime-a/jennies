@@ -2,19 +2,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import RecipeForm from "./RecipeForm";
-
-function postOrPutData(url = ``, data = {}, method = "POST") {
-    // Default options are marked with * Function for posting data
-    return fetch(url, {
-        method: method,
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        referrer: "no-referrer", // no-referrer, *client
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-    }).then(response => response.json()); // returns a promise
-}
+import postOrPutData from "../common/postOrPutData";
 
 export class RecipeList extends Component {
     constructor(props) {
@@ -110,9 +98,12 @@ export class RecipeList extends Component {
             el => el._id === newState.selectedId
         );
 
-        if (event.target.name === "quantity")
+        if (event.target.name === "manHours") {
+             foundItem[event.target.name]= event.target.value;
+        }
+        else if (event.target.name === "quantity")
             foundItem.ingredients[idx].quantity = event.target.value;
-        if (event.target.name === "name")
+        else if (event.target.name === "name")
             foundItem.ingredients[idx].ingredient.name = event.target.value;
         this.setState(newState);
     }
@@ -145,43 +136,27 @@ export class RecipeList extends Component {
         const foundItem = this.state.content.find(
             el => el._id === this.state.selectedId
         );
-        return (
-            <React.Fragment>
-                <div id="poListGrid">
-                    <select
-                        size={10}
-                        className="recipeList"
-                        onChange={e => this.handleItemSelect(e)}
-                    >
-                        {this.state.content.map(item => (
-                            <option value={item._id} key={item._id}>
-                                {`${item.name}`}
-                            </option>
-                        ))}
-                    </select>
-                    {this.state.selectedId !== -1 && (
-                        <RecipeForm
-                            item={foundItem}
-                            onChange={this.handleChangeRecipe}
-                            onAddLine={this.handleAddRecipeLine}
-                            onRemoveLine={this.handleRemoveRecipeLine}
-                            ingNames={this.state.ingNames}
-                        />
-                    )}
-                    <div className="recipeButtons">
-                        <Button
-                            color="success"
-                            className="newRecipe"
-                            onClick={e => this.newPurchaseRecipe(e)}
-                        >
-                            New Recipe
-            </Button>
-                        <Button color="success" onClick={e => this.saveModifiedRecipes(e)}>
-                            Save Modified Recipes
-            </Button>
-                    </div>
-                </div>
-            </React.Fragment>
-        );
+        return <React.Fragment>
+            <div id="recipeListGrid">
+              <select className="recipeList"
+               size={10} 
+               onChange={e => this.handleItemSelect(e)}>
+                {this.state.content.map(item => (
+                  <option value={item._id} key={item._id}>
+                    {`${item.name}`}
+                  </option>
+                ))}
+              </select>
+              {this.state.selectedId !== -1 && <RecipeForm item={foundItem} onChange={this.handleChangeRecipe} onAddLine={this.handleAddRecipeLine} onRemoveLine={this.handleRemoveRecipeLine} ingNames={this.state.ingNames} />}
+              <div className="recipeButtons">
+                <Button color="success" className="newRecipe" onClick={e => this.newPurchaseRecipe(e)}>
+                  New Recipe
+                </Button>
+                <Button color="success" onClick={e => this.saveModifiedRecipes(e)}>
+                  Save Modified Recipes
+                </Button>
+              </div>
+            </div>
+          </React.Fragment>;
     }
 }

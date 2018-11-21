@@ -2,19 +2,8 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
+import postOrPutData from "../common/postOrPutData";
 
-function postOrPutData(url = ``, data = {}, method = "POST") {
-  // Default options are marked with * Function for posting data
-  return fetch(url, {
-    method: method,
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    referrer: "no-referrer", // no-referrer, *client
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  }).then(response => response.json()); // returns a promise
-}
 
 export class PurchaseOrderList extends Component {
   constructor(props) {
