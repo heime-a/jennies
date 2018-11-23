@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/jennies');
+mongoose.connect('mongodb://localhost/jennies', { useNewUrlParser: true });
 
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
