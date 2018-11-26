@@ -6,6 +6,7 @@ import { IngredientList } from './components/IngredientList';
 import { PurchaseOrderList } from "./components/PurchaseOrderList";
 import Inventory  from "./components/Inventory";
 import { RecipeList } from "./components/RecipeList";
+import  WorkOrderList from "./components/WorkOrderList";
 
 import {
   Collapse,
@@ -14,6 +15,7 @@ import {
   Nav,
   NavItem,
   NavLink } from 'reactstrap';
+
 
 
 class App extends Component {
@@ -46,6 +48,7 @@ const MyApp = ({items}) => {
         <Route path="/Purchasing" exact component={PurchaseOrderList} />
         <Route path="/Inventory" exact component={Inventory} />
         <Route path="/Recipe" exact component={RecipeList} />
+        <Route path="/Manufacturing" exact component={WorkOrderList} />
       </div>
 </Router>
   );
