@@ -1,5 +1,5 @@
 'use strict;'
-//@ts-check
+
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";

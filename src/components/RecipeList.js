@@ -137,7 +137,7 @@ export class RecipeList extends Component {
         const foundItem = this.state.content.find(
             el => el._id === this.state.selectedId
         );
-        return <React.Fragment>
+        return <>
             <div id="recipeListGrid">
               <select className="recipeList"
                size={10} 
@@ -158,6 +158,6 @@ export class RecipeList extends Component {
                 </Button>
               </div>
             </div>
-          </React.Fragment>;
+          </>;
     }
 }
