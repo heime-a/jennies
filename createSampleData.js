@@ -1,61 +1,20 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose');
-
+const Ingredient = require('./models/ingredient');
+const Purchaseorder = require('./models/purchaseorders');
+const Recipe = require('./models/recipe');
+const WorkOrder = require('./models/workorder');
 
 async function run() {
   mongoose.connect('mongodb://localhost/jennies');
 
   await mongoose.connection.dropDatabase();
 
-  const supplierSchema = new mongoose.Schema({
-    name: String,
-    address: String,
-  });
-
-  const ingredientSchema = new mongoose.Schema({
-    name: String,
-    unit: String,
-    enum: ['lb', 'oz', 'quart', 'gallon', 'singular'],
-    type: String,
-    // eslint-disable-next-line no-dupe-keys
-    enum: ['Food', 'Packaging'],
-  });
-
-
-  const purchaseOrderSchema = new mongoose.Schema({
-    poNumber: String,
-    ingredients: [{
-      ingredient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ingredient',
-      },
-      quantity: Number,
-    }],
-    supplier: supplierSchema,
-    poStatus: String,
-    enum: ['Pending', 'Delivered'],
-  });
-
-
-  /*  const materialsInventory = new mongoose.Schema({
-    inventory: [{
-      ingredient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ingredient',
-      },
-      quantity: Number,
-    }],
-  });
- */
-
-  const Ingredient = mongoose.model('Ingredient', ingredientSchema);
   await new Ingredient({ name: 'Eggs', type: 'Food', unit: 'Singular' }).save();
   await new Ingredient({ name: 'Flour', type: 'Food', unit: 'Lbs' }).save();
   await new Ingredient({ name: 'Sugar', type: 'Food', unit: 'Lbs' }).save();
   await new Ingredient({ name: 'Coconut Shredded', type: 'Food', unit: 'Lbs' }).save();
 
-
-  const Purchaseorder = mongoose.model('PurchaseOrder', purchaseOrderSchema);
 
   let purchaseorder = new Purchaseorder();
   purchaseorder.poNumber = 'HA0001';
@@ -91,19 +50,6 @@ async function run() {
     console.log(`quantity: ${i.quantity} ingredient name: ${i.ingredient.name}`);
   }
 
-  const recipeSchema = new mongoose.Schema({
-    name: String,
-    ingredients: [{
-      ingredient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Ingredient',
-      },
-      quantity: Number,
-    }],
-    manHours: Number,
-  });
-
-  const Recipe = mongoose.model('Recipe', recipeSchema);
 
   const recipe = new Recipe();
   recipe.name = 'Vanilla Macaroons';
@@ -139,9 +85,45 @@ async function run() {
   });
   await recipe2.save();
 
+  const wo = new WorkOrder();
+  wo.woNumber = 'wo0001';
+  wo.recipe = await Recipe.findOne({ name: 'Vanilla Macaroons' });
+  wo.startDate = Date.now();
+  wo.status = 'Completed';
+  wo.actualHours = 4;
+  await wo.save();
+
+  const wo2 = new WorkOrder();
+  wo2.woNumber = 'wo0002';
+  wo2.recipe = await Recipe.findOne({ name: 'Chocolate Macaroons' });
+  wo2.startDate = Date.now();
+  wo2.status = 'Completed';
+  wo2.actualHours = 4;
+  await wo2.save();
+
+
   console.log('Seed Data created correctly exiting express...');
   process.exit();
 }
 
 
 run().catch((error) => { console.error(error.stack); });
+
+
+/* const supplierSchema = new mongoose.Schema({
+    name: String,
+    address: String,
+  });
+ */
+
+
+/*  const materialsInventory = new mongoose.Schema({
+    inventory: [{
+      ingredient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ingredient',
+      },
+      quantity: Number,
+    }],
+  });
+ */
