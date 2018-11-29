@@ -14,6 +14,7 @@ const purchaseOrdersRouter = require('./routes/purchaseorders');
 const ingredientsRouter = require('./routes/ingredients');
 const inventoryRouter = require('./routes/inventory');
 const recipesRouter = require('./routes/recipes');
+const workorderRouter = require('./routes/workorders');
 
 const app = express();
 
@@ -22,13 +23,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/jennies');
+mongoose.connect('mongodb://localhost/jennies', { useNewUrlParser: true });
 
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
 app.use('/ingredients', ingredientsRouter);
 app.use('/inventory', inventoryRouter);
 app.use('/recipes', recipesRouter);
+app.use('/workorders', workorderRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
