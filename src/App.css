@@ -13,71 +13,11 @@
    */color: black;
   /* */
 }
-.ingredientList {
-  margin: 2px;
-  border: 1px groove rgb(221, 224, 215);
 
-}
-.inputForm { 
-  float: left;
-  border-radius: 2%;
-  border: 1px groove rgb(221, 224, 215);
-  
-  margin: 2px;
-  padding: 5px;
-}
-.newIngredient {
-  margin: 0px;
-}
-.listItem:hover {
-  color: rgb(180, 180, 230);
-}
 .App-link {
   color: #61dafb;
 }
-.ingredientGrid {
-    display:grid;
-    grid-template-columns: 2fr 4fr;
-}
-.ingredientList {
-  list-style-type: none;
-}
-.newIngredient {
-  align-self: start;
-}
 
-.ingButtons {
-  grid-row-start: 2;
-}
-.newRecipe {
-  margin: 5px;
-}
-.newIngredient {
-    margin: 10px;
-}
-
-#poListGrid {
-  display:grid;
-  grid-template-columns: 1fr 2fr;
-}
-
-.newPO { 
-  margin: 2px;
-}
-.poButtons { 
-  grid-row-start: 2;
-}
-
-#recipeListGrid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-}
-
-.recipeButtons {
-  grid-row-start: 2;
-}
-
-#woForm {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+.listItem:hover {
+  color: rgb(180, 180, 230);
 }

@@ -7,18 +7,16 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
 export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingNames }) {
-  const divStyle = { display: 'grid'};
-  return <div id="recipeGrid" style={divStyle}>
-      <div>
-        <Label>Name:</Label> <Input type="text" name="recipeName" value={item.name} onChange={onChange}/>
-      </div>
-      <div>
-        Man Hours:
-        <Input type="text" name="manHours" value={item.manHours} onChange={onChange} />
-      </div>
-      <Button color="success" onClick={onAddLine}>
-        Add Row
-      </Button>
+  return <div>
+        <div id="recipeTop">
+          <Label>Name</Label> 
+          <Input type="text" name="recipeName" value={item.name} onChange={onChange}/>
+          <Label>Man Hours</Label>
+          <Input type="text" name="manHours" value={item.manHours} onChange={onChange} />
+          <Button color="success" onClick={onAddLine}>
+           Add Row
+          </Button>
+        </div>
       <Table>
         <thead>
           <tr>

@@ -1,5 +1,5 @@
 'use strict;'
-
+import "./PurchaseOrderList.css"
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
@@ -167,7 +167,7 @@ export class PurchaseOrderList extends Component {
             >
               New Purchase Order
             </Button>
-            <Button color="success" onClick={e => this.saveModifiedPOs(e)}>
+            <Button color="warning" onClick={e => this.saveModifiedPOs(e)}>
               Save Modified POs
             </Button>
           </div>

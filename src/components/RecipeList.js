@@ -1,5 +1,6 @@
 'use strict;'
 //@ts-check
+import "./RecipeList.css"
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import RecipeForm from "./RecipeForm";
@@ -15,8 +16,8 @@ export class RecipeList extends Component {
             ],
             selectedId: -1
         };
-        this.handleAddRecipeLine = this.handleAddRecipeLine.bind(this);
-        this.handleRemoveRecipeLine = this.handleRemoveRecipeLine.bind(this);
+        //this.handleAddRecipeLine = this.handleAddRecipeLine.bind(this);
+        //this.handleRemoveRecipeLine = this.handleRemoveRecipeLine.bind(this);
 
         console.log("Bound");
     }
@@ -157,7 +158,7 @@ export class RecipeList extends Component {
                 <Button color="success" className="newRecipe" onClick={e => this.handleNewRecipe(e)}>
                   New Recipe
                 </Button>
-                <Button color="success" onClick={e => this.saveModifiedRecipes(e)}>
+                <Button color="warning" onClick={e => this.saveModifiedRecipes(e)}>
                   Save Modified Recipes
                 </Button>
               </div>

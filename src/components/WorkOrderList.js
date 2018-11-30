@@ -1,7 +1,9 @@
-'use strict;'
+"use strict;";
 //@ts-check
+import "./WorkOrderList.css";
 import React, { Component } from "react";
-import { Button, Input, Label  } from "reactstrap";
+import { Button, Input, Label } from "reactstrap";
+import postOrPutData from "../common/postOrPutData";
 
 // import postOrPutData from "../common/postOrPutData";
 
@@ -12,21 +14,14 @@ class WorkOrderList extends Component {
       content: [
         {
           woNumber: "wo0001",
-          recipe : { name:  "Chocolate Macaroons"} ,
+          recipe: { name: "Chocolate Macaroons" },
           startDate: "1980-01-01",
           status: "In Process",
           actualHours: 5
-        },
-        {
-          woNumber: "wo0002",
-          recipe: { name: "Vanilla Macaroons" },
-          startDate: "1980-01-01",
-          status: "Completed",
-          actualHours: 4
         }
       ],
       selectedWoNumber: undefined,
-      recipeNames: ['Chocolate Macaroons','Vanilla Macaroons']
+      recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"]
     };
   }
   async componentDidMount() {
@@ -47,25 +42,64 @@ class WorkOrderList extends Component {
     } else {
       console.log("json message failed");
     }
-    
-  }
-  handleItemSelect = (e) => {
-    const newState  = {...this.state };
-    newState.selectedWoNumber = e.target.value;
-    this.setState( newState);
   }
 
-  handleRecipeChange = (e) => {
-    const idx = this.state.content.findIndex(el => el.woNumber === this.state.selectedWoNumber);
-    const newState = {...this.state};
+  saveWorkOrders = e => {
+    async function saveItem(item) {
+      const { name, woNumber, startDate, status, actualHours } = item;
+      if (item._id.includes("new")) {
+        const data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
+          name,
+          woNumber,
+          startDate,
+          status,
+          actualHours
+        });
+        if (data) console.log(JSON.stringify(data));
+      } else {
+        const data = await postOrPutData(
+          `http://127.0.0.1:3001/workorders/${item._id}`,
+          {
+            name,
+            woNumber,
+            startDate,
+            status,
+            actualHours
+          },
+          "PUT"
+        );
+        if (data) console.log(JSON.stringify(data));
+      }
+    }
+
+    const newState = { ...this.state };
+
+    for (let item of newState.content) {
+      saveItem(item);
+    }
+  };
+
+  handleItemSelect = e => {
+    const newState = { ...this.state };
+    newState.selectedWoNumber = e.target.value;
+    this.setState(newState);
+  };
+
+  handleRecipeChange = e => {
+    const idx = this.state.content.findIndex(
+      el => el.woNumber === this.state.selectedWoNumber
+    );
+    const newState = { ...this.state };
     newState.content[idx].recipe.name = e.target.value;
     this.setState(newState);
-  }
+  };
 
   render() {
-    const foundItem = this.state.content.find(el => el.woNumber === this.state.selectedWoNumber);
+    const foundItem = this.state.content.find(
+      el => el.woNumber === this.state.selectedWoNumber
+    );
     return (
-      <div>
+      <div id="workOrderList">
         <select size={10} onChange={this.handleItemSelect}>
           {this.state.content.map(({ woNumber, status, startDate }) => (
             <option value={woNumber} key={woNumber}>
@@ -73,39 +107,54 @@ class WorkOrderList extends Component {
             </option>
           ))}
         </select>
-        {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleRecipeChange} item={foundItem} recipeNames={this.state.recipeNames}/>
-        }            
+        {this.state.selectedWoNumber !== undefined && (
+          <WorkOrderForm
+            onChange={this.handleRecipeChange}
+            item={foundItem}
+            recipeNames={this.state.recipeNames}
+          />
+        )}
+        <div className="buttonGroup">
+          <Button color="success">New</Button>
+          <Button color="warning" onClick={this.saveWorkOrders}>
+            Save Modified
+          </Button>
+        </div>
       </div>
     );
   }
 }
 
 function WorkOrderForm({ item, recipeNames, onChange }) {
-  const {recipe,  status, actualHours } = item; 
+  const { recipe, status, actualHours } = item;
 
   const startDate = new Date(item.startDate);
 
   const startDateFormatted = startDate.toLocaleDateString();
 
-  return <div id="woForm">
+  return (
+    <div id="woForm">
       <Label>Recipe</Label>
       <select name="recipe.name" value={recipe.name} onChange={onChange}>
-        {recipeNames.map(i => <option key={i}>{i}</option>)}
+        {recipeNames.map(i => (
+          <option key={i}>{i}</option>
+        ))}
       </select>
+
       <Label>Start Date</Label>
       <Input type="text" name="startDate" value={startDateFormatted} />
+
       <Label>Status:</Label>
       <select name="status" value={status}>
         <option>Draft</option>
         <option>In Process</option>
         <option>Completed</option>
       </select>
+
       <Label>Actual Hours</Label>
       <Label>{actualHours}</Label>
-      <Button>New</Button>
-      <Button>Save Modified</Button>
-    </div>;
+    </div>
+  );
 }
-
 
 export default WorkOrderList;

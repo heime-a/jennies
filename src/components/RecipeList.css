@@ -1,0 +1,16 @@
+.newRecipe {
+  margin: 5px;
+}
+
+#recipeListGrid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+#recipeTop {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.recipeButtons {
+  grid-row-start: 2;
+}

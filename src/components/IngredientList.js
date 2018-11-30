@@ -123,7 +123,7 @@ export class IngredientList extends Component {
             New Ingredient
           </Button>
           <Button
-            color="success"
+            color="warning"
             className="saveIngredient"
             onClick={e => this.saveModified(e)}
           >
