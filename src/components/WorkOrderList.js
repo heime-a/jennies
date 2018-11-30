@@ -1,6 +1,9 @@
+'use strict;'
+//@ts-check
 import React, { Component } from "react";
+import { Button, Input, Label  } from "reactstrap";
 
-import { Select } from "reactstrap";
+// import postOrPutData from "../common/postOrPutData";
 
 class WorkOrderList extends Component {
   constructor(props) {
@@ -9,34 +12,100 @@ class WorkOrderList extends Component {
       content: [
         {
           woNumber: "wo0001",
-          recipeName: "Chocolate Macaroons",
-          startDate: "01/01/80",
+          recipe : { name:  "Chocolate Macaroons"} ,
+          startDate: "1980-01-01",
           status: "In Process",
           actualHours: 5
         },
         {
           woNumber: "wo0002",
-          recipeName: "Vanilla Macaroons",
-          startDate: "01/01/80",
+          recipe: { name: "Vanilla Macaroons" },
+          startDate: "1980-01-01",
           status: "Completed",
           actualHours: 4
         }
-      ]
+      ],
+      selectedWoNumber: undefined,
+      recipeNames: ['Chocolate Macaroons','Vanilla Macaroons']
     };
   }
+  async componentDidMount() {
+    const newState = { ...this.state };
+
+    const response = await fetch("http://127.0.0.1:3001/workorders");
+    const jsonMessage = await response.json();
+    if (jsonMessage) {
+      newState.content = jsonMessage.content;
+    } else {
+      console.log("json message failed");
+    }
+    const ingResponse = await fetch("http://127.0.0.1:3001/recipes");
+    const ingJson = await ingResponse.json();
+    if (ingJson) {
+      newState.recipeNames = ingJson.content.map(item => item.name);
+      this.setState(newState);
+    } else {
+      console.log("json message failed");
+    }
+    
+  }
+  handleItemSelect = (e) => {
+    const newState  = {...this.state };
+    newState.selectedWoNumber = e.target.value;
+    this.setState( newState);
+  }
+
+  handleRecipeChange = (e) => {
+    const idx = this.state.content.findIndex(el => el.woNumber === this.state.selectedWoNumber);
+    const newState = {...this.state};
+    newState.content[idx].recipe.name = e.target.value;
+    this.setState(newState);
+  }
+
   render() {
+    const foundItem = this.state.content.find(el => el.woNumber === this.state.selectedWoNumber);
     return (
-      <>
-        <select size={10}>
+      <div>
+        <select size={10} onChange={this.handleItemSelect}>
           {this.state.content.map(({ woNumber, status, startDate }) => (
-            <option>
+            <option value={woNumber} key={woNumber}>
               {startDate} {woNumber} {status}
             </option>
           ))}
         </select>
-      </>
+        {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleRecipeChange} item={foundItem} recipeNames={this.state.recipeNames}/>
+        }            
+      </div>
     );
   }
 }
+
+function WorkOrderForm({ item, recipeNames, onChange }) {
+  const {recipe,  status, actualHours } = item; 
+
+  const startDate = new Date(item.startDate);
+
+  const startDateFormatted = startDate.toLocaleDateString();
+
+  return <div id="woForm">
+      <Label>Recipe</Label>
+      <select name="recipe.name" value={recipe.name} onChange={onChange}>
+        {recipeNames.map(i => <option key={i}>{i}</option>)}
+      </select>
+      <Label>Start Date</Label>
+      <Input type="text" name="startDate" value={startDateFormatted} />
+      <Label>Status:</Label>
+      <select name="status" value={status}>
+        <option>Draft</option>
+        <option>In Process</option>
+        <option>Completed</option>
+      </select>
+      <Label>Actual Hours</Label>
+      <Label>{actualHours}</Label>
+      <Button>New</Button>
+      <Button>Save Modified</Button>
+    </div>;
+}
+
 
 export default WorkOrderList;
