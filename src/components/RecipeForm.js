@@ -1,23 +1,21 @@
 'use strict;'
 //@ts-check
 import React from "react";
-import { Table, Input, Button } from "reactstrap";
+import { Table, Input, Button, Label } from "reactstrap";
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
 export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingNames }) {
   const divStyle = { display: 'grid'};
-  return (
-    <div id="recipeGrid" style={divStyle} >
-      <div>Name: {item.name}</div>
-      <div>Man Hours:
-        <Input
-          type="text"
-          name="manHours"
-          value={item.manHours}
-          onChange={onChange}
-        /></div>
+  return <div id="recipeGrid" style={divStyle}>
+      <div>
+        <Label>Name:</Label> <Input type="text" name="recipeName" value={item.name} onChange={onChange}/>
+      </div>
+      <div>
+        Man Hours:
+        <Input type="text" name="manHours" value={item.manHours} onChange={onChange} />
+      </div>
       <Button color="success" onClick={onAddLine}>
         Add Row
       </Button>
@@ -32,36 +30,23 @@ export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ing
           </tr>
         </thead>
         <tbody>
-          {item.ingredients.map((ing,idx) => (
-            <tr key={ing._id}>
+          {item.ingredients.map((ing, idx) => <tr key={ing._id}>
               <td width="15%">
-                <Input
-                  key={idx}
-                  type="text"
-                  name="quantity"
-                  value={ing.quantity}
-                  onChange={(e)=>onChange(e,idx)}
-                />{" "}
+                <Input key={idx} type="text" name="quantity" value={ing.quantity} onChange={e => onChange(e, idx)} />{" "}
               </td>
               <td width="40%">
-                <Typeahead
-                  options={ingNames}
-                  type="text"
-                  name="name"
-                  defaultInputValue={ing.ingredient.name}
-                  onChange={(val)=>onChange({target:{name:'name',value: val[0]}},idx)}
-                />
+                <Typeahead options={ingNames} type="text" name="name" defaultInputValue={ing.ingredient.name} onChange={val => onChange({ target: { name: "name", value: val[0] } }, idx)} />
               </td>
               <td width="15%">{ing.ingredient.unit}</td>
               <td width="15%">{9.99}</td>
               <td width="15%">{9.99}</td>
-              <td><Button onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
-            </tr>
-          ))}
+              <td>
+                <Button onClick={e => onRemoveLine(e, idx)}>x</Button>
+              </td>
+            </tr>)}
         </tbody>
       </Table>
-    </div>
-  );
+    </div>;
 }
 
 //

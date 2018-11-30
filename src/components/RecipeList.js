@@ -42,7 +42,7 @@ export class RecipeList extends Component {
 
     }
 
-    newRecipe(e) {
+    handleNewRecipe(e) {
         const newState = { ...this.state };
         newState.content.push({
             _id: `new001`,
@@ -100,7 +100,10 @@ export class RecipeList extends Component {
         );
 
         if (event.target.name === "manHours") {
-             foundItem[event.target.name]= event.target.value;
+             foundItem["manHours"]= event.target.value;
+        }
+        if(event.target.name === "recipeName") {
+            foundItem["name"] = event.target.value;
         }
         else if (event.target.name === "quantity")
             foundItem.ingredients[idx].quantity = event.target.value;
@@ -126,6 +129,7 @@ export class RecipeList extends Component {
         const foundItem = newState.content.find(
             el => el._id === newState.selectedId
         );
+
         foundItem.ingredients.push({
             quantity: 1,
             ingredient: { name: "New Item", unit: "" }
@@ -150,7 +154,7 @@ export class RecipeList extends Component {
               </select>
               {this.state.selectedId !== -1 && <RecipeForm item={foundItem} onChange={this.handleChangeRecipe} onAddLine={this.handleAddRecipeLine} onRemoveLine={this.handleRemoveRecipeLine} ingNames={this.state.ingNames} />}
               <div className="recipeButtons">
-                <Button color="success" className="newRecipe" onClick={e => this.newPurchaseRecipe(e)}>
+                <Button color="success" className="newRecipe" onClick={e => this.handleNewRecipe(e)}>
                   New Recipe
                 </Button>
                 <Button color="success" onClick={e => this.saveModifiedRecipes(e)}>
