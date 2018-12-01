@@ -20,12 +20,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const {
-    recipeName, startDate, status, actualHours,
+    recipe, startDate, status, actualHours,
   } = req.body;
 
   const wo = new WorkOrder();
 
-  wo.recipe = await Recipe.findOne({ name: recipeName });
+  wo.recipe = await Recipe.findOne({ name: recipe.name });
 
   wo.startDate = startDate;
   wo.status = status;
@@ -46,14 +46,16 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const {
-    recipeName, startDate, status, actualHours,
+    recipe, startDate, status, actualHours,
   } = req.body;
-
-  const recipe = Recipe.findOne({ name: recipeName });
 
   const wo = {};
 
-  wo.recipe = recipe;
+  wo.recipe = await Recipe.findOne({ name: recipe.name });
+
+  
+
+  //wo.recipe = recipe;
   wo.startDate = startDate;
   wo.status = status;
   wo.actualHours = actualHours;
