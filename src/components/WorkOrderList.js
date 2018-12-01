@@ -46,10 +46,10 @@ class WorkOrderList extends Component {
 
   saveWorkOrders = e => {
     async function saveItem(item) {
-      const { name, woNumber, startDate, status, actualHours } = item;
+      const { recipe, woNumber, startDate, status, actualHours } = item;
       if (item._id.includes("new")) {
         const data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
-          name,
+          recipe,
           woNumber,
           startDate,
           status,
@@ -60,7 +60,7 @@ class WorkOrderList extends Component {
         const data = await postOrPutData(
           `http://127.0.0.1:3001/workorders/${item._id}`,
           {
-            name,
+            recipe,
             woNumber,
             startDate,
             status,
