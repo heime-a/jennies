@@ -29,6 +29,6 @@
   grid-row-start: 2;
 }
 
-.newIngredient {
-  margin: 10px;
+button + button {
+  margin: .5rem;
 }

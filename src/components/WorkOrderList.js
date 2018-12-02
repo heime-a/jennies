@@ -2,10 +2,16 @@
 //@ts-check
 import "./WorkOrderList.css";
 import React, { Component } from "react";
-import { Button, Input, Label } from "reactstrap";
+import { Button, Input, Label, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 
-// import postOrPutData from "../common/postOrPutData";
+/* Alert color="warning">
+This is a warning alert — check it out!
+</Alert>
+<Alert color="info">
+This is a info alert — check it out!
+</Alert> */
+
 
 class WorkOrderList extends Component {
   constructor(props) {
@@ -13,6 +19,7 @@ class WorkOrderList extends Component {
     this.state = {
       content: [
         {
+          _id : "test001",
           woNumber: "wo0001",
           recipe: { name: "Chocolate Macaroons" },
           startDate: "1980-01-01",
@@ -21,9 +28,11 @@ class WorkOrderList extends Component {
         }
       ],
       selectedWoNumber: undefined,
+      alertMessage: undefined,
       recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"]
     };
   }
+
   async componentDidMount() {
     const newState = { ...this.state };
 
@@ -45,16 +54,17 @@ class WorkOrderList extends Component {
   }
 
   saveWorkOrders = e => {
-    async function saveItem(item) {
+    const saveItem  = async item => {
       const { recipe, woNumber, startDate, status, actualHours } = item;
       if (item._id.includes("new")) {
         const data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
           recipe,
-          woNumber,
+          woNumber : woNumber.replace(/new/,'wo'),
           startDate,
           status,
           actualHours
         });
+        
         if (data) console.log(JSON.stringify(data));
       } else {
         const data = await postOrPutData(
@@ -69,6 +79,7 @@ class WorkOrderList extends Component {
           "PUT"
         );
         if (data) console.log(JSON.stringify(data));
+        this.setState({...this.state,alertMessage: data.message});
       }
     }
 
@@ -78,6 +89,26 @@ class WorkOrderList extends Component {
       saveItem(item);
     }
   };
+
+  handleNewWorkOrder = e => {
+
+    const getUniqWo = (woNums) => {
+      const maxWo = Math.max(...woNums.map(i=>i.replace(/\D*/,"")));
+      return `new${maxWo+1}`;
+    }
+    
+    const newState = {...this.state};
+    const newWoNumber = getUniqWo(this.state.content.map(i=>i.woNumber));
+    newState.content.push({
+      _id: newWoNumber,
+      woNumber: newWoNumber,
+      recipe: { name: "New Recipe" },
+      startDate: "1980-01-01",
+      status: "Draft",
+      actualHours: 8
+    });
+    this.setState(newState);
+  }
 
   handleItemSelect = e => {
     const newState = { ...this.state };
@@ -100,6 +131,7 @@ class WorkOrderList extends Component {
     );
     return (
       <div id="workOrderList">
+        {this.state.alertMessage && <UncontrolledAlert color="info">{this.state.alertMessage}</UncontrolledAlert>}
         <select size={10} onChange={this.handleItemSelect}>
           {this.state.content.map(({ woNumber, status, startDate }) => (
             <option value={woNumber} key={woNumber}>
@@ -114,8 +146,8 @@ class WorkOrderList extends Component {
             recipeNames={this.state.recipeNames}
           />
         )}
-        <div className="buttonGroup">
-          <Button color="success">New</Button>
+        <div>
+          <Button color="success" onClick={this.handleNewWorkOrder}>New</Button>
           <Button color="warning" onClick={this.saveWorkOrders}>
             Save Modified
           </Button>

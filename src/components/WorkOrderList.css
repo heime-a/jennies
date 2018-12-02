@@ -9,6 +9,6 @@
   grid-template-columns: 1fr 3fr;
 }
 
-.buttonGroup button {
-  margin: 2px;
+button + button {
+  margin: .5rem
 }
