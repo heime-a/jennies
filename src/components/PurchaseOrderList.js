@@ -1,7 +1,7 @@
 'use strict;'
 import "./PurchaseOrderList.css"
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button , UncontrolledAlert} from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
 
@@ -59,31 +59,30 @@ export class PurchaseOrderList extends Component {
     this.setState(newState);
   }
 
-  saveModifiedPOs = (e) => {
+  saveSelectedPO = (e) => {
     async function saveItem(item) {
+      let data;
       if (item._id.includes("new")) {
-        const data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders`, {
+        data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders`, {
           poNumber: item.poNumber,
           ingredients: item.ingredients,
           supplier: item.supplier
         });
-        if (data) console.log(JSON.stringify(data));
       } else {
-        const data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders/${item._id}`, {
+        data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders/${item._id}`, {
           poNumber: item.poNumber,
           ingredients: item.ingredients,
           supplier: item.supplier
         },"PUT");
-        if (data) console.log(JSON.stringify(data));
-
       }
+      if (data) console.log(JSON.stringify(data));
+      this.setState({ ...this.state, alertMessage: data.message });
+      setTimeout(() => { this.setState({ ...this.state, alertMessage: undefined }) }, 3000);
+
     }
 
-    const newState = { ...this.state };
-
-    for(let item of newState.content) {
-      saveItem(item);
-    }
+    const foundItem = this.state.content.find(i=>this.state.selectedId === i._id);
+    saveItem(foundItem);
   }
 
   handleItemSelect = (event) => {
@@ -137,7 +136,7 @@ export class PurchaseOrderList extends Component {
       el => el._id === this.state.selectedId
     );
     return (
-      <React.Fragment>
+      <div>
         <div id="poListGrid">
           <select
             size={10}
@@ -172,7 +171,12 @@ export class PurchaseOrderList extends Component {
             </Button>
           </div>
         </div>
-      </React.Fragment>
+        {this.state.alertMessage &&
+          <UncontrolledAlert color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"} >
+            {this.state.alertMessage}
+          </UncontrolledAlert>}
+
+      </div>
     );
   }
 }

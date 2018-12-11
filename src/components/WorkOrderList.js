@@ -53,21 +53,20 @@ class WorkOrderList extends Component {
     }
   }
 
-  saveWorkOrders = e => {
+  saveWorkOrder = e => {
     const saveItem  = async item => {
       const { recipe, woNumber, startDate, status, actualHours } = item;
+      let data;
       if (item._id.includes("new")) {
-        const data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
+          data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
           recipe,
           woNumber : woNumber.replace(/new/,'wo'),
           startDate,
           status,
           actualHours
-        });
-        
-        if (data) console.log(JSON.stringify(data));
+        });  
       } else {
-        const data = await postOrPutData(
+          data = await postOrPutData(
           `http://127.0.0.1:3001/workorders/${item._id}`,
           {
             recipe,
@@ -78,16 +77,14 @@ class WorkOrderList extends Component {
           },
           "PUT"
         );
-        if (data) console.log(JSON.stringify(data));
-        this.setState({...this.state,alertMessage: data.message});
       }
+      if (data) console.log(JSON.stringify(data));
+      this.setState({ ...this.state, alertMessage: data.message });
+      setTimeout(() => { this.setState({ ...this.state, alertMessage: undefined }) }, 3000);
     }
 
-    const newState = { ...this.state };
-
-    for (let item of newState.content) {
-      saveItem(item);
-    }
+    const selectedItem = this.state.content.find(i=> this.state.selectedWoNumber === i.woNumber);
+    saveItem(selectedItem);
   };
 
   handleNewWorkOrder = e => {
@@ -129,31 +126,30 @@ class WorkOrderList extends Component {
     const foundItem = this.state.content.find(
       el => el.woNumber === this.state.selectedWoNumber
     );
-    return (
-      <div id="workOrderList">
-        {this.state.alertMessage && <UncontrolledAlert color="info">{this.state.alertMessage}</UncontrolledAlert>}
-        <select size={10} onChange={this.handleItemSelect}>
-          {this.state.content.map(({ woNumber, status, startDate }) => (
-            <option value={woNumber} key={woNumber}>
-              {startDate} {woNumber} {status}
-            </option>
-          ))}
-        </select>
-        {this.state.selectedWoNumber !== undefined && (
-          <WorkOrderForm
-            onChange={this.handleRecipeChange}
-            item={foundItem}
-            recipeNames={this.state.recipeNames}
-          />
-        )}
-        <div>
-          <Button color="success" onClick={this.handleNewWorkOrder}>New</Button>
-          <Button color="warning" onClick={this.saveWorkOrders}>
-            Save Modified
-          </Button>
+    return <div>
+        <div id="workOrderList">
+          <select size={10} onChange={this.handleItemSelect}>
+            {this.state.content.map(({ woNumber, status, startDate }) => (
+              <option value={woNumber} key={woNumber}>
+                {startDate} {woNumber} {status}
+              </option>
+            ))}
+          </select>
+          {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleRecipeChange} item={foundItem} recipeNames={this.state.recipeNames} />}
+          <div>
+            <Button color="success" onClick={this.handleNewWorkOrder}>
+              New
+            </Button>
+            <Button color="warning" onClick={this.saveWorkOrder}>
+              Save Current
+            </Button>
+          </div>
         </div>
-      </div>
-    );
+        {this.state.alertMessage && 
+          <UncontrolledAlert color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"} >
+            {this.state.alertMessage}
+          </UncontrolledAlert>}
+      </div>;
   }
 }
 
