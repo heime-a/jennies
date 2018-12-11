@@ -6,7 +6,8 @@ import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
 
 
-export class PurchaseOrderList extends Component {
+
+ class PurchaseOrderList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,8 +60,8 @@ export class PurchaseOrderList extends Component {
     this.setState(newState);
   }
 
-  saveSelectedPO = (e) => {
-    async function saveItem(item) {
+  saveSelectedPO = e => {
+      const saveItem = async (item) => {
       let data;
       if (item._id.includes("new")) {
         data = await postOrPutData(`http://127.0.0.1:3001/purchaseOrders`, {
@@ -166,8 +167,8 @@ export class PurchaseOrderList extends Component {
             >
               New Purchase Order
             </Button>
-            <Button color="warning" onClick={e => this.saveModifiedPOs(e)}>
-              Save Modified POs
+            <Button color="warning" onClick={this.saveSelectedPO}>
+              Save Current
             </Button>
           </div>
         </div>
@@ -180,3 +181,5 @@ export class PurchaseOrderList extends Component {
     );
   }
 }
+
+export default PurchaseOrderList; 
