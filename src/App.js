@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import { IngredientList } from './components/IngredientList';
-import { PurchaseOrderList } from "./components/PurchaseOrderList";
+import PurchaseOrderList from "./components/PurchaseOrderList";
 import Inventory  from "./components/Inventory";
 import { RecipeList } from "./components/RecipeList";
 import  WorkOrderList from "./components/WorkOrderList";
