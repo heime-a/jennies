@@ -75,7 +75,7 @@ router.post('/', async (req, res) => {
   const canManufacture = validateWorkOrder(wo.recipe.ingredients, inventory);
 
   if (!canManufacture) {
-    res.json({ message: ' Cant Make this not enough inventory', content: [wo.recipe, inventory] });
+    res.json({ message: ` ERROR: Item not saved, Cant Make ${wo.recipe.name} there isn't enough inventory`, content: [wo.recipe, inventory] });
   } else {
     try {
       const savedWo = await wo.save();
@@ -108,7 +108,7 @@ router.put('/:id', async (req, res) => {
   try {
     const updatedWO = await WorkOrder.findOneAndUpdate({ _id: req.params.id }, wo);
     res.json({
-      message: 'Updated work order',
+      message: `Updated work order ${updatedWO.woNumber}`,
       content: updatedWO,
     });
   } catch (error) {
