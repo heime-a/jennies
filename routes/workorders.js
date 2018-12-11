@@ -14,7 +14,7 @@ const router = express.Router();
 function validateWorkOrder(recipeIngredients, inventory) {
   for (const i of recipeIngredients) {
     const itm = inventory.find(el => el.name === i.ingredient.name);
-    if (i.quantity > itm.quantity) {
+    if (itm === undefined || i.quantity > itm.quantity ) {
       return false;
     }
   }
