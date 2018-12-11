@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
       });
     } else {
       res.json({
-        message: 'ingredient not found',
+        message: `ERROR: New PO Not Saved ingredient ${i.ingredient.name} not found`,
         data: JSON.stringify(req.body),
       });
     }
@@ -42,12 +42,12 @@ router.post('/', async (req, res) => {
   try {
     await purchaseorder.save();
     res.json({
-      message: 'Saved new record',
+      message: 'Successfully Saved new record',
       data: JSON.stringify(purchaseorder),
     });
   } catch (err) {
     res.json({
-      message: 'Record not saved',
+      message: `ERROR: Record not saved: ${err.stack}`,
       data: JSON.stringify(purchaseorder),
     });
   }
@@ -72,7 +72,7 @@ router.put('/:id', async (req, res) => {
       });
     } else {
       res.json({
-        message: 'ingredient not found',
+        message: 'ERROR: ingredient not found',
         data: JSON.stringify(req.body),
       });
     }
@@ -82,12 +82,12 @@ router.put('/:id', async (req, res) => {
     const updatedPO = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
     console.log(`after  save ${JSON.stringify(updatedPO)}`);
     res.json({
-      message: 'Updated new record',
+      message: 'Successfuly Updated record',
       data: JSON.stringify(updatedPO),
     });
   } catch (err) {
     res.json({
-      message: `Record not updated: ${err.stack}`,
+      message: `ERROR: Record not updated: ${err.stack}`,
       data: JSON.stringify(purchaseorder),
     });
   }
