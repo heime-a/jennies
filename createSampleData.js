@@ -66,6 +66,8 @@ async function run() {
     ingredient: await Ingredient.findOne({ name: 'Coconut Shredded' }),
     quantity: 10,
   });
+  recipe.expectedYield = 100;
+  recipe.yieldUnits = 'Case';
   await recipe.save();
 
   const recipe2 = new Recipe();
@@ -83,6 +85,8 @@ async function run() {
     ingredient: await Ingredient.findOne({ name: 'Coconut Shredded' }),
     quantity: 10,
   });
+  recipe2.expectedYield = 100;
+  recipe2.yieldUnits = 'Case';
   await recipe2.save();
 
   const wo = new WorkOrder();
@@ -91,6 +95,8 @@ async function run() {
   wo.startDate = Date.now();
   wo.status = 'Completed';
   wo.actualHours = 4;
+  wo.actualYield = 100;
+  wo.units = 'Case';
   await wo.save();
 
   const wo2 = new WorkOrder();
@@ -99,6 +105,9 @@ async function run() {
   wo2.startDate = Date.now();
   wo2.status = 'Completed';
   wo2.actualHours = 4;
+  wo2.actualYield = 200;
+  wo2.units = 'Case';
+
   await wo2.save();
 
 

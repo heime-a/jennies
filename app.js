@@ -15,6 +15,7 @@ const ingredientsRouter = require('./routes/ingredients');
 const inventoryRouter = require('./routes/inventory');
 const recipesRouter = require('./routes/recipes');
 const workorderRouter = require('./routes/workorders');
+const productinventoryRouter = require('./routes/productInventory');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/ingredients', ingredientsRouter);
 app.use('/inventory', inventoryRouter);
 app.use('/recipes', recipesRouter);
 app.use('/workorders', workorderRouter);
+app.use('/productInventory', productinventoryRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

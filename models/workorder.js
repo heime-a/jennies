@@ -11,7 +11,7 @@ const workOrderSchema = new mongoose.Schema({
   startDate: Date,
   status: String,
   actualHours: Number,
-
+  actualYield: Number,
 });
 
 module.exports = mongoose.model('WorkOrder', workOrderSchema);

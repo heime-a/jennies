@@ -12,6 +12,8 @@ const recipeSchema = new mongoose.Schema({
     quantity: Number,
   }],
   manHours: Number,
+  expectedYield: Number,
+  yieldUnits: String,
 });
 
 module.exports = mongoose.model('Recipe', recipeSchema);
