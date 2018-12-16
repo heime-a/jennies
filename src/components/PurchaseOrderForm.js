@@ -48,8 +48,14 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine,onRemoveLi
                 />
               </td>
               <td width="15%">{ing.ingredient.unit}</td>
-              <td width="15%">{9.99}</td>
-              <td width="15%">{9.99}</td>
+              <td width="15%">
+              <Input
+                  key={idx}
+                  type="text"
+                  name="unitCost"
+                  value={ing.unitCost}
+                  onChange={(e)=>onChange(e,idx)}/></td>
+              <td width="15%">{(Math.floor(100 * ing.quantity * ing.unitCost) / 100).toFixed(2) }</td>
               <td><Button onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
             </tr>
           ))}

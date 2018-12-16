@@ -104,6 +104,11 @@ import postOrPutData from "../common/postOrPutData";
       foundItem.ingredients[idx].quantity = event.target.value;
     if (event.target.name === "name")
       foundItem.ingredients[idx].ingredient.name = event.target.value;
+    if (event.target.name === "unitCost")
+      foundItem.ingredients[idx].unitCost = event.target.value;
+    
+
+    console.log(foundItem.ingredients[idx].ingredient.unitCost);
     this.setState(newState);
   }
   handleRemovePoLine = (event,idx) => {
