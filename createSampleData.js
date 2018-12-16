@@ -18,25 +18,26 @@ async function run() {
 
   let purchaseorder = new Purchaseorder();
   purchaseorder.poNumber = 'HA0001';
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5 });
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5, unitCost: 29.95 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10, unitCost: 1.99 });
   purchaseorder.supplier = { name: 'heime', address: '123456' };
   await purchaseorder.save();
 
   purchaseorder = new Purchaseorder();
   purchaseorder.poNumber = 'HA0002';
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5 });
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5, unitCost: 25.00 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10, unitCost: 1.50 });
   purchaseorder.supplier = { name: 'heime', address: '123456' };
   await purchaseorder.save();
 
   purchaseorder = new Purchaseorder();
   purchaseorder.poNumber = 'HA0003';
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5 });
-  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5, unitCost: 23.00 });
+  purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10, unitCost: 1.90 });
   purchaseorder.ingredients.push({
     ingredient: await Ingredient.findOne({ name: 'Coconut Shredded' }),
     quantity: 10,
+    unitCost: 5.99,
   });
 
   purchaseorder.supplier = { name: 'heime', address: '123456' };

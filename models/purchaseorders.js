@@ -17,6 +17,7 @@ const purchaseOrderSchema = new mongoose.Schema({
         ref: 'Ingredient',
       },
       quantity: Number,
+      unitCost: Number,
     },
   ],
   supplier: supplierSchema,

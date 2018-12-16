@@ -1,86 +1,35 @@
 'use strict;';
 
+// eslint-disable-next-line spaced-comment
+//@ts-check
+
 const express = require('express');
-const PurchaseOrder = require('../models/purchaseorders');
-const WorkOrder = require('../models/workorder');
+const common = require('../common/common');
+
 
 const router = express.Router();
 
-router.get('/manufactUsage', async (req, res) => {
-  const response = await WorkOrder.aggregate([{
-    $lookup: {
-      from: 'recipes',
-      localField: 'recipe',
-      foreignField: '_id',
-      as: 'recipe',
-    },
-  }, {
-    $unwind: {
-      path: '$recipe',
 
-    },
-  }, {
-    $unwind: {
-      path: '$recipe.ingredients',
-    },
-  }, {
-    $group: {
-      _id: '$recipe.ingredients.ingredient',
-      Total: {
-        $sum: '$recipe.ingredients.quantity',
-      },
-    },
-  }, {
-    $lookup: {
-      from: 'ingredients',
-      localField: '_id',
-      foreignField: '_id',
-      as: 'ing',
-    },
-  }, {
-    $project: {
-      'ing.name': 1,
-      Total: 1,
-    },
-  }, {
-    $unwind: {
-      path: '$ingName',
-    },
-  }]);
+router.get('/purchTotals', async (req, res) => {
   res.json({
-    message: 'Inventory ',
-    content: response,
+    message: 'PurchTotals',
+    content: await common.getPurchases(),
+  });
+});
+
+router.get('/manufactUsage', async (req, res) => {
+  res.json({
+    message: 'ManufactUsage',
+    content: await common.getUsedIngredients(),
   });
 });
 
 router.get('/', async (req, res) => {
-  const response = await PurchaseOrder.aggregate([
-    {
-      $unwind: {
-        path: '$ingredients',
-      },
-    }, {
-      $lookup: {
-        from: 'ingredients',
-        localField: 'ingredients.ingredient',
-        foreignField: '_id',
-        as: 'ingredients.ingredient',
-      },
-    }, {
-      $group: {
-        _id: '$ingredients.ingredient.name',
-        total: {
-          $sum: '$ingredients.quantity',
-        },
-      },
-    },
-  ]);
-
+  //  response.map(({ _id, total }) => ({ name: _id[0], quantity: total }))
   res.json({
     message: 'Inventory ',
-    content: response.map(({ _id, total }) => ({ name: _id[0], quantity: total })),
+    content: await common.getCurrentInventory(),
   });
 });
-
 
 module.exports = router;

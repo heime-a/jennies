@@ -21,11 +21,17 @@ router.get('/', async (req, res) => {
         $sum: '$actualYield',
       },
     },
-  }]);
+  },
+  {
+    $unwind: {
+      path: '$_id',
+    },
+  },
+  ]);
 
   res.json({
     message: 'productInventory',
-    content: response,
+    content: response.map(({ _id, total }) => ({ name: _id, quantity: total })),
   });
 });
 

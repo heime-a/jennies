@@ -7,45 +7,20 @@
 const express = require('express');
 const WorkOrder = require('../models/workorder');
 const Recipe = require('../models/recipe');
-const PurchaseOrder = require('../models/purchaseorders');
+const common = require('../common/common');
+
 
 const router = express.Router();
 
 function validateWorkOrder(recipeIngredients, inventory) {
   for (const i of recipeIngredients) {
     const itm = inventory.find(el => el.name === i.ingredient.name);
-    if (itm === undefined || i.quantity > itm.quantity ) {
+    if (itm === undefined || i.quantity > itm.quantity) {
       return false;
     }
   }
   return true;
 }
-
-async function getInventory() {
-  const response = await PurchaseOrder.aggregate([
-    {
-      $unwind: {
-        path: '$ingredients',
-      },
-    }, {
-      $lookup: {
-        from: 'ingredients',
-        localField: 'ingredients.ingredient',
-        foreignField: '_id',
-        as: 'ingredients.ingredient',
-      },
-    }, {
-      $group: {
-        _id: '$ingredients.ingredient.name',
-        total: {
-          $sum: '$ingredients.quantity',
-        },
-      },
-    },
-  ]);
-  return response.map(({ _id, total }) => ({ name: _id[0], quantity: total }));
-}
-
 
 router.get('/', async (req, res) => {
   const allworkorders = await WorkOrder.find({}).populate('recipe');
@@ -70,7 +45,7 @@ router.post('/', async (req, res) => {
   wo.actualHours = actualHours;
   wo.woNumber = woNumber;
 
-  const inventory = await getInventory();
+  const inventory = await common.getCurrentInventory();
 
   const canManufacture = validateWorkOrder(wo.recipe.ingredients, inventory);
 

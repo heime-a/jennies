@@ -31,6 +31,7 @@ router.post('/', async (req, res) => {
       purchaseorder.ingredients.push({
         ingredient,
         quantity: i.quantity,
+        unitCost: i.unitCost,
       });
     } else {
       res.json({
@@ -69,6 +70,7 @@ router.put('/:id', async (req, res) => {
       purchaseorder.ingredients.push({
         ingredient,
         quantity: i.quantity,
+        unitCost: i.unitCost,
       });
     } else {
       res.json({
