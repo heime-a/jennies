@@ -33,6 +33,7 @@ class Inventory extends Component {
                     <tr>                    
                         <th>Name</th>
                         <th>On Hand</th>
+                        <th>Avg Cost</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@ class Inventory extends Component {
                         <tr>
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
+                            <td>{(Math.floor(100 * item.avgCost) /100).toFixed(2)}</td>
                         </tr>))
                     }
                 </tbody>

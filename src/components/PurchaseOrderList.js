@@ -132,7 +132,7 @@ import postOrPutData from "../common/postOrPutData";
     );
     foundItem.ingredients.push({
       quantity: 1,
-      ingredient: { name: "New Item", unit: "" }
+      ingredient: { name: "New Item", unit: "",  unitCost: .01 }
     });
     this.setState(newState);
   }
