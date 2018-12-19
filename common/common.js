@@ -17,8 +17,11 @@ module.exports.getPurchases = async () => {
     }, {
       $group: {
         _id: '$ingredients.ingredient.name',
-        total: {
+        quantity: {
           $sum: '$ingredients.quantity',
+        },
+        cost: {
+          $sum: { $multiply: ['$ingredients.quantity', '$ingredients.unitCost'] },
         },
       },
     },
@@ -28,7 +31,8 @@ module.exports.getPurchases = async () => {
       },
     },
   ]);
-  return response.map(({ _id, total }) => ({ name: _id, quantity: total }));
+  // eslint-disable-next-line max-len
+  return response.map(({ _id, quantity, cost }) => ({ name: _id, quantity, avgCost: cost / quantity }));
 };
 
 
@@ -83,7 +87,7 @@ module.exports.getCurrentInventory = async () => {
 
   return purch.map((i) => {
     const usedIng = used.find(e => e.name === i.name);
-    if (usedIng === undefined) return { name: i.name, quantity: i.quantity };
-    return { name: i.name, quantity: i.quantity - usedIng.quantity };
+    if (usedIng === undefined) return { name: i.name, quantity: i.quantity, avgCost: i.avgCost };
+    return { name: i.name, quantity: i.quantity - usedIng.quantity, avgCost: i.avgCost };
   });
 };
