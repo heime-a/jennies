@@ -1,4 +1,8 @@
 /* eslint-disable no-console */
+/* TODO: Need to generate transaction ids for all transactions */
+/* TODO: PurchaseOrtder List and customerOrder as printable forms */
+/* TODO: Inventory List as printable form */
+
 
 'use strict;';
 
