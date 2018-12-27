@@ -121,6 +121,7 @@ class WorkOrderList extends Component {
     const idx = this.state.content.findIndex(
       el => el.woNumber === this.state.selectedWoNumber
     );
+    console.log(`Idx ${idx} name ${e.target.name} ${e.target.value}`);
     const newState = { ...this.state };
     if(e.target.name === 'recipe.name') newState.content[idx].recipe.name = e.target.value;
     newState.content[idx][e.target.name] = e.target.value; 
@@ -184,7 +185,7 @@ function WorkOrderForm({ item, recipeNames, onChange }) {
       <Label>Actual Hours</Label>
       <Input type="text" name='actualHours' value={actualHours} onChange={onChange}/>
       <Label>Actual Yield</Label>
-      <Input type="text" name="actualYield" value={actualYield} onChange={onchange}/>
+      <Input type="text" name="actualYield" value={actualYield} onChange={onChange}/>
     </div>;
 }
 
