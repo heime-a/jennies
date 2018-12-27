@@ -16,6 +16,8 @@ function validateWorkOrder(recipeIngredients, inventory) {
   for (const i of recipeIngredients) {
     const itm = inventory.find(el => el.name === i.ingredient.name);
     if (itm === undefined || i.quantity > itm.quantity) {
+      // eslint-disable-next-line no-console
+      console.log(`Not Enough ${itm.name}`);
       return false;
     }
   }
@@ -33,7 +35,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const {
-    woNumber, recipe, startDate, status, actualHours,
+    woNumber, recipe, startDate, status, actualHours, actualYield,
   } = req.body;
 
   const wo = new WorkOrder();
@@ -43,6 +45,7 @@ router.post('/', async (req, res) => {
   wo.startDate = startDate;
   wo.status = status;
   wo.actualHours = actualHours;
+  wo.actualYield = actualYield;
   wo.woNumber = woNumber;
 
   const inventory = await common.getCurrentInventory();
@@ -54,6 +57,7 @@ router.post('/', async (req, res) => {
   } else {
     try {
       const savedWo = await wo.save();
+      console.log(savedWo);
       res.json({
         message: 'WorkOrder Saved',
         content: savedWo,
@@ -69,7 +73,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const {
-    woNumber, recipe, startDate, status, actualHours,
+    woNumber, recipe, startDate, status, actualHours, actualYield,
   } = req.body;
 
   const wo = {};
@@ -78,10 +82,12 @@ router.put('/:id', async (req, res) => {
   wo.startDate = startDate;
   wo.status = status;
   wo.actualHours = actualHours;
+  wo.actualYield = actualYield;
   wo.woNumber = woNumber;
 
   try {
     const updatedWO = await WorkOrder.findOneAndUpdate({ _id: req.params.id }, wo);
+    console.log(updatedWO);
     res.json({
       message: `Updated work order ${updatedWO.woNumber}`,
       content: updatedWO,

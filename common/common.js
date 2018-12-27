@@ -91,3 +91,30 @@ module.exports.getCurrentInventory = async () => {
     return { name: i.name, quantity: i.quantity - usedIng.quantity, avgCost: i.avgCost };
   });
 };
+
+module.exports.getCurrentProductInventory = async () => module.exports.getAggregateWOProduction();
+
+module.exports.getAggregateWOProduction = async () => {
+  const response = await WorkOrder.aggregate([{
+    $lookup: {
+      from: 'recipes',
+      localField: 'recipe',
+      foreignField: '_id',
+      as: 'recipe',
+    },
+  }, {
+    $group: {
+      _id: '$recipe.name',
+      total: {
+        $sum: '$actualYield',
+      },
+    },
+  },
+  {
+    $unwind: {
+      path: '$_id',
+    },
+  },
+  ]);
+  return response.map(({ _id, total }) => ({ name: _id, quantity: total }));
+};
