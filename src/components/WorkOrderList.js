@@ -24,7 +24,8 @@ class WorkOrderList extends Component {
           recipe: { name: "Chocolate Macaroons" },
           startDate: "1980-01-01",
           status: "In Process",
-          actualHours: 5
+          actualHours: 5,
+          actualYield: 100,
         }
       ],
       selectedWoNumber: undefined,
@@ -55,7 +56,7 @@ class WorkOrderList extends Component {
 
   saveWorkOrder = e => {
     const saveItem  = async item => {
-      const { recipe, woNumber, startDate, status, actualHours } = item;
+      const { recipe, woNumber, startDate, status, actualHours, actualYield } = item;
       let data;
       if (item._id.includes("new")) {
           data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
@@ -63,7 +64,8 @@ class WorkOrderList extends Component {
           woNumber : woNumber.replace(/new/,'wo'),
           startDate,
           status,
-          actualHours
+          actualHours,
+          actualYield
         });  
       } else {
           data = await postOrPutData(
@@ -73,7 +75,8 @@ class WorkOrderList extends Component {
             woNumber,
             startDate,
             status,
-            actualHours
+            actualHours,
+            actualYield,
           },
           "PUT"
         );
@@ -102,7 +105,8 @@ class WorkOrderList extends Component {
       recipe: { name: "New Recipe" },
       startDate: "1980-01-01",
       status: "Draft",
-      actualHours: 8
+      actualHours: 8,
+      actualYield: 100,
     });
     this.setState(newState);
   }
@@ -154,19 +158,16 @@ class WorkOrderList extends Component {
 }
 
 function WorkOrderForm({ item, recipeNames, onChange }) {
-  const { recipe, status, actualHours } = item;
+  const { recipe, status, actualHours, actualYield } = item;
 
   const startDate = new Date(item.startDate);
 
   const startDateFormatted = startDate.toLocaleDateString();
 
-  return (
-    <div id="woForm">
+  return <div id="woForm">
       <Label>Recipe</Label>
       <select name="recipe.name" value={recipe.name} onChange={onChange}>
-        {recipeNames.map(i => (
-          <option key={i}>{i}</option>
-        ))}
+        {recipeNames.map(i => <option key={i}>{i}</option>)}
       </select>
 
       <Label>Start Date</Label>
@@ -181,8 +182,9 @@ function WorkOrderForm({ item, recipeNames, onChange }) {
 
       <Label>Actual Hours</Label>
       <Label>{actualHours}</Label>
-    </div>
-  );
+      <Label>Actual Yield</Label>
+      <Label>{actualYield}</Label>
+    </div>;
 }
 
 export default WorkOrderList;
