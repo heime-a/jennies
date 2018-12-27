@@ -117,12 +117,13 @@ class WorkOrderList extends Component {
     this.setState(newState);
   };
 
-  handleRecipeChange = e => {
+  handleChange = e => {
     const idx = this.state.content.findIndex(
       el => el.woNumber === this.state.selectedWoNumber
     );
     const newState = { ...this.state };
-    newState.content[idx].recipe.name = e.target.value;
+    if(e.target.name === 'recipe.name') newState.content[idx].recipe.name = e.target.value;
+    newState.content[idx][e.target.name] = e.target.value; 
     this.setState(newState);
   };
 
@@ -139,7 +140,7 @@ class WorkOrderList extends Component {
               </option>
             ))}
           </select>
-          {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleRecipeChange} item={foundItem} recipeNames={this.state.recipeNames} />}
+          {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleChange} item={foundItem} recipeNames={this.state.recipeNames} />}
           <div>
             <Button color="success" onClick={this.handleNewWorkOrder}>
               New
@@ -171,19 +172,19 @@ function WorkOrderForm({ item, recipeNames, onChange }) {
       </select>
 
       <Label>Start Date</Label>
-      <Input type="text" name="startDate" value={startDateFormatted} />
+      <Input type="text" name="startDate" value={startDateFormatted} onChange={onChange}/>
 
       <Label>Status:</Label>
-      <select name="status" value={status}>
+      <select name="status" value={status} onChange={onChange}>
         <option>Draft</option>
         <option>In Process</option>
         <option>Completed</option>
       </select>
 
       <Label>Actual Hours</Label>
-      <Label>{actualHours}</Label>
+      <Input type="text" name='actualHours' value={actualHours} onChange={onChange}/>
       <Label>Actual Yield</Label>
-      <Label>{actualYield}</Label>
+      <Input type="text" name="actualYield" value={actualYield} onChange={onchange}/>
     </div>;
 }
 
