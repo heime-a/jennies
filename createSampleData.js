@@ -4,6 +4,7 @@ const Ingredient = require('./models/ingredient');
 const Purchaseorder = require('./models/purchaseorders');
 const Recipe = require('./models/recipe');
 const WorkOrder = require('./models/workorder');
+const CustomerOrder = require('./models/customerorders');
 
 async function run() {
   mongoose.connect('mongodb://localhost/jennies');
@@ -110,6 +111,21 @@ async function run() {
   wo2.units = 'Case';
 
   await wo2.save();
+
+  const co1 = new CustomerOrder();
+  co1.poNumber = 'co0001';
+  co1.items.push({ recipe: await Recipe.findOne({ name: 'Chocolate Macarooms' }), quantity: 5, unitCost: 29.95 });
+  co1.items.push({ ingredient: await Ingredient.findOne({ name: 'Vanilla Macaroons' }), quantity: 10, unitCost: 1.99 });
+  co1.supplier = { name: 'heime', address: '123456' };
+  await co1.save();
+
+  const co1 = new CustomerOrder();
+  co1.poNumber = 'co0001';
+  co1.items.push({ recipe: await Recipe.findOne({ name: 'Chocolate Macarooms' }), quantity: 5, unitCost: 29.95 });
+  co1.items.push({ ingredient: await Ingredient.findOne({ name: 'Vanilla Macaroons' }), quantity: 10, unitCost: 1.99 });
+  co1.supplier = { name: 'heime', address: '123456' };
+  await co1.save();
+
 
 
   console.log('Seed Data created correctly exiting express...');
