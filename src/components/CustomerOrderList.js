@@ -12,8 +12,8 @@ import postOrPutData from "../common/postOrPutData";
     super(props);
     this.state = {
       content: [
-        { coNumber: 1, supplier: { name: "Test1" } },
-        { coNumber: 2, supplier: { name: "Test2" } }
+        { coNumber: 1, customer: { name: "Test1",address: 'address' } },
+        { coNumber: 2, customer: { name: "Test2",address: 'address' } }
       ],
       selectedId: -1
     };
@@ -62,19 +62,19 @@ import postOrPutData from "../common/postOrPutData";
   }
 
   saveSelectedCO = e => {
-      const saveItem = async (item) => {
+      const saveItem = async (order) => {
       let data;
-      if (item._id.includes("new")) {
+      if (order._id.includes("new")) {
         data = await postOrPutData(`http://127.0.0.1:3001/customerOrders`, {
-          coNumber: item.name,
-          items: items,
-          supplier: item.supplier
+          coNumber: order.name,
+          items: order.items,
+          supplier: order.customer
         });
       } else {
-        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders/${item._id}`, {
-          coNumber: item.coNumber,
-          items: items,
-          customer: item.supplier
+        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders/${order._id}`, {
+          coNumber: order.coNumber,
+          items: order.items,
+          customer: order.customer
         },"PUT");
       }
       if (data) console.log(JSON.stringify(data));
@@ -113,7 +113,7 @@ import postOrPutData from "../common/postOrPutData";
     this.setState(newState);
   }
 
-  handleRemovePoLine = (event,idx) => {
+  handleRemoveCoLine = (event,idx) => {
 
     const newState = { ...this.state };
 
@@ -127,7 +127,7 @@ import postOrPutData from "../common/postOrPutData";
   }
 
 
-  handleAddPoLine = (event) => {
+  handleAddCoLine = (event) => {
     const newState = { ...this.state };
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
@@ -140,30 +140,30 @@ import postOrPutData from "../common/postOrPutData";
   }
 
   render() {
-    const foundItem = this.state.content.find(
+    const foundOrder = this.state.content.find(
       el => el._id === this.state.selectedId
     );
     return (
       <div>
-        <div id="poListGrid">
+        <div id="coListGrid">
           <select
             size={10}
-            className="purchaseOrderList"
+            className="customerOrderList"
             onChange={e => this.handleItemSelect(e)}
           >
             {this.state.content.map(item => (
               <option value={item._id} key={item._id}>
-                {`${item.poNumber} ${item.supplier.name}`}
+                {`${item.coNumber} ${item.customer.name}`}
               </option>
             ))}
           </select>
           {this.state.selectedId !== -1 && (
             <CustomerOrderForm
-              item={foundItem}
-              onChange={this.handleChangePO}
-              onAddLine={this.handleAddPoLine}
-              onRemoveLine={this.handleRemovePoLine}
-              ingNames={this.state.ingNames}
+              order={foundOrder}
+              onChange={this.handleChangeCO}
+              onAddLine={this.handleAddCoLine}
+              onRemoveLine={this.handleRemoveCoLine}
+              productNames={this.state.productNames}
             />
           )}
           <div className="poButtons">
@@ -172,7 +172,7 @@ import postOrPutData from "../common/postOrPutData";
               className="newPO"
               onClick={e => this.newCustomerOrder(e)}
             >
-              New Csutomer Order
+              New Customer Order
             </Button>
             <Button color="warning" onClick={this.saveSelectedPO}>
               Save Current

@@ -8,6 +8,7 @@ import Inventory from "./components/Inventory";
 import ProductInventory from "./components/ProductInventory";
 import { RecipeList } from "./components/RecipeList";
 import  WorkOrderList from "./components/WorkOrderList";
+import  CustomerOrders from "./components/CustomerOrderList";
 
 import {
   Collapse,
@@ -55,6 +56,8 @@ const MyApp = ({items}) => {
         <Route path="/Recipe" exact component={RecipeList} />
         <Route path="/Manufacturing" exact component={WorkOrderList} />
         <Route path="/Product Inventory" exact component={ProductInventory} />
+        <Route path="/Customer Orders" exact component={CustomerOrders} />
+        
       </div>
     </Router>;
 };
