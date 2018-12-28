@@ -113,20 +113,18 @@ async function run() {
   await wo2.save();
 
   const co1 = new CustomerOrder();
-  co1.poNumber = 'co0001';
-  co1.items.push({ recipe: await Recipe.findOne({ name: 'Chocolate Macarooms' }), quantity: 5, unitCost: 29.95 });
-  co1.items.push({ ingredient: await Ingredient.findOne({ name: 'Vanilla Macaroons' }), quantity: 10, unitCost: 1.99 });
-  co1.supplier = { name: 'heime', address: '123456' };
+  co1.coNumber = 'co0001';
+  co1.items.push({ name: 'Chocolate Macaroons', quantity: 5, unitCost: 29.95 });
+  co1.items.push({ name: 'Vanilla Macaroons', quantity: 10, unitCost: 22.99 });
+  co1.customer = { name: 'heime', address: '123456' };
   await co1.save();
 
-  const co1 = new CustomerOrder();
-  co1.poNumber = 'co0001';
-  co1.items.push({ recipe: await Recipe.findOne({ name: 'Chocolate Macarooms' }), quantity: 5, unitCost: 29.95 });
-  co1.items.push({ ingredient: await Ingredient.findOne({ name: 'Vanilla Macaroons' }), quantity: 10, unitCost: 1.99 });
-  co1.supplier = { name: 'heime', address: '123456' };
-  await co1.save();
-
-
+  const co2 = new CustomerOrder();
+  co2.coNumber = 'co0002';
+  co2.items.push({ name: 'Chocolate Macaroons', quantity: 5, unitCost: 29.95 });
+  co2.items.push({ name: 'Vanilla Macaroons', quantity: 10, unitCost: 1.99 });
+  co2.customer = { name: 'heime', address: '1234789012' };
+  await co2.save();
 
   console.log('Seed Data created correctly exiting express...');
   process.exit();

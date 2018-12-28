@@ -3,27 +3,24 @@
 
 const mongoose = require('mongoose');
 
-const supplierSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
   name: String,
   address: String,
 });
 
 const customerOrderSchema = new mongoose.Schema({
-  poNumber: String,
+  coNumber: String,
   items: [
     {
-      recipe: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Recipe',
-      },
+      name: String,
       quantity: Number,
       unitCost: Number,
     },
   ],
-  supplier: supplierSchema,
-  poStatus: String,
+  customer: customerSchema,
+  coStatus: String,
   enum: ['Pending', 'Delivered'],
 });
 
 
-module.exports = mongoose.model('PurchaseOrder', customerOrderSchema);
+module.exports = mongoose.model('CustomerOrder', customerOrderSchema);
