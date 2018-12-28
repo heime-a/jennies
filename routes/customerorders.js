@@ -10,7 +10,7 @@ const router = express.Router();
 
 /* GET CustomerOrders listing. */
 router.get('/', async (req, res) => {
-  const allPos = await CustomerOrder.find({}).populate('items.recipe');
+  const allPos = await CustomerOrder.find({});
   res.json({
     message: 'All Customer Orders',
     content: allPos,
@@ -18,18 +18,18 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { poNumber, supplier, items } = req.body;
+  const { coNumber, customer, items } = req.body;
   const customerOrder = new CustomerOrder();
-  customerOrder.poNumber = poNumber;
-  customerOrder.supplier = supplier;
+  customerOrder.coNumber = coNumber;
+  customerOrder.customer = customer;
 
   // eslint-disable-next-line no-restricted-syntax
   for (const i of items) {
     // eslint-disable-next-line no-await-in-loop
-    const recipe = await Recipe.findOne({ name: i.ingredient.name });
+    const recipe = await Recipe.findOne({ name: i.name });
     if (recipe) {
       customerOrder.items.push({
-        recipe,
+        name: i.name,
         quantity: i.quantity,
         unitCost: i.unitCost,
       });
@@ -57,26 +57,26 @@ router.post('/', async (req, res) => {
 // TODO: Copy paste modify
 
 router.put('/:id', async (req, res) => {
-  const { poNumber, supplier, items } = req.body;
-  console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${items}`);
+  const { coNumber, customer, items } = req.body;
+  console.log(`Saving: ${req.params.id} ${coNumber} ${customer} ${items}`);
   const customerOrder = {};
-  customerOrder.poNumber = poNumber;
-  customerOrder.supplier = supplier;
+  customerOrder.poNumber = coNumber;
+  customerOrder.customer = customer;
   customerOrder.items = [];
 
   // eslint-disable-next-line no-restricted-syntax
   for (const i of items) {
     // eslint-disable-next-line no-await-in-loop
-    const ingredient = await Recipe.findOne({ name: i.recipe.name });
-    if (ingredient) {
+    const recipe = await Recipe.findOne({ name: i.name });
+    if (recipe) {
       customerOrder.items.push({
-        ingredient,
+        name: i.name,
         quantity: i.quantity,
         unitCost: i.unitCost,
       });
     } else {
       res.json({
-        message: 'ERROR: recipe not found',
+        message: 'ERROR: product  not found',
         data: JSON.stringify(req.body),
       });
     }
