@@ -12,31 +12,31 @@ import postOrPutData from "../common/postOrPutData";
     super(props);
     this.state = {
       content: [
-        { poNumber: 1, supplier: { name: "Test1" } },
-        { poNumber: 2, supplier: { name: "Test2" } }
+        { coNumber: 1, supplier: { name: "Test1" } },
+        { coNumber: 2, supplier: { name: "Test2" } }
       ],
       selectedId: -1
     };
-    this.handleAddPoLine = this.handleAddPoLine.bind(this);
-    this.handleRemovePoLine = this.handleRemovePoLine.bind(this);
+    this.handleAddCoLine = this.handleAddCoLine.bind(this);
+    this.handleRemoveCoLine = this.handleRemoveCoLine.bind(this);
 
     console.log("Bound");
   }
   async componentDidMount() {
     const newState = { ...this.state};
 
-    let response = await fetch("http://127.0.0.1:3001/CustomerOrders");
+    let response = await fetch("http://127.0.0.1:3001/customerOrders");
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
     } else {
       console.log("json message failed");
     }
-
-    response = await fetch("http://127.0.0.1:3001/ingredients");
+;
+    response = await fetch("http://127.0.0.1:3001/recipes");
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingNames = jsonMessage.content.map(item=>item.name);
+      newState.productNames = jsonMessage.content.map(item=>item.name);
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -48,11 +48,12 @@ import postOrPutData from "../common/postOrPutData";
     const newState = { ...this.state };
     newState.content.push({
       _id: `new001`,
-      poNumber: `new001`,
-      ingredients: [
+      coNumber: `new001`,
+      items: [
         {
-          ingredient: { name: "New Ingredient", type: "Type", unit: "Oz." },
-          quantity: 0
+         name: "New LineItem", 
+          quantity: 0,
+          unitCost: 2.99,
         }
       ],
       supplier: { name: "Test2" }
@@ -60,20 +61,20 @@ import postOrPutData from "../common/postOrPutData";
     this.setState(newState);
   }
 
-  saveSelectedPO = e => {
+  saveSelectedCO = e => {
       const saveItem = async (item) => {
       let data;
       if (item._id.includes("new")) {
-        data = await postOrPutData(`http://127.0.0.1:3001/CustomerOrders`, {
-          poNumber: item.poNumber,
-          ingredients: item.ingredients,
+        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders`, {
+          coNumber: item.name,
+          items: items,
           supplier: item.supplier
         });
       } else {
-        data = await postOrPutData(`http://127.0.0.1:3001/CustomerOrders/${item._id}`, {
-          poNumber: item.poNumber,
-          ingredients: item.ingredients,
-          supplier: item.supplier
+        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders/${item._id}`, {
+          coNumber: item.coNumber,
+          items: items,
+          customer: item.supplier
         },"PUT");
       }
       if (data) console.log(JSON.stringify(data));
@@ -92,7 +93,7 @@ import postOrPutData from "../common/postOrPutData";
     this.setState(newState);
   }
 
-  handleChangePO = (event, idx) => {
+  handleChangeCO = (event, idx) => {
     console.log(event.target.value);
     const newState = { ...this.state };
 
@@ -101,16 +102,17 @@ import postOrPutData from "../common/postOrPutData";
     );
     
     if (event.target.name === "quantity")
-      foundItem.ingredients[idx].quantity = event.target.value;
+      foundItem.lineItems[idx].quantity = event.target.value;
     if (event.target.name === "name")
-      foundItem.ingredients[idx].ingredient.name = event.target.value;
+      foundItem.lineItems[idx].name = event.target.value;
     if (event.target.name === "unitCost")
-      foundItem.ingredients[idx].unitCost = event.target.value;
+      foundItem.lineItems[idx].unitCost = event.target.value;
     
 
     console.log(foundItem.ingredients[idx].ingredient.unitCost);
     this.setState(newState);
   }
+
   handleRemovePoLine = (event,idx) => {
 
     const newState = { ...this.state };
@@ -146,7 +148,7 @@ import postOrPutData from "../common/postOrPutData";
         <div id="poListGrid">
           <select
             size={10}
-            className="CustomerOrderList"
+            className="purchaseOrderList"
             onChange={e => this.handleItemSelect(e)}
           >
             {this.state.content.map(item => (
@@ -170,7 +172,7 @@ import postOrPutData from "../common/postOrPutData";
               className="newPO"
               onClick={e => this.newCustomerOrder(e)}
             >
-              New Purchase Order
+              New Csutomer Order
             </Button>
             <Button color="warning" onClick={this.saveSelectedPO}>
               Save Current

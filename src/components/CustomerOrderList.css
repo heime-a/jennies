@@ -1,12 +1,11 @@
 #poListGrid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-  }
-  
-  .newPO {
-    margin: 2px;
-  }
-  .poButtons {
-    grid-row-start: 2;
-  }
-  
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.newPO {
+  margin: 2px;
+}
+.poButtons {
+  grid-row-start: 2;
+}
