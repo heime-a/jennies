@@ -54,15 +54,14 @@ router.post('/', async (req, res) => {
   }
 });
 
-// TODO: Copy paste modify
-
 router.put('/:id', async (req, res) => {
   const { coNumber, customer, items } = req.body;
   console.log(`Saving: ${req.params.id} ${coNumber} ${customer} ${items}`);
   const customerOrder = {};
-  customerOrder.poNumber = coNumber;
+  customerOrder.coNumber = coNumber;
   customerOrder.customer = customer;
   customerOrder.items = [];
+
 
   // eslint-disable-next-line no-restricted-syntax
   for (const i of items) {
