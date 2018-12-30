@@ -66,9 +66,9 @@ import postOrPutData from "../common/postOrPutData";
       let data;
       if (order._id.includes("new")) {
         data = await postOrPutData(`http://127.0.0.1:3001/customerOrders`, {
-          coNumber: order.name,
+          coNumber: order.coNumber,
           items: order.items,
-          supplier: order.customer
+          customer : order.customer
         });
       } else {
         data = await postOrPutData(`http://127.0.0.1:3001/customerOrders/${order._id}`, {
@@ -150,9 +150,9 @@ import postOrPutData from "../common/postOrPutData";
             className="customerOrderList"
             onChange={e => this.handleItemSelect(e)}
           >
-            {this.state.content.map((item,idx) => (
-              <option value={item._id} key={idx}>
-                {`${item.coNumber} ${item.customer.name}`}
+            {this.state.content.map((order,idx) => (
+              <option value={order._id} key={idx}>
+                {`${order.coNumber} ${order.customer.name}`}
               </option>
             ))}
           </select>
