@@ -12,8 +12,8 @@ import postOrPutData from "../common/postOrPutData";
     super(props);
     this.state = {
       content: [
-        { coNumber: 1, customer: { name: "Test1",address: 'address' } },
-        { coNumber: 2, customer: { name: "Test2",address: 'address' } }
+        { _id: 1,  coNumber: 1, customer: { name: "Test1",address: 'address' } },
+        { _id: 2, coNumber: 2, customer: { name: "Test2",address: 'address' } }
       ],
       selectedId: -1
     };
@@ -51,12 +51,12 @@ import postOrPutData from "../common/postOrPutData";
       coNumber: `new001`,
       items: [
         {
-         name: "New LineItem", 
+          name: "New LineItem", 
           quantity: 0,
           unitCost: 2.99,
         }
       ],
-      supplier: { name: "Test2" }
+      customer: { name: "Test2",address: "test3" }
     });
     this.setState(newState);
   }
@@ -102,14 +102,12 @@ import postOrPutData from "../common/postOrPutData";
     );
     
     if (event.target.name === "quantity")
-      foundItem.lineItems[idx].quantity = event.target.value;
+      foundItem.items[idx].quantity = event.target.value;
     if (event.target.name === "name")
-      foundItem.lineItems[idx].name = event.target.value;
+      foundItem.items[idx].name = event.target.value;
     if (event.target.name === "unitCost")
-      foundItem.lineItems[idx].unitCost = event.target.value;
+      foundItem.items[idx].unitCost = event.target.value;
     
-
-    console.log(foundItem.ingredients[idx].ingredient.unitCost);
     this.setState(newState);
   }
 
@@ -121,8 +119,8 @@ import postOrPutData from "../common/postOrPutData";
       el => el._id === newState.selectedId
     );
 
-    foundItem.ingredients = [ ...foundItem.ingredients];
-    foundItem.ingredients.splice(idx,1);
+    foundItem.items = [ ...foundItem.items];
+    foundItem.items.splice(idx,1);
     this.setState(newState);
   }
 
@@ -132,9 +130,10 @@ import postOrPutData from "../common/postOrPutData";
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-    foundItem.ingredients.push({
+    foundItem.items.push({
+      name: 'New Item',
       quantity: 1,
-      ingredient: { name: "New Item", unit: "",  unitCost: .01 }
+      unitCost: .01,
     });
     this.setState(newState);
   }
@@ -151,8 +150,8 @@ import postOrPutData from "../common/postOrPutData";
             className="customerOrderList"
             onChange={e => this.handleItemSelect(e)}
           >
-            {this.state.content.map(item => (
-              <option value={item._id} key={item._id}>
+            {this.state.content.map((item,idx) => (
+              <option value={item._id} key={idx}>
                 {`${item.coNumber} ${item.customer.name}`}
               </option>
             ))}
@@ -166,7 +165,7 @@ import postOrPutData from "../common/postOrPutData";
               productNames={this.state.productNames}
             />
           )}
-          <div className="poButtons">
+          <div className="coButtons">
             <Button
               color="success"
               className="newPO"
@@ -174,7 +173,7 @@ import postOrPutData from "../common/postOrPutData";
             >
               New Customer Order
             </Button>
-            <Button color="warning" onClick={this.saveSelectedPO}>
+            <Button color="warning" onClick={this.saveSelectedCO}>
               Save Current
             </Button>
           </div>
