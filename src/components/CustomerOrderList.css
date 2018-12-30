@@ -1,11 +1,11 @@
-#poListGrid {
+#coListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
 }
 
-.newPO {
+.newCO {
   margin: 2px;
 }
-.poButtons {
+.coButtons {
   grid-row-start: 2;
 }
