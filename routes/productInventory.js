@@ -13,4 +13,12 @@ router.get('/', async (req, res) => {
   });
 });
 
+router.get('/aggCustomerOrders', async (req, res) => {
+  res.json({
+    message: 'customerOrders',
+    content: await common.getAggregateCustomerOrders(),
+  });
+});
+
+
 module.exports = router;

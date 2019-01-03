@@ -1,6 +1,8 @@
 const PurchaseOrder = require('../models/purchaseorders');
 const WorkOrder = require('../models/workorder');
 
+const CustomerOrder = require('../models/customerorders');
+
 module.exports.getPurchases = async () => {
   const response = await PurchaseOrder.aggregate([
     {
@@ -92,7 +94,16 @@ module.exports.getCurrentInventory = async () => {
   });
 };
 
-module.exports.getCurrentProductInventory = async () => module.exports.getAggregateWOProduction();
+module.exports.getCurrentProductInventory = async () => {
+  const production = await module.exports.getAggregateWOProduction();
+  const customerOrders = await module.exports.getAggregateCustomerOrders();
+
+  return production.map((i) => {
+    const ordered = customerOrders.find(e => e.name === i.name);
+    if (ordered === undefined) return ({ name: i.name, quantity: i.quantity });
+    return ({ name: i.name, quantity: i.quantity - ordered.quantity });
+  });
+};
 
 module.exports.getAggregateWOProduction = async () => {
   const response = await WorkOrder.aggregate([{
@@ -116,5 +127,21 @@ module.exports.getAggregateWOProduction = async () => {
     },
   },
   ]);
+  return response.map(({ _id, total }) => ({ name: _id, quantity: total }));
+};
+
+module.exports.getAggregateCustomerOrders = async () => {
+  const response = await CustomerOrder.aggregate([{
+    $unwind: {
+      path: '$items',
+    },
+  }, {
+    $group: {
+      _id: '$items.name',
+      total: {
+        $sum: '$items.quantity',
+      },
+    },
+  }]);
   return response.map(({ _id, total }) => ({ name: _id, quantity: total }));
 };
