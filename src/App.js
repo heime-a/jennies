@@ -41,11 +41,9 @@ const MyApp = ({items}) => {
           </NavbarBrand>
           <Collapse navbar>
             <Nav className="ml-auto" navbar>
-              {items.map(item => <NavItem key={item}>
-                  <Link className="nav-link" to={item}>
-                    {" "}
-                    {item}
-                  </Link>
+              {items.map(item => 
+                <NavItem key={item}>
+                  <Link className="nav-link" to={item}>{item}</Link>
                 </NavItem>)}
             </Nav>
           </Collapse>
