@@ -32,7 +32,7 @@ export class RecipeList extends Component {
     response = await fetch("http://127.0.0.1:3001/ingredients");
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingNames = jsonMessage.content.map(item => item.name);
+      newState.ingData = jsonMessage.content.reduce((acc, val) => { acc[val.name] = val.unit; return acc }, {});
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -162,7 +162,7 @@ export class RecipeList extends Component {
               onChange={this.handleChangeRecipe}
               onAddLine={this.handleAddRecipeLine}
               onRemoveLine={this.handleRemoveRecipeLine}
-              ingNames={this.state.ingNames}
+              ingData={this.state.ingData}
             />
           )}
           <div className="recipeButtons">

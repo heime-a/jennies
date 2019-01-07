@@ -6,7 +6,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
-export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingNames }) {
+export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingData }) {
   return <div>
         <div id="recipeTop">
           <Label>Name</Label> 
@@ -33,9 +33,9 @@ export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ing
                 <Input key={idx} type="text" name="quantity" value={ing.quantity} onChange={e => onChange(e, idx)} />{" "}
               </td>
               <td width="40%">
-                <Typeahead options={ingNames} type="text" name="name" defaultInputValue={ing.ingredient.name} onChange={val => onChange({ target: { name: "name", value: val[0] } }, idx)} />
+                <Typeahead options={Object.keys(ingData)} type="text" name="name" defaultInputValue={ing.ingredient.name} onChange={val => onChange({ target: { name: "name", value: val[0] } }, idx)} />
               </td>
-              <td width="15%">{ing.ingredient.unit}</td>
+              <td width="15%">{ingData[ing.ingredient.name]}</td>
               <td width="15%">{9.99}</td>
               <td width="15%">{9.99}</td>
               <td>

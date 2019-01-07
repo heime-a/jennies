@@ -36,7 +36,7 @@ import postOrPutData from "../common/postOrPutData";
     response = await fetch("http://127.0.0.1:3001/ingredients");
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingNames = jsonMessage.content.map(item=>item.name);
+      newState.ingData = jsonMessage.content.reduce((acc,val)=>{acc[val.name]=val.unit;return acc},{});
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -161,7 +161,7 @@ import postOrPutData from "../common/postOrPutData";
               onChange={this.handleChangePO}
               onAddLine={this.handleAddPoLine}
               onRemoveLine={this.handleRemovePoLine}
-              ingNames={this.state.ingNames}
+              ingData={this.state.ingData}
             />
           )}
           <div className="poButtons">
