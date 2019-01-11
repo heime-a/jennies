@@ -1,4 +1,16 @@
 'use strict;'
+//TODO: Work order date default and date edit 
+//TODO: Global transaction number scheme
+//TODO: Statuses for purchase orders and exclusion of non completed PO statuses from totals 
+//TODO: Statuses for customer orders and exclusion of non completed PO statuses from totals 
+//TODO: Customer order unique transaction numbers 
+//TODO: use componentunmount to free react resources / save state when exiting screen ?
+//TODO: printing layout for purchaseorders 
+//TODO: print layout for customer orders 
+//TODO: Message on ingredient save and update test
+//TODO: Customer orders dont apply to production inventory xx works
+//TODO: costing of recipe items from average price on inventory screen XXX
+
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
