@@ -8,15 +8,15 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 
 export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingData }) {
   return <div>
-        <div id="recipeTop">
-          <Label>Name</Label> 
-          <Input type="text" name="recipeName" value={item.name} onChange={onChange}/>
-          <Label>Man Hours</Label>
-          <Input type="text" name="manHours" value={item.manHours} onChange={onChange} />
-          <Button color="success" onClick={onAddLine}>
-           Add Row
-          </Button>
-        </div>
+      <div id="recipeTop">
+        <Label>Name</Label>
+        <Input type="text" name="recipeName" value={item.name} onChange={onChange} />
+        <Label>Man Hours</Label>
+        <Input type="text" name="manHours" value={item.manHours} onChange={onChange} />
+        <Button color="success" onClick={onAddLine}>
+          Add Row
+        </Button>
+      </div>
       <Table>
         <thead>
           <tr>
@@ -35,9 +35,9 @@ export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ing
               <td width="40%">
                 <Typeahead options={Object.keys(ingData)} type="text" name="name" defaultInputValue={ing.ingredient.name} onChange={val => onChange({ target: { name: "name", value: val[0] } }, idx)} />
               </td>
-              <td width="15%">{ingData[ing.ingredient.name]}</td>
-              <td width="15%">{9.99}</td>
-              <td width="15%">{9.99}</td>
+              <td width="15%">{ingData[ing.ingredient.name]["unit"]}</td>
+              <td width="15%">{(Math.floor(ingData[ing.ingredient.name]["avgCost"] *100) / 100).toFixed(2)}</td>
+              <td width="15%">{(Math.floor(ingData[ing.ingredient.name]["avgCost"] * ing.quantity * 100) / 100).toFixed(2)}</td>
               <td>
                 <Button onClick={e => onRemoveLine(e, idx)}>x</Button>
               </td>

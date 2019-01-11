@@ -32,11 +32,25 @@ export class RecipeList extends Component {
     response = await fetch("http://127.0.0.1:3001/ingredients");
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingData = jsonMessage.content.reduce((acc, val) => { acc[val.name] = val.unit; return acc }, {});
+      newState.ingData = jsonMessage.content.reduce((acc, val) => 
+      { acc[val.name] = {'unit' : val.unit }; return acc }, {});
       this.setState(newState);
     } else {
       console.log("json message failed");
     }
+
+    response = await fetch("http://127.0.0.1:3001/inventory");
+    jsonMessage = await response.json();
+    if(jsonMessage) {
+      newState.ingData = jsonMessage.content.reduce((acc,val) =>
+      { acc[val.name]['avgCost'] = val.avgCost; return acc}, newState.ingData );
+      console.log(newState.ingData);
+    } else {
+      console.log('inventory json message failed')
+    }
+
+
+
   }
 
   handleNewRecipe(e) {
