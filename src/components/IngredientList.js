@@ -2,7 +2,7 @@
 //@ts-check
 import React, { Component } from "react";
 import IngredientForm from "./IngredientForm";
-import { Button } from "reactstrap";
+import { Button, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 
 export class IngredientList extends Component {
@@ -27,6 +27,10 @@ export class IngredientList extends Component {
       console.log("json message failed");
     }
   }
+
+  async componentWillUnmount() {
+    console.log('Unmounting IngredientList' );
+  }
   handleItemSelect = event => {
     //console.log(event.target.attributes.itemid.value);
     const newState = { ...this.state };
@@ -42,39 +46,35 @@ export class IngredientList extends Component {
     this.setState(change);
   };
 
-  saveModified = event => {
+  saveSelected = event => {
     const saveItem = async item => {
       const url = "http://127.0.0.1:3001/ingredients";
+      let data;
       if (item._id.includes("new")) {
-        const data = await postOrPutData(`${url}`, {
+        data = await postOrPutData(`${url}`, {
           name: item.name,
           type: item.type,
           unit: item.unit
         });
-
-        if (data) console.log(JSON.stringify(data));
       } else {
-        const data = await postOrPutData(
+        data = await postOrPutData(
           `${url}/${item._id}`,
           { name: item.name, type: item.type, unit: item.unit },
           "PUT"
         );
-        if (data) console.log(JSON.stringify(data));
       }
-      //TODO : create alert area to show that item got successfully saved
+      if (data) console.log(JSON.stringify(data));
+      this.setState({ ...this.state, alertMessage: data.message });
+      setTimeout(() => { this.setState({ ...this.state, alertMessage: undefined }) }, 3000);
+
     };
 
     
-    const change = { ...this.state };
-    console.log("savemodified");
-    change.content.map(item => {
-      if (item.needSave) {
-        saveItem(item);
-        item.needSave = false;
-      }
-      return item;
-    });
-    this.setState(change);
+    const newState = { ...this.state };
+    console.log("saveSelected");
+    const selectedItem = newState.content.find(el => el._id === this.state.selectedId);
+    saveItem(selectedItem);
+    this.setState(newState);
   };
 
   newIngredient = event => {
@@ -125,11 +125,16 @@ export class IngredientList extends Component {
           <Button
             color="warning"
             className="saveIngredient"
-            onClick={e => this.saveModified(e)}
+            onClick={e => this.saveSelected(e)}
           >
-            Save Modified
+            Save Selected
           </Button>
         </div>
+        {this.state.alertMessage &&
+          <UncontrolledAlert color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"} >
+            {this.state.alertMessage}
+          </UncontrolledAlert>}
+
       </div>
     );
   }
