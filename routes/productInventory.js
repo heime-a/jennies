@@ -20,5 +20,12 @@ router.get('/aggCustomerOrders', async (req, res) => {
   });
 });
 
+router.get('/aggProduction', async (req, res) => {
+  res.json({
+    message: 'production',
+    content: await common.getAggregateWOProduction(),
+  });
+});
+
 
 module.exports = router;
