@@ -5,14 +5,6 @@ import React, { Component } from "react";
 import { Button, Input, Label, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 
-/* Alert color="warning">
-This is a warning alert — check it out!
-</Alert>
-<Alert color="info">
-This is a info alert — check it out!
-</Alert> */
-
-
 class WorkOrderList extends Component {
   constructor(props) {
     super(props);
@@ -121,7 +113,6 @@ class WorkOrderList extends Component {
     const idx = this.state.content.findIndex(
       el => el.woNumber === this.state.selectedWoNumber
     );
-    console.log(`Idx ${idx} name ${e.target.name} ${e.target.value}`);
     const newState = { ...this.state };
     if(e.target.name === 'recipe.name') newState.content[idx].recipe.name = e.target.value;
     newState.content[idx][e.target.name] = e.target.value; 
@@ -162,8 +153,9 @@ class WorkOrderList extends Component {
 function WorkOrderForm({ item, recipeNames, onChange }) {
   const { recipe, status, actualHours, actualYield } = item;
 
-  const startDate = new Date(item.startDate);
 
+  const startDate = new Date(item.startDate);
+  //TODO: validte start date here 
   const startDateFormatted = startDate.toLocaleDateString();
 
   return <div id="woForm">
