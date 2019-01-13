@@ -5,7 +5,8 @@ import { Button , UncontrolledAlert} from "reactstrap";
 import CustomerOrderForm from "./CustomerOrderForm";
 import postOrPutData from "../common/postOrPutData";
 
-
+//TODO: Customer order unique transaction numbers 
+//TODO: print layout for customer orders  started
 
  class CustomerOrderList extends Component {
   constructor(props) {

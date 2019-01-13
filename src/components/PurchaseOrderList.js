@@ -5,7 +5,7 @@ import { Button , UncontrolledAlert} from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
 
-
+//TODO: printing layout for purchaseorders  started 
 
  class PurchaseOrderList extends Component {
   constructor(props) {
