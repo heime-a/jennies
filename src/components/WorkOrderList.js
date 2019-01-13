@@ -151,13 +151,19 @@ class WorkOrderList extends Component {
 }
 
 function WorkOrderForm({ item, recipeNames, onChange }) {
-  const { recipe, status, actualHours, actualYield } = item;
+  const { recipe, status, actualHours, actualYield, startDate } = item;
 
-
-  const startDate = new Date(item.startDate);
-  //TODO: validte start date here 
-  const startDateFormatted = startDate.toLocaleDateString();
-
+//TODO: Work order date default and date edit 
+  //TODO: validate start date here 
+  let startDateFormatted;
+  if (startDate.length === 10) { 
+    const startDate = new Date(item.startDate);  
+    startDateFormatted = startDate.toLocaleDateString();
+  }
+  else { 
+    startDateFormatted = startDate;
+  }
+ 
   return <div id="woForm">
       <Label>Recipe</Label>
       <select name="recipe.name" value={recipe.name} onChange={onChange}>
