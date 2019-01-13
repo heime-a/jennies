@@ -13,7 +13,7 @@ export default function CustomerOrderForm({ order, onChange, onAddLine,onRemoveL
       <div>Customer Name: {order.customer.name}</div>
       <div>Customer Address: {order.customer.address}</div>
       <div>Order Status: NEW</div>
-      <Button color="success" onClick={onAddLine}>
+      <Button className="delete" color="success" onClick={onAddLine}>
         Add Row
       </Button>
       <Table>
@@ -54,7 +54,7 @@ export default function CustomerOrderForm({ order, onChange, onAddLine,onRemoveL
                   value={item.unitCost}
                   onChange={(e)=>onChange(e,idx)}/></td>
               <td width="15%">{(Math.floor(100 * item.quantity * item.unitCost) / 100).toFixed(2) }</td>
-              <td><Button onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
+              <td><Button className="delete" onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
             </tr>
           ))}
         </tbody>

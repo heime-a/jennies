@@ -146,7 +146,7 @@ import postOrPutData from "../common/postOrPutData";
         <div id="poListGrid">
           <select
             size={10}
-            className="purchaseOrderList"
+            className="purchaseOrderList delete"
             onChange={e => this.handleItemSelect(e)}
           >
             {this.state.content.map(item => (
@@ -164,7 +164,7 @@ import postOrPutData from "../common/postOrPutData";
               ingData={this.state.ingData}
             />
           )}
-          <div className="poButtons">
+          <div className="poButtons delete">
             <Button
               color="success"
               className="newPO"

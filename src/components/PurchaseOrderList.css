@@ -9,3 +9,13 @@
 .poButtons {
   grid-row-start: 2;
 }
+
+@media print {
+  .delete {
+    display: none !important;
+  }
+  #poListGrid {
+    grid-template-columns: 1fr;
+  }
+}
+

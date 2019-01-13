@@ -1,3 +1,4 @@
+body { font: 14px/1.4 Helvetica, sans-serif; letter-spacing: 0.3px;}
 #coListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -9,3 +10,13 @@
 .coButtons {
   grid-row-start: 2;
 }
+
+@media print {
+  .delete {
+    display: none !important;
+  }
+  #coListGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
