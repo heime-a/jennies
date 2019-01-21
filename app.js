@@ -59,4 +59,4 @@ app.use((err, req, res) => {
 
 module.exports = app;
 
-app.listen(port, 'localhost', () => console.log(`SimplErp listening on ${port}`));
+app.listen(port, () => console.log(`SimplErp listening on ${port}`));
