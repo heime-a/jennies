@@ -1,11 +1,13 @@
 /* eslint-disable no-console */
-/* TODO: Need to generate transaction ids for all transactions */
-/* TODO: PurchaseOrtder List and customerOrder as printable forms */
-/* TODO: Inventory List as printable form */
-
 
 'use strict;';
 
+require('dotenv').config();
+
+
+const port = process.env.PORT || 5000;
+const secret = process.env.SECRET || 'some secret passphrase here for local development';
+const dburl = process.env.DBURL || 'mongodb://127.0.0.1/jennies';
 const createError = require('http-errors');
 const express = require('express');
 const cors = require('cors');
@@ -29,8 +31,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/jennies', { useNewUrlParser: true });
-
+mongoose.connect(dburl, { useNewUrlParser: true });
+console.log(`Connecting to ${dburl}`);
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
 app.use('/ingredients', ingredientsRouter);
@@ -57,4 +59,4 @@ app.use((err, req, res) => {
 
 module.exports = app;
 
-app.listen(3001, 'localhost', () => console.log('app listening on 3001'));
+app.listen(port, 'localhost', () => console.log(`app listening on ${port}`));
