@@ -3,7 +3,7 @@
 //TODO: Global transaction number scheme
 //TODO: Statuses for purchase orders and exclusion of non completed PO statuses from totals 
 //TODO: Statuses for customer orders and exclusion of non completed PO statuses from totals 
-
+//TODO: Implement user authentication
 
 
 
@@ -28,11 +28,14 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink } from 'reactstrap';
+  NavLink,
+  NavbarToggler } from 'reactstrap';
 
 
 
 class App extends Component {
+  
+
   render() {
     const menuItems = ['Ingredients','Purchasing','Inventory','Recipe','Manufacturing','Product Inventory','Customer Orders']
     return <div className="App">
@@ -44,16 +47,26 @@ class App extends Component {
 }
 
 
-const MyApp = ({items}) => {
-  return <Router>
+class MyApp extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      collapsed: true
+    };
+
+  }
+  render() { 
+    return(<Router>
       <div>
         <Navbar color="light" expand="md">
           <NavbarBrand href="/">
             <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
           </NavbarBrand>
-          <Collapse navbar>
+          <NavbarToggler onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} />
+          <Collapse isOpen={!this.state.collapsed} navbar>
             <Nav className="ml-auto" navbar>
-              {items.map(item => 
+              {this.props.items.map(item => 
                 <NavItem key={item}>
                   <Link className="nav-link" to={item}>{item}</Link>
                 </NavItem>)}
@@ -69,7 +82,8 @@ const MyApp = ({items}) => {
         <Route path="/Customer Orders" exact component={CustomerOrders} />
         
       </div>
-    </Router>;
+    </Router>);
+  }
 };
 
 
