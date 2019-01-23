@@ -45,13 +45,12 @@ export class RecipeList extends Component {
     if(jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc,val) =>
       { acc[val.name]['avgCost'] = val.avgCost; return acc}, newState.ingData );
+      newState.ingData['New Item'] = { 'avgCost': 0.01, unit: 'N/A' };
+      this.setState(newState);
       console.log(newState.ingData);
     } else {
       console.log('inventory json message failed')
     }
-
-
-
   }
 
   handleNewRecipe(e) {
@@ -61,7 +60,7 @@ export class RecipeList extends Component {
       name: `new001`,
       ingredients: [
         {
-          ingredient: { name: "New Ingredient", type: "Type", unit: "Oz." },
+          ingredient: { name: "New Item", type: "N/A", unit: "N/A" },
           quantity: 0
         }
       ],
