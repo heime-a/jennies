@@ -4,12 +4,7 @@ import React, { Component } from "react";
 import { Button , UncontrolledAlert} from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
-
-let API_URL;
-
-process.env.REACT_APP_STAGE === 'dev'
-  ? API_URL = 'http://localhost:3001'
-  : API_URL = 'http://simplerp.herokuapp.com';
+import apiUrl from "../common/apiurl.js";
 
 //TODO: printing layout for purchaseorders  started 
 
@@ -31,7 +26,7 @@ process.env.REACT_APP_STAGE === 'dev'
   async componentDidMount() {
     const newState = { ...this.state};
 
-    let response = await fetch(`${API_URL}/purchaseOrders`);
+    let response = await fetch(`${apiUrl()}/purchaseOrders`);
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -39,7 +34,7 @@ process.env.REACT_APP_STAGE === 'dev'
       console.log("json message failed");
     }
 
-    response = await fetch(`${API_URL}/ingredients`);
+    response = await fetch(`${apiUrl()}/ingredients`);
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc,val)=>{acc[val.name]=val.unit;return acc},{});
@@ -70,13 +65,13 @@ process.env.REACT_APP_STAGE === 'dev'
       const saveItem = async (item) => {
       let data;
       if (item._id.includes("new")) {
-        data = await postOrPutData(`${API_URL}/purchaseOrders`, {
+        data = await postOrPutData(`${apiUrl()}/purchaseOrders`, {
           poNumber: item.poNumber,
           ingredients: item.ingredients,
           supplier: item.supplier
         });
       } else {
-        data = await postOrPutData(`${API_URL}/purchaseOrders/${item._id}`, {
+        data = await postOrPutData(`${apiUrl()}/purchaseOrders/${item._id}`, {
           poNumber: item.poNumber,
           ingredients: item.ingredients,
           supplier: item.supplier

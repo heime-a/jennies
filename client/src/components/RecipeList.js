@@ -5,12 +5,7 @@ import React, { Component } from "react";
 import { Button, UncontrolledAlert } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
-
-let API_URL;
-
-process.env.REACT_APP_STAGE === 'dev'
-  ? API_URL = 'http://localhost:3001'
-  : API_URL = 'http://simplerp.herokuapp.com';
+import apiUrl from "../common/apiurl.js";
 
 export class RecipeList extends Component {
   constructor(props) {
@@ -27,7 +22,7 @@ export class RecipeList extends Component {
   async componentDidMount() {
     const newState = { ...this.state };
 
-    let response = await fetch(`${API_URL}/recipes`);
+    let response = await fetch(`${apiUrl()}/recipes`);
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -35,7 +30,7 @@ export class RecipeList extends Component {
       console.log("json message failed");
     }
 
-    response = await fetch(`${API_URL}/ingredients`);
+    response = await fetch(`${apiUrl()}/ingredients`);
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc, val) => 
@@ -45,7 +40,7 @@ export class RecipeList extends Component {
       console.log("json message failed");
     }
 
-    response = await fetch(`${API_URL}/inventory`);
+    response = await fetch(`${apiUrl()}/inventory`);
     jsonMessage = await response.json();
     if(jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc,val) =>
@@ -79,14 +74,14 @@ export class RecipeList extends Component {
     const saveItem = async item => {
       let data;
       if (item._id.includes("new")) {
-        data = await postOrPutData(`${API_URL}/recipes`, {
+        data = await postOrPutData(`${apiUrl()}/recipes`, {
           name: item.name,
           ingredients: item.ingredients,
           manHours: item.manHours
         });
       } else {
         data = await postOrPutData(
-          `${API_URL}/recipes/${item._id}`,
+          `${apiUrl()}/recipes/${item._id}`,
           {
             name: item.name,
             ingredients: item.ingredients,

@@ -2,12 +2,7 @@
 //@ts-check
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-
-let API_URL;
-
-process.env.REACT_APP_STAGE === 'dev'
-  ? API_URL = 'http://localhost:3001'
-  : API_URL = 'http://simplerp.herokuapp.com';
+import apiUrl from "../common/apiurl.js";
 
 class Inventory extends Component {
 
@@ -22,7 +17,7 @@ class Inventory extends Component {
     }
 
     async componentDidMount() {
-        const response = await fetch(`${API_URL}/productInventory`);
+        const response = await fetch(`${apiUrl()}/productInventory`);
         const jsonMessage = await response.json();
         if (jsonMessage) {
             this.setState({ content: jsonMessage.content });
