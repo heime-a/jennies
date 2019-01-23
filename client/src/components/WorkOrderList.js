@@ -5,6 +5,13 @@ import React, { Component } from "react";
 import { Button, Input, Label, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 
+let API_URL;
+
+process.env.REACT_APP_STAGE === 'dev'
+  ? API_URL = 'http://localhost:3001'
+  : API_URL = 'http://simplerp.herokuapp.com';
+
+
 class WorkOrderList extends Component {
   constructor(props) {
     super(props);
@@ -29,14 +36,14 @@ class WorkOrderList extends Component {
   async componentDidMount() {
     const newState = { ...this.state };
 
-    const response = await fetch("http://127.0.0.1:3001/workorders");
+    const response = await fetch(`${API_URL}/workorders`);
     const jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
     } else {
       console.log("json message failed");
     }
-    const ingResponse = await fetch("http://127.0.0.1:3001/recipes");
+    const ingResponse = await fetch(`${API_URL}/recipes`);
     const ingJson = await ingResponse.json();
     if (ingJson) {
       newState.recipeNames = ingJson.content.map(item => item.name);
@@ -51,7 +58,7 @@ class WorkOrderList extends Component {
       const { recipe, woNumber, startDate, status, actualHours, actualYield } = item;
       let data;
       if (item._id.includes("new")) {
-          data = await postOrPutData(`http://127.0.0.1:3001/workorders`, {
+          data = await postOrPutData(`${API_URL}/workorders`, {
           recipe,
           woNumber : woNumber.replace(/new/,'wo'),
           startDate,
@@ -61,7 +68,7 @@ class WorkOrderList extends Component {
         });  
       } else {
           data = await postOrPutData(
-          `http://127.0.0.1:3001/workorders/${item._id}`,
+          `${API_URL}/workorders/${item._id}`,
           {
             recipe,
             woNumber,

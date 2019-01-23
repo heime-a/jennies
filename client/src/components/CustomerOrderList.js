@@ -5,6 +5,13 @@ import { Button , UncontrolledAlert} from "reactstrap";
 import CustomerOrderForm from "./CustomerOrderForm";
 import postOrPutData from "../common/postOrPutData";
 
+
+let API_URL;
+
+process.env.REACT_APP_STAGE === 'dev'
+  ? API_URL = 'http://localhost:3001'
+  : API_URL = 'http://simplerp.herokuapp.com';
+
 //TODO: Customer order unique transaction numbers 
 //TODO: print layout for customer orders  started
 
@@ -26,7 +33,7 @@ import postOrPutData from "../common/postOrPutData";
   async componentDidMount() {
     const newState = { ...this.state};
 
-    let response = await fetch("http://127.0.0.1:3001/customerOrders");
+    let response = await fetch(`${API_URL}/customerOrders`);
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -34,7 +41,7 @@ import postOrPutData from "../common/postOrPutData";
       console.log("json message failed");
     }
 ;
-    response = await fetch("http://127.0.0.1:3001/recipes");
+    response = await fetch(`${API_URL}/recipes`);
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.productNames = jsonMessage.content.map(item=>item.name);
@@ -66,13 +73,13 @@ import postOrPutData from "../common/postOrPutData";
       const saveItem = async (order) => {
       let data;
       if (order._id.includes("new")) {
-        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders`, {
+        data = await postOrPutData(`${API_URL}/customerOrders`, {
           coNumber: order.coNumber,
           items: order.items,
           customer : order.customer
         });
       } else {
-        data = await postOrPutData(`http://127.0.0.1:3001/customerOrders/${order._id}`, {
+        data = await postOrPutData(`${API_URL}/customerOrders/${order._id}`, {
           coNumber: order.coNumber,
           items: order.items,
           customer: order.customer

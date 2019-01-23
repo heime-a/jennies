@@ -6,6 +6,12 @@ import { Button, UncontrolledAlert } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
 
+let API_URL;
+
+process.env.REACT_APP_STAGE === 'dev'
+  ? API_URL = 'http://localhost:3001'
+  : API_URL = 'http://simplerp.herokuapp.com';
+
 export class RecipeList extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +27,7 @@ export class RecipeList extends Component {
   async componentDidMount() {
     const newState = { ...this.state };
 
-    let response = await fetch("http://127.0.0.1:3001/recipes");
+    let response = await fetch(`${API_URL}/recipes`);
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -29,7 +35,7 @@ export class RecipeList extends Component {
       console.log("json message failed");
     }
 
-    response = await fetch("http://127.0.0.1:3001/ingredients");
+    response = await fetch(`${API_URL}/ingredients`);
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc, val) => 
@@ -39,7 +45,7 @@ export class RecipeList extends Component {
       console.log("json message failed");
     }
 
-    response = await fetch("http://127.0.0.1:3001/inventory");
+    response = await fetch(`${API_URL}/inventory`);
     jsonMessage = await response.json();
     if(jsonMessage) {
       newState.ingData = jsonMessage.content.reduce((acc,val) =>
@@ -73,14 +79,14 @@ export class RecipeList extends Component {
     const saveItem = async item => {
       let data;
       if (item._id.includes("new")) {
-        data = await postOrPutData(`http://127.0.0.1:3001/recipes`, {
+        data = await postOrPutData(`${API_URL}/recipes`, {
           name: item.name,
           ingredients: item.ingredients,
           manHours: item.manHours
         });
       } else {
         data = await postOrPutData(
-          `http://127.0.0.1:3001/recipes/${item._id}`,
+          `${API_URL}/recipes/${item._id}`,
           {
             name: item.name,
             ingredients: item.ingredients,
