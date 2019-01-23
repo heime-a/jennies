@@ -31,6 +31,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
 mongoose.connect(dburl, { useNewUrlParser: true });
 console.log(`Connecting to ${dburl}`);
 app.use('/', indexRouter);
@@ -58,5 +60,7 @@ app.use((err, req, res) => {
 });
 
 module.exports = app;
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 app.listen(port, () => console.log(`SimplErp listening on ${port}`));
