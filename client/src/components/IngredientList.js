@@ -5,6 +5,12 @@ import IngredientForm from "./IngredientForm";
 import { Button, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 
+let API_URL;
+
+process.env.REACT_APP_STAGE === 'dev'
+  ? API_URL = 'http://localhost:3001'
+  : API_URL = 'http://simplerp.herokuapp.com';
+
 export class IngredientList extends Component {
   constructor(props) {
     super(props);
@@ -19,13 +25,8 @@ export class IngredientList extends Component {
     };
   }
   async componentDidMount() {
-    let API_URL;
 
-    process.env.REACT_APP_STAGE === 'dev'
-      ? API_URL = 'http://localhost:3001'
-      : API_URL = 'http://simplerp.herokuapp.com'
-
-    const response = await fetch(`${API_URL}/ingredients");
+    const response = await fetch(`${API_URL}/ingredients`);
     const jsonMessage = await response.json();
     if (jsonMessage) {
       this.setState({ content: jsonMessage.content });
@@ -54,7 +55,7 @@ export class IngredientList extends Component {
 
   saveSelected = event => {
     const saveItem = async item => {
-      const url = "http://127.0.0.1:3001/ingredients";
+      const url = `${API_URL}/ingredients`;
       let data;
       if (item._id.includes("new")) {
         data = await postOrPutData(`${url}`, {
