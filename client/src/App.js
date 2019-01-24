@@ -56,6 +56,7 @@ class MyApp extends Component {
     };
 
   }
+  //TODO: Figure our how to enable autp collape of hambuger menu Only when its visible to avoid visual artifact when there is no hamburger menu present
   render() { 
     return(<Router>
       <div>
