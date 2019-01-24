@@ -5,7 +5,7 @@ import { Table, Input, Button, Label } from "reactstrap";
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
-
+//TODO: Remove Trailing spaces from recipe names
 export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ingData }) {
   return <div>
       <div id="recipeTop">
