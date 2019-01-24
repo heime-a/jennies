@@ -63,8 +63,10 @@ class MyApp extends Component {
           <NavbarBrand href="/">
             <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
           </NavbarBrand>
-          <NavbarToggler onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} />
-          <Collapse isOpen={!this.state.collapsed} navbar>
+          <NavbarToggler 
+               onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} />
+          <Collapse onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} 
+                    isOpen={!this.state.collapsed} navbar>
             <Nav className="ml-auto" navbar>
               {this.props.items.map(item => 
                 <NavItem key={item}>
