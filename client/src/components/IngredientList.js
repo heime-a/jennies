@@ -96,7 +96,6 @@ export class IngredientList extends Component {
     const foundItem = this.state.content.find(
       el => el._id === this.state.selectedId
     );
-    console.log("render:", foundItem, this.state.selectedId);
     return (
       <div className="ingredientGrid">
         <select
