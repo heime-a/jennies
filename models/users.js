@@ -19,6 +19,11 @@ const UserSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
-UserSchema.methods.generateHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-UserSchema.methods.validPassword = password => bcrypt.compareSync(password, this.password);
+// eslint-disable-next-line max-len
+UserSchema.methods.generateHash = passwordIn => bcrypt.hashSync(passwordIn, bcrypt.genSaltSync(8), null);
+// eslint-disable-next-line func-names
+UserSchema.methods.validPassword = function (passwordIn) {
+  const ret = bcrypt.compareSync(passwordIn, this.password);
+  return ret;
+};
 module.exports = mongoose.model('User', UserSchema);

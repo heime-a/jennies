@@ -1,216 +1,165 @@
-//@ts-check
+/* eslint-disable no-unused-vars */
+// @ts-check
+const express = require('express');
 const User = require('../models/users');
 const UserSession = require('../models/usersession');
-const express = require('express');
+
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  const allUsers = await User.find({});
+  res.json({
+    message: 'All User Objects',
+    content: allUsers,
+  });
+});
 
-module.exports = (app) => {
-    /*
-     * Sign up
-     */
-    router.get('/', async (req, res) => {
-        const allUsers = await User.find({});
-        res.json({
-            message: 'All User Objects',
-            content: allUsers,
+router.post('/signup', async (req, res) => {
+  let { email } = req.body;
+  const { password } = req.body;
+
+  if (!email) {
+    return res.send({
+      success: false,
+      message: 'Error: Email cannot be blank.',
+    });
+  }
+  if (!password) {
+    return res.send({
+      success: false,
+      message: 'Error: Password cannot be blank.',
+    });
+  }
+
+  email = email.toLowerCase();
+  email = email.trim();
+
+  // Steps:
+  // 1. Verify email doesn't exist
+  // 2. Save
+  const prevUser = await User.findOne({ email });
+  if (prevUser && prevUser.length > 0) {
+    return res.send({
+      success: false,
+      message: 'Error: Account already exists.',
+    });
+  }
+
+  // Save the new user
+  const newUser = new User();
+
+  newUser.email = email;
+  newUser.password = newUser.generateHash(password);
+
+  try {
+    await newUser.save();
+    return res.send({
+      success: true,
+      message: 'Signed up',
+    });
+  } catch (err) {
+    return res.send({
+      success: false,
+      message: 'Error: Server error',
+    });
+  }
+});
+
+router.post('/signin', async (req, res) => {
+  let { email } = req.body;
+  const { password } = req.body;
+
+  if (!email) {
+    return res.send({
+      success: false,
+      message: 'Error: Email cannot be blank.',
+    });
+  }
+  if (!password) {
+    return res.send({
+      success: false,
+      message: 'Error: Password cannot be blank.',
+    });
+  }
+
+  email = email.toLowerCase();
+  email = email.trim();
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user.validPassword(password)) {
+      return res.send({
+        success: false,
+        message: 'Error: Invalid',
+      });
+    }
+    const userSession = new UserSession();
+    userSession.userId = user._id;
+    userSession.save((err, doc) => {
+      if (err) {
+        console.log(err);
+        return res.send({
+          success: false,
+          message: 'Error: server error',
         });
+      }
+
+      return res.send({
+        success: true,
+        message: 'Valid sign in',
+        token: doc._id,
+      });
     });
-
-    router.post('/signup', (req, res, next) => {
-        const { body } = req;
-        const { password } = body;
-        let { email } = body;
-
-        if (!email) {
-            return res.send({
-                success: false,
-                message: 'Error: Email cannot be blank.'
-            });
-        }
-        if (!password) {
-            return res.send({
-                success: false,
-                message: 'Error: Password cannot be blank.'
-            });
-        }
-
-        email = email.toLowerCase();
-        email = email.trim();
-
-        // Steps:
-        // 1. Verify email doesn't exist
-        // 2. Save
-        User.find({
-            email: email
-        }, (err, previousUsers) => {
-            if (err) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Server error'
-                });
-            } else if (previousUsers.length > 0) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Account already exist.'
-                });
-            }
-
-            // Save the new user
-            const newUser = new User();
-
-            newUser.email = email;
-            newUser.password = newUser.generateHash(password);
-            newUser.save((err, user) => {
-                if (err) {
-                    return res.send({
-                        success: false,
-                        message: 'Error: Server error'
-                    });
-                }
-                return res.send({
-                    success: true,
-                    message: 'Signed up'
-                });
-            });
-        });
-
+  } catch (err) {
+    console.log('err 2:', err);
+    return res.send({
+      success: false,
+      message: 'Error: server error',
     });
+  }
+});
 
-    router.post('/signin', (req, res, next) => {
-        const { body } = req;
-        const {
-            password
-        } = body;
-        let {
-            email
-        } = body;
+router.get('/verify', async (req, res, next) => {
+  // Get the token
+  const { token } = req.query;
+  // ?token=test
 
-
-        if (!email) {
-            return res.send({
-                success: false,
-                message: 'Error: Email cannot be blank.'
-            });
-        }
-        if (!password) {
-            return res.send({
-                success: false,
-                message: 'Error: Password cannot be blank.'
-            });
-        }
-
-        email = email.toLowerCase();
-        email = email.trim();
-
-        User.find({
-            email: email
-        }, (err, users) => {
-            if (err) {
-                console.log('err 2:', err);
-                return res.send({
-                    success: false,
-                    message: 'Error: server error'
-                });
-            }
-            if (users.length != 1) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Invalid'
-                });
-            }
-
-            const user = users[0];
-            if (!user.validPassword(password)) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Invalid'
-                });
-            }
-
-            // Otherwise correct user
-            const userSession = new UserSession();
-            userSession.userId = user._id;
-            userSession.save((err, doc) => {
-                if (err) {
-                    console.log(err);
-                    return res.send({
-                        success: false,
-                        message: 'Error: server error'
-                    });
-                }
-
-                return res.send({
-                    success: true,
-                    message: 'Valid sign in',
-                    token: doc._id
-                });
-            });
-        });
+  // Verify the token is one of a kind and it's not deleted.
+  try {
+    const session = await UserSession.findOne({ _id: token, isDeleted: false });
+    return res.send({
+      success: true,
+      message: 'Good',
     });
-
-    router.get('/verify', (req, res, next) => {
-        // Get the token
-        const { query } = req;
-        const { token } = query;
-        // ?token=test
-
-        // Verify the token is one of a kind and it's not deleted.
-
-        UserSession.find({
-            _id: token,
-            isDeleted: false
-        }, (err, sessions) => {
-            if (err) {
-                console.log(err);
-                return res.send({
-                    success: false,
-                    message: 'Error: Server error'
-                });
-            }
-
-            if (sessions.length != 1) {
-                return res.send({
-                    success: false,
-                    message: 'Error: Invalid'
-                });
-            } else {
-                return res.send({
-                    success: true,
-                    message: 'Good'
-                });
-            }
-        });
+  } catch (err) {
+    return res.send({
+      success: false,
+      message: `Error: Server error ${err.stack}`,
     });
+  }
+});
 
-    app.get('/logout', (req, res, next) => {
-        // Get the token
-        const { query } = req;
-        const { token } = query;
-        // ?token=test
+router.get('/logout', async (req, res) => {
+  // Get the token
+  const { query } = req;
+  const { token } = query;
+  // ?token=test
 
-        // Verify the token is one of a kind and it's not deleted.
-
-        UserSession.findOneAndUpdate({
-            _id: token,
-            isDeleted: false
-        }, {
-                $set: {
-                    isDeleted: true
-                }
-            }, null, (err, sessions) => {
-                if (err) {
-                    console.log(err);
-                    return res.send({
-                        success: false,
-                        message: 'Error: Server error'
-                    });
-                }
-
-                return res.send({
-                    success: true,
-                    message: 'Good'
-                });
-            });
+  // Verify the token is one of a kind and it's not deleted.
+  try {
+    await UserSession.findOneAndUpdate(
+      { _id: token, isDeleted: false },
+      { $set: { isDeleted: true } },
+    );
+    return res.send({
+      success: true,
+      message: 'Good',
     });
-};
+  } catch (err) {
+    return res.send({
+      success: false,
+      message: `Error: Server error ${err.stack}`,
+    });
+  }
+});
+module.exports = router;
