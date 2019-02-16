@@ -4,7 +4,7 @@ function apiUrl() {
     let logged = false;
     process.env.REACT_APP_STAGE === 'dev'
     ? API_URL = 'http://localhost:3001'
-    : API_URL = 'http://simplerp.herokuapp.com';
+    : API_URL = 'https://simplerp.herokuapp.com';
 
     const hostName = process.env.REACT_APP_HOSTNAME;
 
