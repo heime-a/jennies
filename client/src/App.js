@@ -21,6 +21,8 @@ import ProductInventory from "./components/ProductInventory";
 import { RecipeList } from "./components/RecipeList";
 import  WorkOrderList from "./components/WorkOrderList";
 import  CustomerOrders from "./components/CustomerOrderList";
+import isLoggedIn from "./common/isLoggedIn";
+import LoginForm from "./components/LoginForm";
 
 import {
   Collapse,
@@ -28,19 +30,30 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   NavbarToggler } from 'reactstrap';
+import apiUrl from './common/apiurl';
 
+function LogOut() {
 
+  window.localStorage.removeItem(apiUrl()+'token');
+  return(<div>Successfully Logged Out</div>);
+}
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    const loggedIn = isLoggedIn()
+    this.state = { loggedIn }
+  }
   
 
   render() {
-    const menuItems = ['Ingredients','Purchasing','Inventory','Recipe','Manufacturing','Product Inventory','Customer Orders']
+    const menuItems = ['Ingredients','Purchasing','Inventory',
+                        'Recipe','Manufacturing','Product Inventory','Customer Orders','LogOut']
+    const login = ['Login'];
     return <div className="App">
         <div className="App-header">
-          <MyApp items={menuItems} />
+          <MyApp items={ this.state.loggedIn ? menuItems : login} />
         </div>
       </div>;
   }
@@ -56,7 +69,6 @@ class MyApp extends Component {
     };
 
   }
-  //TODO: Figure our how to enable autp collape of hambuger menu Only when its visible to avoid visual artifact when there is no hamburger menu present
   render() { 
     return(<Router>
       <div>
@@ -76,6 +88,7 @@ class MyApp extends Component {
             </Nav>
           </Collapse>
         </Navbar>
+        <Route path="/Login" exact component={LoginForm} />
         <Route path="/Ingredients" exact component={IngredientList} />
         <Route path="/Purchasing" exact component={PurchaseOrderList} />
         <Route path="/Inventory" exact component={Inventory} />
@@ -83,6 +96,7 @@ class MyApp extends Component {
         <Route path="/Manufacturing" exact component={WorkOrderList} />
         <Route path="/Product Inventory" exact component={ProductInventory} />
         <Route path="/Customer Orders" exact component={CustomerOrders} />
+        <Route path="/LogOut" exact component={LogOut} />
         
       </div>
     </Router>);
