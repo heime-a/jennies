@@ -14,7 +14,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
-import { AuthProvider,AuthConsumer } from '.components/AuthContext';
+import { AuthProvider,AuthConsumer } from './components/AuthContext';
 import { IngredientList } from './components/IngredientList';
 import PurchaseOrderList from "./components/PurchaseOrderList";
 import Inventory from "./components/Inventory";
@@ -33,7 +33,6 @@ import {
   Nav,
   NavItem,
   NavbarToggler } from 'reactstrap';
-import apiUrl from './common/apiurl';
 
 function LogOut() {
 

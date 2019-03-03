@@ -1,6 +1,7 @@
 import React from 'react';
 import apiUrl from "../common/apiurl.js";
 import postOrPutData from "../common/postOrPutData.js";
+import isLoggedIn from "../common/isLoggedIn.js"
 
 const AuthContext = React.createContext()
 
@@ -8,7 +9,7 @@ class AuthProvider extends React.Component {
   state = { 
       email: '',
       password: '',
-      loggedIn: false
+      loggedIn: isLoggedIn()
     }
 
     onChange = e => {

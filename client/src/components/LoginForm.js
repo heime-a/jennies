@@ -2,7 +2,7 @@
 import "./LoginForm.css"
 import React from "react";
 import { Input,Label, Form } from "reactstrap";
-import { AuthConsumer } from '../AuthContext';
+import { AuthConsumer } from './AuthContext';
 
     const LoginForm = () => {
         return(
