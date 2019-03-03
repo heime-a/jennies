@@ -1,6 +1,6 @@
 import React from 'react';
-import apiUrl from "./common/apiurl.js";
-import postOrPutData from "./common/postOrPutData.js";
+import apiUrl from "../common/apiurl.js";
+import postOrPutData from "../common/postOrPutData.js";
 
 const AuthContext = React.createContext()
 

@@ -14,7 +14,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
-import { AuthProvider,AuthConsumer } from './AuthContext';
+import { AuthProvider,AuthConsumer } from '.components/AuthContext';
 import { IngredientList } from './components/IngredientList';
 import PurchaseOrderList from "./components/PurchaseOrderList";
 import Inventory from "./components/Inventory";
