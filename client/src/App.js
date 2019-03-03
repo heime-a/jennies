@@ -14,6 +14,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
+import { AuthProvider,AuthConsumer } from './AuthContext';
 import { IngredientList } from './components/IngredientList';
 import PurchaseOrderList from "./components/PurchaseOrderList";
 import Inventory from "./components/Inventory";
@@ -23,6 +24,7 @@ import  WorkOrderList from "./components/WorkOrderList";
 import  CustomerOrders from "./components/CustomerOrderList";
 import isLoggedIn from "./common/isLoggedIn";
 import LoginForm from "./components/LoginForm";
+import { Button } from "reactstrap";
 
 import {
   Collapse,
@@ -35,8 +37,14 @@ import apiUrl from './common/apiurl';
 
 function LogOut() {
 
-  window.localStorage.removeItem(apiUrl()+'token');
-  return(<div>Successfully Logged Out</div>);
+  return(
+          <AuthConsumer>
+            {({loggedIn, logout}) => (
+            <>{loggedIn && <Button color="warning" onClick={logout}>Log Out</Button>}</>
+            )
+            }
+          </AuthConsumer>
+          );
 }
 
 class App extends Component {
@@ -52,9 +60,15 @@ class App extends Component {
                         'Recipe','Manufacturing','Product Inventory','Customer Orders','LogOut']
     const login = ['Login'];
     return <div className="App">
-        <div className="App-header">
-          <MyApp items={ this.state.loggedIn ? menuItems : login} />
-        </div>
+            <AuthProvider>
+                <AuthConsumer>
+                  {({ loggedIn }) => (
+                    <div className="App-header">
+                      <MyApp items={loggedIn ? menuItems : login} />
+                    </div>)
+                  }
+                </AuthConsumer>
+            </AuthProvider>
       </div>;
   }
 }
@@ -70,8 +84,8 @@ class MyApp extends Component {
 
   }
   render() { 
-    return(<Router>
-      <div>
+    return(<Router> 
+      <>
         <Navbar color="light" expand="md">
           <NavbarBrand href="/">
             <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
@@ -96,9 +110,8 @@ class MyApp extends Component {
         <Route path="/Manufacturing" exact component={WorkOrderList} />
         <Route path="/Product Inventory" exact component={ProductInventory} />
         <Route path="/Customer Orders" exact component={CustomerOrders} />
-        <Route path="/LogOut" exact component={LogOut} />
-        
-      </div>
+        <Route path="/LogOut" exact component={LogOut} />        
+      </>
     </Router>);
   }
 };
