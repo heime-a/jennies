@@ -18,10 +18,7 @@ import apiUrl from "../common/apiurl.js";
       ],
       selectedId: -1
     };
-    this.handleAddPoLine = this.handleAddPoLine.bind(this);
-    this.handleRemovePoLine = this.handleRemovePoLine.bind(this);
 
-    console.log("Bound");
   }
   async componentDidMount() {
     const newState = { ...this.state};
