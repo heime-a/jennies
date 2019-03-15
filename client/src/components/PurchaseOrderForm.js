@@ -28,7 +28,7 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine,onRemoveLi
         </thead>
         <tbody>
           {item.ingredients.map((ing,idx) => (
-            <tr key={ing._id}>
+            <tr key={ing.ingredient.name}>
               <td width="15%">
                 <Input
                   key={idx}

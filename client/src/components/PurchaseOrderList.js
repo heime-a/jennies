@@ -43,11 +43,19 @@ class PurchaseOrderList extends Component {
     }
   }
 
+  
   newPurchaseOrder(e) {
+    const getUniqPo = (poNums) => {
+      const maxPo = Math.max(...poNums.map(i => i.replace(/\D*/, "")));
+      return `new${maxPo + 1}`;
+    }
+
     const newState = { ...this.state };
+    const newPoNumber = getUniqPo(this.state.content.map(i => i.poNumber));
+
     newState.content.push({
-      _id: `new001`,
-      poNumber: `new001`,
+      _id: newPoNumber,
+      poNumber: newPoNumber,
       ingredients: [
         {
           ingredient: { name: "New Ingredient", type: "Type", unit: "Oz." },
