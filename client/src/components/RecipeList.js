@@ -14,10 +14,6 @@ export class RecipeList extends Component {
       content: [{ name: "Macaroons1" }, { name: "Macaroons2" }],
       selectedId: -1
     };
-    //this.handleAddRecipeLine = this.handleAddRecipeLine.bind(this);
-    //this.handleRemoveRecipeLine = this.handleRemoveRecipeLine.bind(this);
-
-    console.log("Bound");
   }
   async componentDidMount() {
     const newState = { ...this.state };
@@ -33,8 +29,10 @@ export class RecipeList extends Component {
     response = await fetch(`${apiUrl()}/ingredients`);
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingData = jsonMessage.content.reduce((acc, val) => 
-      { acc[val.name] = {'unit' : val.unit }; return acc }, {});
+      newState.ingData = jsonMessage.content.reduce((acc, val) => {
+        acc[val.name] = { unit: val.unit };
+        return acc;
+      }, {});
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -42,14 +40,15 @@ export class RecipeList extends Component {
 
     response = await fetch(`${apiUrl()}/inventory`);
     jsonMessage = await response.json();
-    if(jsonMessage) {
-      newState.ingData = jsonMessage.content.reduce((acc,val) =>
-      { acc[val.name]['avgCost'] = val.avgCost; return acc}, newState.ingData );
-      newState.ingData['New Item'] = { 'avgCost': 0.01, unit: 'N/A' };
+    if (jsonMessage) {
+      newState.ingData = jsonMessage.content.reduce((acc, val) => {
+        acc[val.name]["avgCost"] = val.avgCost;
+        return acc;
+      }, newState.ingData);
+      newState.ingData["New Item"] = { avgCost: 0.01, unit: "N/A" };
       this.setState(newState);
-      console.log(newState.ingData);
     } else {
-      console.log('inventory json message failed')
+      console.log("inventory json message failed");
     }
   }
 
@@ -165,7 +164,7 @@ export class RecipeList extends Component {
             onChange={e => this.handleItemSelect(e)}
           >
             {this.state.content.map(item => (
-              <option value={item._id} key={item._id}>
+              <option value={item._id} key={item.name}>
                 {`${item.name}`}
               </option>
             ))}
