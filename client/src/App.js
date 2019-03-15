@@ -53,6 +53,7 @@ class App extends Component {
     this.state = { loggedIn }
   }
   
+  
 
   render() {
     const menuItems = ['Ingredients','Purchasing','Inventory',
@@ -80,38 +81,62 @@ class MyApp extends Component {
     this.state = {
       collapsed: true
     };
-
   }
-  render() { 
-    return(<Router> 
-      <>
-        <Navbar color="light" expand="md">
-          <NavbarBrand href="/">
-            <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
-          </NavbarBrand>
-          <NavbarToggler 
-               onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} />
-          <Collapse onClick={()=>{ this.setState({ collapsed:!this.state.collapsed })}} 
-                    isOpen={!this.state.collapsed} navbar>
-            <Nav className="ml-auto" navbar>
-              {this.props.items.map(item => 
-                <NavItem key={item}>
-                  <Link className="nav-link" to={item}>{item}</Link>
-                </NavItem>)}
-            </Nav>
-          </Collapse>
-        </Navbar>
-        <Route path="/Login" exact component={LoginForm} />
-        <Route path="/Ingredients" exact component={IngredientList} />
-        <Route path="/Purchasing" exact component={PurchaseOrderList} />
-        <Route path="/Inventory" exact component={Inventory} />
-        <Route path="/Recipe" exact component={RecipeList} />
-        <Route path="/Manufacturing" exact component={WorkOrderList} />
-        <Route path="/Product Inventory" exact component={ProductInventory} />
-        <Route path="/Customer Orders" exact component={CustomerOrders} />
-        <Route path="/LogOut" exact component={LogOut} />        
-      </>
-    </Router>);
+
+  componentDidMount() {
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
+  }
+
+  resize() {
+    this.setState({
+      hamburgerVisible: window.innerWidth <= 760
+    });
+  }
+
+  render() {
+    return (
+      <Router>
+        <>
+          <Navbar collapseOnSelect color="light" expand="md">
+            <NavbarBrand href="/">
+              <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
+            </NavbarBrand>
+            <NavbarToggler
+              onClick={() => {
+                this.setState({ collapsed: !this.state.collapsed });
+              }}
+            />
+            <Collapse
+              onClick={() => {
+                this.state.hamburgerVisible && this.setState({ collapsed: !this.state.collapsed });
+              }}
+              isOpen={!this.state.collapsed}
+              navbar
+            >
+              <Nav className="ml-auto" navbar>
+                {this.props.items.map(item => (
+                  <NavItem key={item}>
+                    <Link className="nav-link" to={item}>
+                      {item}
+                    </Link>
+                  </NavItem>
+                ))}
+              </Nav>
+            </Collapse>
+          </Navbar>
+          <Route path="/Login" exact component={LoginForm} />
+          <Route path="/Ingredients" exact component={IngredientList} />
+          <Route path="/Purchasing" exact component={PurchaseOrderList} />
+          <Route path="/Inventory" exact component={Inventory} />
+          <Route path="/Recipe" exact component={RecipeList} />
+          <Route path="/Manufacturing" exact component={WorkOrderList} />
+          <Route path="/Product Inventory" exact component={ProductInventory} />
+          <Route path="/Customer Orders" exact component={CustomerOrders} />
+          <Route path="/LogOut" exact component={LogOut} />
+        </>
+      </Router>
+    );
   }
 };
 
