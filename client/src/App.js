@@ -98,7 +98,7 @@ class MyApp extends Component {
     return (
       <Router>
         <>
-          <Navbar collapseOnSelect color="light" expand="md">
+          <Navbar color="light" expand="md">
             <NavbarBrand href="/">
               <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
             </NavbarBrand>
