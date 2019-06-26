@@ -1,11 +1,12 @@
 "use strict;";
+//TODO: Add modal dialogs for search functions in PO 
 //TODO: use componentunmount to free react resources / save state when exiting screen ?
 //TODO: Global transaction number scheme
 //TODO: Statuses for purchase orders and exclusion of non completed PO statuses from totals
 //TODO: Statuses for customer orders and exclusion of non completed PO statuses from totals
 //TODO: Implement user authentication
 //TODO: Optimize layout for smaller devices(phone)
-//TODO: Add modal dialogs for search functions
+
 
 //TODO: Message on ingredient save and update test
 //TODO: Customer orders dont apply to production inventory xx works
