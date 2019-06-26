@@ -39,3 +39,8 @@
 .listItem:hover {
   color: rgb(180, 180, 230);
 }
+
+
+table td { 
+  vertical-align: middle !important;
+}
