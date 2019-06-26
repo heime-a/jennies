@@ -9,13 +9,15 @@
 .poButtons {
   grid-row-start: 2;
 }
-
+#purchaseOrderGrid {
+  margin: 5px;
+}
 @media print {
   .delete {
     display: none !important;
   }
   #poListGrid {
     grid-template-columns: 1fr;
+    margin: 5px;
   }
 }
-

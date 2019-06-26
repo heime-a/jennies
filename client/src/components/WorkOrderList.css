@@ -2,11 +2,13 @@
 #workOrderList {
     display: grid;
     grid-template-columns: 4fr 6fr;
+    margin: 5px;
 }
 
 #woForm {
   display: grid;
   grid-template-columns: 1fr 3fr;
+  margin: 5px;
 }
 
 button + button {

@@ -5,11 +5,13 @@
 #recipeListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin: 5px;
 }
 
 #recipeTop {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin: 5px;
 }
 .recipeButtons {
   grid-row-start: 2;
