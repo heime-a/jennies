@@ -39,7 +39,7 @@ export default function RecipeForm({ item, onChange, onAddLine,onRemoveLine, ing
               <td width="15%">{(Math.floor(ingData[ing.ingredient.name]["avgCost"] *100) / 100).toFixed(2)}</td>
               <td width="15%">{(Math.floor(ingData[ing.ingredient.name]["avgCost"] * ing.quantity * 100) / 100).toFixed(2)}</td>
               <td>
-                <Button onClick={e => onRemoveLine(e, idx)}>x</Button>
+              <Button className="btn-danger delete" onClick={e => onRemoveLine(e, idx)}>x</Button>
               </td>
             </tr>)}
         </tbody>

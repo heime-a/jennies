@@ -56,7 +56,7 @@ export default function PurchaseOrderForm({ item, onChange, onAddLine,onRemoveLi
                   value={ing.unitCost}
                   onChange={(e)=>onChange(e,idx)}/></td>
               <td width="15%">{(Math.floor(100 * ing.quantity * ing.unitCost) / 100).toFixed(2) }</td>
-              <td><Button className="delete" onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
+              <td><Button className="btn-danger delete" onClick={(e) => onRemoveLine(e, idx)}>x</Button></td>
             </tr>
           ))}
         </tbody>
