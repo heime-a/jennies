@@ -12,6 +12,18 @@
 #purchaseOrderGrid {
   margin: 5px;
 }
+
+td button {
+  visibility: hidden !important;
+  padding: 2px !important;
+  border: 0px !important;
+  margin: 0 !important;
+}
+
+tr:hover td button {
+  visibility: initial !important;
+}
+
 @media print {
   .delete {
     display: none !important;
