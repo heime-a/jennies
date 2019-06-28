@@ -13,7 +13,7 @@
 //TODO: costing of recipe items from average price on inventory screen XXX
 
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route,  NavLink as RRNavLink } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, AuthConsumer } from "./components/AuthContext";
 import { IngredientList } from "./components/IngredientList";
@@ -25,7 +25,7 @@ import WorkOrderList from "./components/WorkOrderList";
 import CustomerOrders from "./components/CustomerOrderList";
 import isLoggedIn from "./common/isLoggedIn";
 import LoginForm from "./components/LoginForm";
-import { Button } from "reactstrap";
+import { Button,NavLink } from "reactstrap";
 
 import {
   Collapse,
@@ -131,9 +131,9 @@ class MyApp extends Component {
               <Nav className="ml-auto" navbar>
                 {this.props.items.map(item => (
                   <NavItem key={item}>
-                    <Link className="nav-link" to={item}>
+                    <NavLink  tag={RRNavLink} to={item}>
                       {item}
-                    </Link>
+                    </NavLink>
                   </NavItem>
                 ))}
               </Nav>
