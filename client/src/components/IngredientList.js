@@ -7,9 +7,7 @@ import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 
 export class IngredientList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+    state = {
       content: [
         { _id: 1, name: "", type: "", unit: "", needSave: false },
         { _id: 2 },
@@ -18,7 +16,7 @@ export class IngredientList extends Component {
       selectedId: -1,
       newItemsIndex: 0
     };
-  }
+
   async componentDidMount() {
 
     const response = await fetch(`${apiUrl()}/ingredients`);

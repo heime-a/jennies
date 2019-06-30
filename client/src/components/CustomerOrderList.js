@@ -10,9 +10,7 @@ import apiUrl from "../common/apiurl.js";
 //TODO: print layout for customer orders  started
 
 class CustomerOrderList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+    state = {
       content: [
         {
           _id: 1,
@@ -23,7 +21,7 @@ class CustomerOrderList extends Component {
       ],
       selectedId: -1
     };
-  }
+  
   async componentDidMount() {
     const newState = { ...this.state };
 

@@ -5,15 +5,12 @@ import { Table } from "reactstrap";
 import apiUrl from "../common/apiurl.js";
 
 class Inventory extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       content: [
         { name: "Item1", quantity: 10 },
         { name: "Item2", quantity: 11 }
       ]
     };
-  }
 
   async componentDidMount() {
     const response = await fetch(`${apiUrl()}/inventory`);

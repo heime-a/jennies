@@ -13,7 +13,7 @@
 //TODO: costing of recipe items from average price on inventory screen XXX
 
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route,  NavLink as RRNavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink as RRNavLink } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, AuthConsumer } from "./components/AuthContext";
 import { IngredientList } from "./components/IngredientList";
@@ -25,9 +25,11 @@ import WorkOrderList from "./components/WorkOrderList";
 import CustomerOrders from "./components/CustomerOrderList";
 import isLoggedIn from "./common/isLoggedIn";
 import LoginForm from "./components/LoginForm";
-import { Button,NavLink } from "reactstrap";
+
 
 import {
+  Button, 
+  NavLink,
   Collapse,
   Navbar,
   NavbarBrand,
@@ -53,11 +55,7 @@ function LogOut() {
 }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    const loggedIn = isLoggedIn();
-    this.state = { loggedIn };
-  }
+    state = { loggedIn : isLoggedIn() };
 
   render() {
     const menuItems = [
@@ -70,14 +68,13 @@ class App extends Component {
       "Customer Orders",
       "LogOut"
     ];
-    const login = ["Login"];
     return (
       <div className="App">
         <AuthProvider>
           <AuthConsumer>
             {({ loggedIn }) => (
               <div className="App-header">
-                <MyApp items={loggedIn ? menuItems : login} />
+                <MyApp items={loggedIn ? menuItems : ['Login'] } />
               </div>
             )}
           </AuthConsumer>
@@ -87,14 +84,9 @@ class App extends Component {
   }
 }
 
-class MyApp extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      collapsed: true
-    };
-  }
+class MyApp extends Component {
+    state = { collapsed: true };
 
   componentDidMount() {
     window.addEventListener("resize", this.resize.bind(this));
@@ -131,9 +123,7 @@ class MyApp extends Component {
               <Nav className="ml-auto" navbar>
                 {this.props.items.map(item => (
                   <NavItem key={item}>
-                    <NavLink  tag={RRNavLink} to={item}>
-                      {item}
-                    </NavLink>
+                    <NavLink tag={RRNavLink} to={item}>{item}</NavLink>
                   </NavItem>
                 ))}
               </Nav>

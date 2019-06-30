@@ -8,25 +8,23 @@ import apiUrl from "../common/apiurl.js";
 
 
 class WorkOrderList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: [
-        {
-          _id : "test001",
-          woNumber: "wo0001",
-          recipe: { name: "Chocolate Macaroons" },
-          startDate: "1980-01-01",
-          status: "In Process",
-          actualHours: 5,
-          actualYield: 100,
-        }
-      ],
-      selectedWoNumber: undefined,
-      alertMessage: undefined,
-      recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"]
-    };
-  }
+  state = {
+    content: [
+      {
+        _id: "test001",
+        woNumber: "wo0001",
+        recipe: { name: "Chocolate Macaroons" },
+        startDate: "1980-01-01",
+        status: "In Process",
+        actualHours: 5,
+        actualYield: 100,
+      }
+    ],
+    selectedWoNumber: undefined,
+    alertMessage: undefined,
+    recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"]
+  };
+
 
   async componentDidMount() {
     const newState = { ...this.state };
@@ -49,20 +47,20 @@ class WorkOrderList extends Component {
   }
 
   saveWorkOrder = e => {
-    const saveItem  = async item => {
+    const saveItem = async item => {
       const { recipe, woNumber, startDate, status, actualHours, actualYield } = item;
       let data;
       if (item._id.includes("new")) {
-          data = await postOrPutData(`${apiUrl()}/workorders`, {
+        data = await postOrPutData(`${apiUrl()}/workorders`, {
           recipe,
-          woNumber : woNumber.replace(/new/,'wo'),
+          woNumber: woNumber.replace(/new/, 'wo'),
           startDate,
           status,
           actualHours,
           actualYield
-        });  
+        });
       } else {
-          data = await postOrPutData(
+        data = await postOrPutData(
           `${apiUrl()}/workorders/${item._id}`,
           {
             recipe,
@@ -80,19 +78,19 @@ class WorkOrderList extends Component {
       setTimeout(() => { this.setState({ ...this.state, alertMessage: undefined }) }, 3000);
     }
 
-    const selectedItem = this.state.content.find(i=> this.state.selectedWoNumber === i.woNumber);
+    const selectedItem = this.state.content.find(i => this.state.selectedWoNumber === i.woNumber);
     saveItem(selectedItem);
   };
 
   handleNewWorkOrder = e => {
 
     const getUniqWo = (woNums) => {
-      const maxWo = Math.max(...woNums.map(i=>i.replace(/\D*/,"")));
-      return `new${maxWo+1}`;
+      const maxWo = Math.max(...woNums.map(i => i.replace(/\D*/, "")));
+      return `new${maxWo + 1}`;
     }
-    
-    const newState = {...this.state};
-    const newWoNumber = getUniqWo(this.state.content.map(i=>i.woNumber));
+
+    const newState = { ...this.state };
+    const newWoNumber = getUniqWo(this.state.content.map(i => i.woNumber));
     newState.content.push({
       _id: newWoNumber,
       woNumber: newWoNumber,
@@ -116,8 +114,8 @@ class WorkOrderList extends Component {
       el => el.woNumber === this.state.selectedWoNumber
     );
     const newState = { ...this.state };
-    if(e.target.name === 'recipe.name') newState.content[idx].recipe.name = e.target.value;
-    newState.content[idx][e.target.name] = e.target.value; 
+    if (e.target.name === 'recipe.name') newState.content[idx].recipe.name = e.target.value;
+    newState.content[idx][e.target.name] = e.target.value;
     this.setState(newState);
   };
 
@@ -126,67 +124,67 @@ class WorkOrderList extends Component {
       el => el.woNumber === this.state.selectedWoNumber
     );
     return <div>
-        <div id="workOrderList">
-          <select size={10} onChange={this.handleItemSelect}>
-            {this.state.content.map(({ woNumber, status, startDate }) => (
-              <option value={woNumber} key={woNumber}>
-                {startDate} {woNumber} {status}
-              </option>
-            ))}
-          </select>
-          {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleChange} item={foundItem} recipeNames={this.state.recipeNames} />}
-          <div>
-            <Button color="success" onClick={this.handleNewWorkOrder}>
-              New
+      <div id="workOrderList">
+        <select size={10} onChange={this.handleItemSelect}>
+          {this.state.content.map(({ woNumber, status, startDate }) => (
+            <option value={woNumber} key={woNumber}>
+              {startDate} {woNumber} {status}
+            </option>
+          ))}
+        </select>
+        {this.state.selectedWoNumber !== undefined && <WorkOrderForm onChange={this.handleChange} item={foundItem} recipeNames={this.state.recipeNames} />}
+        <div>
+          <Button color="success" onClick={this.handleNewWorkOrder}>
+            New
             </Button>
-            <Button color="warning" onClick={this.saveWorkOrder}>
-              Save Current
+          <Button color="warning" onClick={this.saveWorkOrder}>
+            Save Current
             </Button>
-          </div>
         </div>
-        {this.state.alertMessage && 
-          <UncontrolledAlert color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"} >
-            {this.state.alertMessage}
-          </UncontrolledAlert>}
-      </div>;
+      </div>
+      {this.state.alertMessage &&
+        <UncontrolledAlert color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"} >
+          {this.state.alertMessage}
+        </UncontrolledAlert>}
+    </div>;
   }
 }
 
 function WorkOrderForm({ item, recipeNames, onChange }) {
   const { recipe, status, actualHours, actualYield, startDate } = item;
 
-//TODO: Work order date default and date edit 
+  //TODO: Work order date default and date edit 
   //TODO: validate start date here 
   let startDateFormatted;
-  if (startDate.length === 10) { 
-    const startDate = new Date(item.startDate);  
+  if (startDate.length === 10) {
+    const startDate = new Date(item.startDate);
     startDateFormatted = startDate.toLocaleDateString();
   }
-  else { 
+  else {
     startDateFormatted = startDate;
   }
- 
+
   return <div id="woForm">
-      <Label>Recipe</Label>
-      <select name="recipe.name" value={recipe.name} onChange={onChange}>
-        {recipeNames.map(i => <option key={i}>{i}</option>)}
-      </select>
+    <Label>Recipe</Label>
+    <select name="recipe.name" value={recipe.name} onChange={onChange}>
+      {recipeNames.map(i => <option key={i}>{i}</option>)}
+    </select>
 
-      <Label>Start Date</Label>
-      <Input type="text" name="startDate" value={startDateFormatted} onChange={onChange}/>
+    <Label>Start Date</Label>
+    <Input type="text" name="startDate" value={startDateFormatted} onChange={onChange} />
 
-      <Label>Status:</Label>
-      <select name="status" value={status} onChange={onChange}>
-        <option>Draft</option>
-        <option>In Process</option>
-        <option>Completed</option>
-      </select>
+    <Label>Status:</Label>
+    <select name="status" value={status} onChange={onChange}>
+      <option>Draft</option>
+      <option>In Process</option>
+      <option>Completed</option>
+    </select>
 
-      <Label>Actual Hours</Label>
-      <Input type="text" name='actualHours' value={actualHours} onChange={onChange}/>
-      <Label>Actual Yield</Label>
-      <Input type="text" name="actualYield" value={actualYield} onChange={onChange}/>
-    </div>;
+    <Label>Actual Hours</Label>
+    <Input type="text" name='actualHours' value={actualHours} onChange={onChange} />
+    <Label>Actual Yield</Label>
+    <Input type="text" name="actualYield" value={actualYield} onChange={onChange} />
+  </div>;
 }
 
 export default WorkOrderList;

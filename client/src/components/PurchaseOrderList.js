@@ -9,16 +9,14 @@ import apiUrl from "../common/apiurl.js";
 //TODO: printing layout for purchaseorders  started
 
 class PurchaseOrderList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: [
-        { poNumber: 1, supplier: { name: "Test1" } },
-        { poNumber: 2, supplier: { name: "Test2" } }
-      ],
-      selectedId: -1
-    };
-  }
+  state = {
+    content: [
+      { poNumber: 1, supplier: { name: "Test1" } },
+      { poNumber: 2, supplier: { name: "Test2" } }
+    ],
+    selectedId: -1
+  };
+
   async componentDidMount() {
     const newState = { ...this.state };
 
@@ -43,7 +41,7 @@ class PurchaseOrderList extends Component {
     }
   }
 
-  
+
   newPurchaseOrder(e) {
     const getUniqPo = (poNums) => {
       const maxPo = Math.max(...poNums.map(i => i.replace(/\D*/, "")));
