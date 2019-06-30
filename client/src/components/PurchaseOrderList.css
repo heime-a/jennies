@@ -1,6 +1,7 @@
 #poListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
+  margin: 5px;
 }
 
 .newPO {
