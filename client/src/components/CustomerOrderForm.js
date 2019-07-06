@@ -6,7 +6,7 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 
 //import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 
-export default function CustomerOrderForm({ order, onChange, onAddLine,onRemoveLine, productNames }) {
+export default function CustomerOrderForm({ order, productNames, onChange, onAddLine, onRemoveLine, }) {
   return (
     <div id="customerOrderGrid">
       <div>PO Number: {order.coNumber}</div>
@@ -18,44 +18,11 @@ export default function CustomerOrderForm({ order, onChange, onAddLine,onRemoveL
       </Button>
       <Table>
         <thead>
-          <tr>
-            <th>Amount</th>
-            <th>Name</th>
-            <th>Unit Cost</th>
-            <th>Total Cost</th>
-          </tr>
+          <ProductHeader />
         </thead>
         <tbody>
-          {order.items.map((item,idx) => (
-            <tr key={idx}>
-              <td width="15%">
-                <Input
-                  key={idx}
-                  type="text"
-                  name="quantity"
-                  value={item.quantity}
-                  onChange={(e)=>onChange(e,idx)}
-                />{" "}
-              </td>
-              <td width="40%">
-                <Typeahead
-                  options={productNames}
-                  type="text"
-                  name="name"
-                  defaultInputValue={item.name}
-                  onChange={(val)=>onChange({target:{name:'name',value: val[0]}},idx)}
-                />
-              </td>
-              <td width="15%">
-              <Input
-                  key={idx}
-                  type="text"
-                  name="unitCost"
-                  value={item.unitCost}
-                  onChange={(e)=>onChange(e,idx)}/></td>
-              <td width="15%">{(Math.floor(100 * item.quantity * item.unitCost) / 100).toFixed(2) }</td>
-              <td><Button className="btn-danger delete" onClick={(e) => onRemoveLine(e,idx)}>x</Button></td>
-            </tr>
+          {order.items.map((item, idx) => (
+            <ProductLine item={item} idx={idx} productNames={productNames} onChange={onChange} onRemoveLine={onRemoveLine} />
           ))}
         </tbody>
       </Table>
@@ -63,4 +30,44 @@ export default function CustomerOrderForm({ order, onChange, onAddLine,onRemoveL
   );
 }
 
+function ProductHeader() {
+  return <tr>
+    <th>Amount</th>
+    <th>Name</th>
+    <th>Unit Cost</th>
+    <th>Total Cost</th>
+  </tr>;
+}
+
+function ProductLine({ item, productNames, idx, onChange, onRemoveLine }) {
+  return <tr key={idx}>
+    <td width="15%">
+      <Input
+        key={idx}
+        type="text"
+        name="quantity"
+        value={item.quantity}
+        onChange={(e) => onChange(e, idx)}
+      />{" "}
+    </td>
+    <td width="40%">
+      <Typeahead
+        options={productNames}
+        type="text"
+        name="name"
+        defaultInputValue={item.name}
+        onChange={(val) => onChange({ target: { name: 'name', value: val[0] } }, idx)}
+      />
+    </td>
+    <td width="15%">
+      <Input
+        key={idx}
+        type="text"
+        name="unitCost"
+        value={item.unitCost}
+        onChange={(e) => onChange(e, idx)} /></td>
+    <td width="15%">{(Math.floor(100 * item.quantity * item.unitCost) / 100).toFixed(2)}</td>
+    <td><Button className="btn-danger delete" onClick={(e) => onRemoveLine(e, idx)}>x</Button></td>
+  </tr>;
+}
 //
