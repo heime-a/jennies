@@ -69,7 +69,9 @@ function IngredientLine({ ing, ingData, idx, onChange, onRemoveLine }) {
         value={ing.unitCost}
         onChange={(e) => onChange(e, idx)} /></td>
     <td width="15%">{(Math.floor(100 * ing.quantity * ing.unitCost) / 100).toFixed(2)}</td>
-    <td><Button className="btn-danger delete" onClick={(e) => onRemoveLine(e, idx)}>x</Button></td>
+    <td><button onClick={(e) => onRemoveLine(e, idx)}>
+      <i class="fas fa-trash"></i>
+    </button></td>
   </tr>;
 
 }

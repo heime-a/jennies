@@ -67,7 +67,8 @@ function ProductLine({ item, productNames, idx, onChange, onRemoveLine }) {
         value={item.unitCost}
         onChange={(e) => onChange(e, idx)} /></td>
     <td width="15%">{(Math.floor(100 * item.quantity * item.unitCost) / 100).toFixed(2)}</td>
-    <td><Button className="btn-danger delete" onClick={(e) => onRemoveLine(e, idx)}>x</Button></td>
-  </tr>;
+    <td><button onClick={(e) => onRemoveLine(e, idx)}>
+      <i class="fas fa-trash"></i>
+    </button></td>t  </tr>;
 }
 //
