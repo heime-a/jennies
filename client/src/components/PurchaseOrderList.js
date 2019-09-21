@@ -165,19 +165,13 @@ class PurchaseOrderList extends Component {
             ))}
           </select>
           {this.state.selectedId !== -1 && (
-            <PurchaseOrderForm
-              item={foundItem}
-              onChange={this.handleChangePO}
-              onAddLine={this.handleAddPoLine}
+            <PurchaseOrderForm item={foundItem} onChange={this.handleChangePO} onAddLine={this.handleAddPoLine}
               onRemoveLine={this.handleRemovePoLine}
               ingData={this.state.ingData}
             />
           )}
           <div className="poButtons delete">
-            <Button
-              color="success"
-              className="newPO"
-              onClick={e => this.newPurchaseOrder(e)}
+            <Button color="success" className="newPO" onClick={e => this.newPurchaseOrder(e)}
             >
               New Purchase Order
             </Button>
@@ -188,9 +182,7 @@ class PurchaseOrderList extends Component {
         </div>
         {this.state.alertMessage && (
           <UncontrolledAlert
-            color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
+            color={this.state.alertMessage.includes("ERROR:") ? "danger" : "info"}
           >
             {this.state.alertMessage}
           </UncontrolledAlert>

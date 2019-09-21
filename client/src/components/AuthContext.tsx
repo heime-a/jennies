@@ -1,25 +1,45 @@
-import React from "react";
+import React, { Component } from "react";
 import apiUrl from "../common/apiurl.js";
 import postOrPutData from "../common/postOrPutData.js";
-import isLoggedIn from "../common/isLoggedIn.js";
+import isLoggedIn from "../common/isLoggedIn";
 
-const AuthContext = React.createContext();
+const AuthContext = React.createContext<{
+  loggedIn?: boolean;
+  logout?: () => void;
+  onSubmit?: (e: any) => void;
+  onChange?: (e: any) => void;
+}>({});
 
-class AuthProvider extends React.Component {
-  state = {
+interface AuthProviderState {
+  [index: string]: string | boolean;
+  email: string;
+  password: string;
+  loggedIn: boolean;
+}
+interface AuthProviderProps {
+  children: any;
+}
+
+class AuthProvider extends Component {
+  state: AuthProviderState = {
     email: "",
     password: "",
     loggedIn: isLoggedIn()
   };
 
-  onChange = e => {
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let newState = { ...this.state };
     newState[name] = value;
     this.setState(newState);
   };
 
-  onSubmit = e => {
+  logout = () => {
+    console.log(this);
+    this.setState({ loggedIn: false });
+  };
+  onSubmit = (e: { preventDefault: () => void }) => {
+    console.log(JSON.stringify(this.state));
     postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
       .then(data => {
         if (data.success) {
@@ -31,10 +51,6 @@ class AuthProvider extends React.Component {
         console.log(err.stack);
       });
     e.preventDefault();
-  };
-
-  logout = () => {
-    this.setState({ loggedIn: false });
   };
 
   render() {

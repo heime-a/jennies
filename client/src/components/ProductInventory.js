@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import apiUrl from "../common/apiurl.js";
 
+//TODO: Put Product inventory in its own card
 class Inventory extends Component {
     state = {
       content: [
