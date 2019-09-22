@@ -8,11 +8,11 @@ import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import { Ingredient } from "./IngredientList";
 
-interface RecipeLine {
+export interface RecipeLine {
   ingredient: Ingredient;
   quantity: number;
 }
-interface Recipe {
+export interface Recipe {
   _id: string;
   name: string;
   manHours: number;
