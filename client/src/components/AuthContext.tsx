@@ -38,7 +38,7 @@ class AuthProvider extends Component {
     console.log(this);
     this.setState({ loggedIn: false });
   };
-  onSubmit = (e: { preventDefault: () => void }) => {
+  onSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     console.log(JSON.stringify(this.state));
     postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
       .then(data => {
