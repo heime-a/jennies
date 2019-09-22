@@ -8,18 +8,56 @@ import apiUrl from "../common/apiurl.js";
 
 //TODO: Customer order unique transaction numbers
 //TODO: print layout for customer orders  started
-
+interface Order {
+  _id: string;
+  coNumber: string;
+  items: {
+      name: string;
+      quantity: number;
+      unitCost: number;
+  }[];
+  customer: {
+      name: string;
+      address: string;
+  };
+};
+interface CustomerOrderListState { 
+    content: {
+        _id: string;
+        coNumber: string;
+        items: {
+            name: string;
+            quantity: number;
+            unitCost: number;
+        }[];
+        customer: {
+            name: string;
+            address: string;
+        };
+    }[];
+    selectedId: string;
+    productNames: string[];
+    alertMessage: string;
+}
 class CustomerOrderList extends Component {
-    state = {
+    state: CustomerOrderListState = {
       content: [
         {
-          _id: 1,
-          coNumber: 1,
-          customer: { name: "Test1", address: "address" }
+          _id: "1",
+          coNumber: "1",
+          items: [
+            {
+              name: "New LineItem",
+              quantity: 0,
+              unitCost: 2.99
+            }
+          ],
+          customer: { name: "Test2", address: "test3" }
         },
-        { _id: 2, coNumber: 2, customer: { name: "Test2", address: "address" } }
       ],
-      selectedId: -1
+      selectedId: "",
+      productNames: ['macaroon','cholate'],
+      alertMessage: ""
     };
   
   async componentDidMount() {
@@ -35,14 +73,14 @@ class CustomerOrderList extends Component {
     response = await fetch(`${apiUrl()}/recipes`);
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.productNames = jsonMessage.content.map(item => item.name);
+      newState.productNames = jsonMessage.content.map((item:{name: string}) => item.name);
       this.setState(newState);
     } else {
       console.log("json message failed");
     }
   }
 
-  newCustomerOrder(e) {
+  newCustomerOrder() {
     const newState = { ...this.state };
     newState.content.push({
       _id: `new001`,
@@ -59,8 +97,8 @@ class CustomerOrderList extends Component {
     this.setState(newState);
   }
 
-  saveSelectedCO = e => {
-    const saveItem = async order => {
+  saveSelectedCO = () => {
+    const saveItem = async (order:Order) => {
       let data;
       if (order._id.includes("new")) {
         data = await postOrPutData(`${apiUrl()}/customerOrders`, {
@@ -89,50 +127,54 @@ class CustomerOrderList extends Component {
     const foundItem = this.state.content.find(
       i => this.state.selectedId === i._id
     );
+    if (!foundItem) return;
     saveItem(foundItem);
   };
 
-  handleItemSelect = event => {
+  handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = { ...this.state };
     newState.selectedId = event.target.value;
     this.setState(newState);
   };
 
-  handleChangeCO = (event, idx) => {
+  handleChangeCO = (event: React.ChangeEvent<HTMLSelectElement>, idx:number) => {
     console.log(event.target.value);
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-
+    if(!foundItem) return;
     if (event.target.name === "quantity")
-      foundItem.items[idx].quantity = event.target.value;
+      foundItem.items[idx].quantity = Number(event.target.value);
     if (event.target.name === "name")
       foundItem.items[idx].name = event.target.value;
     if (event.target.name === "unitCost")
-      foundItem.items[idx].unitCost = event.target.value;
+      foundItem.items[idx].unitCost = Number(event.target.value);
 
     this.setState(newState);
   };
 
-  handleRemoveCoLine = (event, idx) => {
+  handleRemoveCoLine = (idx:number) => {
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
+    
+    if(!foundItem) return;
 
     foundItem.items = [...foundItem.items];
     foundItem.items.splice(idx, 1);
     this.setState(newState);
   };
 
-  handleAddCoLine = event => {
+  handleAddCoLine = () => {
     const newState = { ...this.state };
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
+    if (!foundItem) return;
     foundItem.items.push({
       name: "New Item",
       quantity: 1,
@@ -159,7 +201,7 @@ class CustomerOrderList extends Component {
               </option>
             ))}
           </select>
-          {this.state.selectedId !== -1 && (
+          {foundOrder && (
             <CustomerOrderForm
               order={foundOrder}
               onChange={this.handleChangeCO}
@@ -172,7 +214,7 @@ class CustomerOrderList extends Component {
             <Button
               color="success"
               className="newPO"
-              onClick={e => this.newCustomerOrder(e)}
+              onClick={e => this.newCustomerOrder()}
             >
               New Customer Order
             </Button>
