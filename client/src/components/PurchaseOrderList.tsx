@@ -8,17 +8,18 @@ import apiUrl from "../common/apiurl.js";
 import { Ingredient } from "./IngredientList";
 
 //TODO: printing layout for purchaseorders  started
-interface LineItem {
+export interface LineItem {
   ingredient: Ingredient;
   quantity: number;
   unitCost: number;
 }
-interface Po {
+export interface Po {
   _id: string;
   poNumber: string;
   ingredients: Array<LineItem>;
   supplier: {
     name: string;
+    address: string;
   };
 }
 interface PurchaseOrderListState {
@@ -35,7 +36,7 @@ class PurchaseOrderList extends Component {
       {
         _id: "1",
         poNumber: "1",
-        supplier: { name: "Test1" },
+        supplier: { name: "Test1", address: "address" },
         ingredients: [
           {
             ingredient: { _id: "0", name: "name", type: "type", unit: "unit" },
@@ -47,7 +48,7 @@ class PurchaseOrderList extends Component {
       {
         _id: "2",
         poNumber: "2",
-        supplier: { name: "Test1" },
+        supplier: { name: "Test1", address: "address" },
         ingredients: [
           {
             ingredient: { _id: "0", name: "name", type: "type", unit: "unit" },
@@ -119,7 +120,7 @@ class PurchaseOrderList extends Component {
           unitCost: 1
         }
       ],
-      supplier: { name: "Test2" }
+      supplier: { name: "Test2", address: "address" }
     });
     this.setState(newState);
   }
@@ -165,7 +166,7 @@ class PurchaseOrderList extends Component {
   };
 
   handleChangePO = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLSelectElement>,
     idx: number
   ) => {
     console.log(event.target.value);
