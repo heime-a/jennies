@@ -3,23 +3,22 @@ import { Button, UncontrolledAlert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import IngredientForm from "./IngredientForm";
-export interface Item {
-  [index: string]: string | boolean;
+export interface Ingredient {
+  [index: string]: string;
   _id: string;
   name: string;
   type: string;
   unit: string;
-  needSave: boolean;
 }
 interface IngredientListState {
-  content: Array<Item>;
+  content: Array<Ingredient>;
   selectedId: string;
   newItemsIndex: number;
   alertMessage?: string;
 }
 export class IngredientList extends Component {
   state: IngredientListState = {
-    content: [{ _id: "1", name: "", type: "", unit: "", needSave: false }],
+    content: [{ _id: "1", name: "", type: "", unit: "" }],
     selectedId: "",
     newItemsIndex: 0,
     alertMessage: undefined
@@ -42,16 +41,15 @@ export class IngredientList extends Component {
     this.setState(newState);
   };
 
-  handleFormChange = (event: React.ChangeEvent<HTMLInputElement>, item: Item) => {
+  handleFormChange = (event: React.ChangeEvent<HTMLInputElement>, item: Ingredient) => {
     const change: IngredientListState = { ...this.state };
     const idx = this.state.content.indexOf(item);
     change.content[idx][event.target.name] = event.target.value;
-    change.content[idx].needSave = true;
     this.setState(change);
   };
 
   saveSelected = () => {
-    const saveItem = async (item?: Item) => {
+    const saveItem = async (item?: Ingredient) => {
       const url = `${apiUrl()}/ingredients`;
       let data;
 
@@ -93,7 +91,6 @@ export class IngredientList extends Component {
       name: "New Ingredient Here",
       type: "None",
       unit: "None",
-      needSave: true
     });
     state.newItemsIndex++;
     this.setState(state);

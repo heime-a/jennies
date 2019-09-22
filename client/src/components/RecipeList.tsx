@@ -6,15 +6,56 @@ import { Button, UncontrolledAlert } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
+import { Ingredient } from "./IngredientList";
 
+interface RecipeLine {
+  ingredient: Ingredient;
+  quantity: number;
+}
+interface Recipe {
+  _id: string;
+  name: string;
+  manHours: number;
+  ingredients: Array<RecipeLine>;
+}
+interface RecipeListState {
+  content: Array<Recipe>;
+  selectedId: string;
+  ingData: {
+    [index: string]: { unit: string; avgCost: number };
+  };
+  alertMessage?: string;
+}
 export class RecipeList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: [{ name: "Macaroons1" }, { name: "Macaroons2" }],
-      selectedId: -1
-    };
-  }
+  state: RecipeListState = {
+    content: [
+      {
+        _id: `new001`,
+        name: `new001`,
+        manHours: 0,
+        ingredients: [
+          {
+            ingredient: {
+              _id: "",
+              name: "New Item",
+              type: "N/A",
+              unit: "N/A"
+            },
+            quantity: 0
+          }
+        ]
+      }
+    ],
+    selectedId: "",
+    ingData: {
+      newItem: {
+        unit: "Oz.",
+        avgCost: 0.01
+      }
+    },
+    alertMessage: ""
+  };
+
   async componentDidMount() {
     const newState = { ...this.state };
 
@@ -29,10 +70,16 @@ export class RecipeList extends Component {
     response = await fetch(`${apiUrl()}/ingredients`);
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingData = jsonMessage.content.reduce((acc, val) => {
-        acc[val.name] = { unit: val.unit };
-        return acc;
-      }, {});
+      newState.ingData = jsonMessage.content.reduce(
+        (
+          acc: { [index: string]: { avgCost: number; unit: string } },
+          val: { name: string; unit: string }
+        ) => {
+          acc[val.name] = { avgCost: 0.01, unit: val.unit };
+          return acc;
+        },
+        {}
+      );
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -41,25 +88,36 @@ export class RecipeList extends Component {
     response = await fetch(`${apiUrl()}/inventory`);
     jsonMessage = await response.json();
     if (jsonMessage) {
-      newState.ingData = jsonMessage.content.reduce((acc, val) => {
-        acc[val.name]["avgCost"] = val.avgCost;
-        return acc;
-      }, newState.ingData);
-      newState.ingData["New Item"] = { avgCost: 0.01, unit: "N/A" };
+      newState.ingData = jsonMessage.content.reduce(
+        (
+          acc: { [index: string]: { avgCost: number; unit: string } },
+          val: { name: string; avgCost: number }
+        ) => {
+          acc[val.name]["avgCost"] = val.avgCost;
+          return acc;
+        },
+        newState.ingData
+      );
+      newState.ingData.newItem = { avgCost: 0.01, unit: "N/A" };
       this.setState(newState);
     } else {
       console.log("inventory json message failed");
     }
   }
 
-  handleNewRecipe(e) {
+  handleNewRecipe() {
     const newState = { ...this.state };
     newState.content.push({
       _id: `new001`,
       name: `new001`,
       ingredients: [
         {
-          ingredient: { name: "New Item", type: "N/A", unit: "N/A" },
+          ingredient: {
+            _id: "foo",
+            name: "New Item",
+            type: "N/A",
+            unit: "N/A"
+          },
           quantity: 0
         }
       ],
@@ -68,8 +126,13 @@ export class RecipeList extends Component {
     this.setState(newState);
   }
 
-  saveSelectedRecipe = e => {
-    const saveItem = async item => {
+  saveSelectedRecipe = () => {
+    const saveItem = async (item: {
+      _id: string;
+      name: string;
+      ingredients: Array<{ ingredient: Ingredient; quantity: number }>;
+      manHours: number;
+    }) => {
       let data;
       if (item._id.includes("new")) {
         data = await postOrPutData(`${apiUrl()}/recipes`, {
@@ -98,55 +161,59 @@ export class RecipeList extends Component {
     const foundItem = this.state.content.find(
       i => i._id === this.state.selectedId
     );
+    if (!foundItem) return;
     saveItem(foundItem);
   };
 
-  handleItemSelect = event => {
+  handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newState = { ...this.state };
     newState.selectedId = event.target.value;
     this.setState(newState);
   };
 
-  handleChangeRecipe = (event, idx) => {
+  handleChangeRecipe = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    idx: number
+  ) => {
     console.log(event.target.value);
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-
+    if (!foundItem) return;
     if (event.target.name === "manHours") {
-      foundItem["manHours"] = event.target.value;
+      foundItem["manHours"] = Number(event.target.value);
     }
     if (event.target.name === "recipeName") {
       foundItem["name"] = event.target.value;
     } else if (event.target.name === "quantity")
-      foundItem.ingredients[idx].quantity = event.target.value;
+      foundItem.ingredients[idx].quantity = Number(event.target.value);
     else if (event.target.name === "name")
       foundItem.ingredients[idx].ingredient.name = event.target.value;
     this.setState(newState);
   };
-  handleRemoveRecipeLine = (event, idx) => {
+  handleRemoveRecipeLine = (idx: number) => {
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-
+    if (!foundItem) return;
     foundItem.ingredients = [...foundItem.ingredients];
     foundItem.ingredients.splice(idx, 1);
     this.setState(newState);
   };
 
-  handleAddRecipeLine = event => {
+  handleAddRecipeLine = () => {
     const newState = { ...this.state };
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
-
+    if (!foundItem) return;
     foundItem.ingredients.push({
       quantity: 1,
-      ingredient: { name: "New Item", unit: "" }
+      ingredient: { _id: "0", type: "type", name: "New Item", unit: "" }
     });
     this.setState(newState);
   };
@@ -169,7 +236,7 @@ export class RecipeList extends Component {
               </option>
             ))}
           </select>
-          {this.state.selectedId !== -1 && (
+          {foundItem && (
             <RecipeForm
               item={foundItem}
               onChange={this.handleChangeRecipe}
@@ -182,11 +249,11 @@ export class RecipeList extends Component {
             <Button
               color="success"
               className="newRecipe"
-              onClick={e => this.handleNewRecipe(e)}
+              onClick={e => this.handleNewRecipe()}
             >
               New Recipe
             </Button>
-            <Button color="warning" onClick={e => this.saveSelectedRecipe(e)}>
+            <Button color="warning" onClick={e => this.saveSelectedRecipe()}>
               Save Current Recipe
             </Button>
           </div>

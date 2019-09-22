@@ -1,13 +1,13 @@
 import "./IngredientList.css";
 import React from "react";
 import { Col, Form, FormGroup, Label, Input } from "reactstrap";
-import { Item } from "./IngredientList";
+import { Ingredient } from "./IngredientList";
 
 const IngredientForm = ({
   item,
   onChange
 }: {
-  item: Item;
+  item: Ingredient;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   const { name, type, unit } = item;
