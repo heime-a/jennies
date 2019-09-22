@@ -5,6 +5,7 @@ const Purchaseorder = require('./models/purchaseorders');
 const Recipe = require('./models/recipe');
 const WorkOrder = require('./models/workorder');
 const CustomerOrder = require('./models/customerorders');
+const User = require('./models/users');
 
 async function run() {
   mongoose.connect('mongodb://localhost/jennies');
@@ -125,6 +126,11 @@ async function run() {
   co2.items.push({ name: 'Vanilla Macaroons', quantity: 10, unitCost: 1.99 });
   co2.customer = { name: 'heime', address: '1234789012' };
   await co2.save();
+
+  user = new User();
+  user.email = 'user@example.com';
+  user.password =  user.generateHash("abc123");
+  await user.save();
 
   console.log('Seed Data created correctly exiting express...');
   process.exit();
