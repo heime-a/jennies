@@ -16,9 +16,6 @@ interface AuthProviderState {
   password: string;
   loggedIn: boolean;
 }
-interface AuthProviderProps {
-  children: any;
-}
 
 class AuthProvider extends Component {
   state: AuthProviderState = {
