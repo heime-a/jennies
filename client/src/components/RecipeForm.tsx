@@ -87,14 +87,14 @@ function IngredientLine({
 }) {
   return (
     <tr key={idx}>
-      <td>
+      <td style={{width:"10%"}}>
         <Input
           key={idx}
           type="text"
           name="quantity"
           value={ing.quantity}
           onChange={e => onChange(e, idx)}
-        />{" "}
+        />
       </td>
       <td>
         <Typeahead

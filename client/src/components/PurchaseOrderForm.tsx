@@ -80,7 +80,7 @@ function IngredientLine({
 }) {
   return (
     <tr key={ing.ingredient.name}>
-      <td>
+      <td  style={{width: "10%"}}>
         <Input
           key={idx}
           type="text"
@@ -99,7 +99,7 @@ function IngredientLine({
         />
       </td>
       <td>{ingData[ing.ingredient.name]}</td>
-      <td>
+      <td style={{width:"15%"}}>
         <Input
           key={idx}
           type="text"
