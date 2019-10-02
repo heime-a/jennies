@@ -6,8 +6,8 @@ import isLoggedIn from "../common/isLoggedIn";
 const AuthContext = React.createContext<{
   loggedIn?: boolean;
   logout?: () => void;
-  onSubmit?: (e: any) => void;
-  onChange?: (e: any) => void;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }>({});
 
 interface AuthProviderState {
@@ -23,7 +23,6 @@ class AuthProvider extends Component {
     password: "",
     loggedIn: isLoggedIn()
   };
-
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let newState = { ...this.state };
@@ -35,8 +34,9 @@ class AuthProvider extends Component {
     console.log(this);
     this.setState({ loggedIn: false });
   };
-  onSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log(JSON.stringify(this.state));
+    console.log(JSON.stringify(e));
     postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
       .then(data => {
         if (data.success) {

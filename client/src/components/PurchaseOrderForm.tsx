@@ -5,7 +5,6 @@ import { Table, Input, Button } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import PurchaseOrderList, { Po, LineItem } from "./PurchaseOrderList";
 
-//import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 interface PurchaseOrderFormProps {
   item: Po;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>, idx: number) => void;
@@ -80,7 +79,7 @@ function IngredientLine({
 }) {
   return (
     <tr key={ing.ingredient.name}>
-      <td  style={{width: "10%"}}>
+      <td style={{ width: "10%" }}>
         <Input
           key={idx}
           type="text"
@@ -99,7 +98,7 @@ function IngredientLine({
         />
       </td>
       <td>{ingData[ing.ingredient.name]}</td>
-      <td style={{width:"15%"}}>
+      <td style={{ width: "15%" }}>
         <Input
           key={idx}
           type="text"

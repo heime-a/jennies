@@ -2,7 +2,7 @@
 import "./CustomerOrderList.css";
 import React, { Component } from "react";
 import { Button, UncontrolledAlert } from "reactstrap";
-import CustomerOrderForm from "./CustomerOrderForm";
+import CustomerOrderForm, { FormChangeEvent } from "./CustomerOrderForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 
@@ -139,10 +139,7 @@ class CustomerOrderList extends Component {
     this.setState(newState);
   };
 
-  handleChangeCO = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-    idx: number
-  ) => {
+  handleChangeCO = (event: FormChangeEvent, idx: number) => {
     console.log(event.target.value);
     const newState = { ...this.state };
 

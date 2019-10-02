@@ -7,8 +7,9 @@ import { Order } from "./CustomerOrderList";
 import CustomerOrderList from "./CustomerOrderList";
 import { on } from "cluster";
 
-//import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
-
+export interface FormChangeEvent {
+  target: { name: string; value: string };
+}
 export default function CustomerOrderForm({
   order,
   productNames,
@@ -18,7 +19,7 @@ export default function CustomerOrderForm({
 }: {
   order: Order;
   productNames: Array<string>;
-  onChange: (e: any, idx: number) => void;
+  onChange: (e: FormChangeEvent, idx: number) => void;
   onAddLine: () => void;
   onRemoveLine: (idx: number) => void;
 }) {
@@ -72,12 +73,12 @@ function ProductLine({
   item: any;
   productNames: Array<string>;
   idx: number;
-  onChange: (e: any, idx: number) => void;
+  onChange: (e: FormChangeEvent, idx: number) => void;
   onRemoveLine: (idx: number) => void;
 }) {
   return (
     <tr key={idx}>
-      <td style={{width:"10%"}}>
+      <td style={{ width: "10%" }}>
         <Input
           key={idx}
           type="text"
@@ -95,7 +96,7 @@ function ProductLine({
           }
         />
       </td>
-      <td style={{width:"15%"}}>
+      <td style={{ width: "15%" }}>
         <Input
           key={idx}
           type="text"
