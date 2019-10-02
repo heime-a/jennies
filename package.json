@@ -12,18 +12,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^12.7.5",
-    "@types/react": "^16.9.2",
+    "@types/node": "^12.7.9",
+    "@types/react": "^16.9.4",
     "@types/react-bootstrap-typeahead": "^3.4.5",
-    "@types/react-dom": "^16.9.0",
+    "@types/react-dom": "^16.9.1",
     "@types/react-router-dom": "^4.3.5",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
-    "mongoose": "^5.7.1",
-    "nodemon": "^1.19.2",
+    "mongoose": "^5.7.3",
+    "nodemon": "^1.19.3",
     "typescript": "^3.6.3"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react": "^7.15.1",
     "eslint-plugin-standard": "^4.0.1"
   }
 }
