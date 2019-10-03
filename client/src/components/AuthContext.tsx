@@ -35,8 +35,8 @@ class AuthProvider extends Component {
     this.setState({ loggedIn: false });
   };
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(JSON.stringify(this.state));
-    console.log(JSON.stringify(e));
+    e.preventDefault();
+
     postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
       .then(data => {
         if (data.success) {
@@ -47,7 +47,6 @@ class AuthProvider extends Component {
       .catch(err => {
         console.log(err.stack);
       });
-    e.preventDefault();
   };
 
   render() {
