@@ -44,3 +44,7 @@
 table td { 
   vertical-align: middle !important;
 }
+
+.is-active {
+  background: black;
+}
