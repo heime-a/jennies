@@ -127,7 +127,11 @@ class MyApp extends Component<{ items: Array<string> }, MyAppState> {
               <Nav className="ml-auto" navbar>
                 {this.props.items.map(item => (
                   <NavItem key={item}>
-                    <NavLink tag={RRNavLink} to={item}>
+                    <NavLink
+                      to={`/${item}`}
+                      tag={RRNavLink}
+                      activeClassName="selected"
+                    >
                       {item}
                     </NavLink>
                   </NavItem>

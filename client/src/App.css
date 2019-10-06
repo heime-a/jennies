@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css?family=Staatliches');
+@import url("https://fonts.googleapis.com/css?family=Staatliches");
 
-.navbar-brand, .navbar-nav a {
-    font-family: 'Staatliches', cursive;
-    font-size: 17px;
-    color: #8c968e;
+.navbar-brand,
+.navbar-nav a {
+  font-family: "Staatliches", cursive;
+  font-size: 17px;
+  color: #8c968e;
 }
 
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
 }
-.App  {
-   font-size: 12px;
+.App {
+  font-size: 12px;
 }
- input[type="text"]{
-   font-size: 12px;
- }
+input[type="text"] {
+  font-size: 12px;
+}
 
 .App {
   text-align: left;
@@ -22,14 +23,10 @@
 
 .App-header {
   background-color: white;
-  /*  min-height: 100vh; */
-   display: grid;
-   grid-template-columns: 1fr;
-  
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: center;
-  /* font-size: calc(5px + 2vmin);
-   */color: black;
-  /* */
+  color: black;
 }
 
 .App-link {
@@ -40,11 +37,10 @@
   color: rgb(180, 180, 230);
 }
 
-
-table td { 
+table td {
   vertical-align: middle !important;
 }
 
-.is-active {
-  background: black;
+.selected {
+  background: rgba(155, 104, 160, 0.219);
 }
