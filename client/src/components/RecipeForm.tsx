@@ -1,7 +1,6 @@
 "use strict;";
 //@ts-check
 import React from "react";
-import _get from "lodash";
 import { Table, Input, Button, Label } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Recipe, RecipeLine } from "./RecipeList";
