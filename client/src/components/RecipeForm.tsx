@@ -1,6 +1,7 @@
 "use strict;";
 //@ts-check
 import React from "react";
+import _get from "lodash";
 import { Table, Input, Button, Label } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Recipe, RecipeLine } from "./RecipeList";
@@ -85,9 +86,10 @@ function IngredientLine({
   idx: number;
   onRemoveLine: (idx: number) => void;
 }) {
+  console.log(ing);
   return (
     <tr key={idx}>
-      <td style={{width:"10%"}}>
+      <td style={{ width: "10%" }}>
         <Input
           key={idx}
           type="text"
@@ -105,18 +107,22 @@ function IngredientLine({
           }
         />
       </td>
-      <td>{ingData[ing.ingredient.name]["unit"]}</td>
       <td>
-        {(
-          Math.floor(ingData[ing.ingredient.name]["avgCost"] * 100) / 100
-        ).toFixed(2)}
+        {ingData[ing.ingredient.name] && ingData[ing.ingredient.name].unit}
       </td>
       <td>
-        {(
-          Math.floor(
-            ingData[ing.ingredient.name]["avgCost"] * ing.quantity * 100
-          ) / 100
-        ).toFixed(2)}
+        {ingData[ing.ingredient.name] &&
+          (
+            Math.floor(ingData[ing.ingredient.name].avgCost * 100) / 100
+          ).toFixed(2)}
+      </td>
+      <td>
+        {ingData[ing.ingredient.name] &&
+          (
+            Math.floor(
+              ingData[ing.ingredient.name].avgCost * ing.quantity * 100
+            ) / 100
+          ).toFixed(2)}
       </td>
       <td>
         <button onClick={e => onRemoveLine(idx)}>
