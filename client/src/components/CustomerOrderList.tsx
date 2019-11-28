@@ -8,14 +8,17 @@ import apiUrl from "../common/apiurl.js";
 
 //TODO: Customer order unique transaction numbers
 //TODO: print layout for customer orders  started
+
+export interface Item {
+  name: string;
+  quantity: number;
+  unitCost: number;
+}
+
 export interface Order {
   _id: string;
   coNumber: string;
-  items: {
-    name: string;
-    quantity: number;
-    unitCost: number;
-  }[];
+  items: Item[];
   customer: {
     name: string;
     address: string;

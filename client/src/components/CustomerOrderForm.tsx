@@ -3,7 +3,7 @@
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { Order } from "./CustomerOrderList";
+import { Order, Item } from "./CustomerOrderList";
 import CustomerOrderList from "./CustomerOrderList";
 import { on } from "cluster";
 
@@ -70,7 +70,7 @@ function ProductLine({
   onChange,
   onRemoveLine
 }: {
-  item: any;
+  item: Item;
   productNames: Array<string>;
   idx: number;
   onChange: (e: FormChangeEvent, idx: number) => void;
