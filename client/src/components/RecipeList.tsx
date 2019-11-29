@@ -1,7 +1,7 @@
 "use strict;";
 //@ts-check
 import "./RecipeList.css";
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, UncontrolledAlert } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
@@ -12,12 +12,14 @@ export interface RecipeLine {
   ingredient: Ingredient;
   quantity: number;
 }
+
 export interface Recipe {
   _id: string;
   name: string;
   manHours: number;
   ingredients: Array<RecipeLine>;
 }
+
 interface RecipeListState {
   content: Array<Recipe>;
   selectedId: string;
@@ -26,8 +28,9 @@ interface RecipeListState {
   };
   alertMessage?: string;
 }
-export class RecipeList extends Component {
-  state: RecipeListState = {
+
+export const RecipeList = () => {
+  const [recipeList, setRecipeList] = useState<RecipeListState>({
     content: [
       {
         _id: `new001`,
@@ -54,10 +57,14 @@ export class RecipeList extends Component {
       }
     },
     alertMessage: ""
-  };
+  });
 
-  async componentDidMount() {
-    const newState = { ...this.state };
+  useEffect(() => {
+    loadContent();
+  }, []);
+
+  async function loadContent() {
+    const newState = { ...recipeList };
 
     let response = await fetch(`${apiUrl()}/recipes`);
     let jsonMessage = await response.json();
@@ -69,6 +76,7 @@ export class RecipeList extends Component {
 
     response = await fetch(`${apiUrl()}/ingredients`);
     jsonMessage = await response.json();
+
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce(
         (
@@ -80,7 +88,7 @@ export class RecipeList extends Component {
         },
         {}
       );
-      this.setState(newState);
+      setRecipeList(newState);
     } else {
       console.log("json message failed");
     }
@@ -99,14 +107,14 @@ export class RecipeList extends Component {
         newState.ingData
       );
       newState.ingData.newItem = { avgCost: 0.01, unit: "N/A" };
-      this.setState(newState);
+      setRecipeList(newState);
     } else {
       console.log("inventory json message failed");
     }
   }
 
-  handleNewRecipe() {
-    const newState = { ...this.state };
+  function handleNewRecipe() {
+    const newState = { ...recipeList };
     newState.content.push({
       _id: `new001`,
       name: `new001`,
@@ -123,10 +131,10 @@ export class RecipeList extends Component {
       ],
       manHours: 0
     });
-    this.setState(newState);
+    setRecipeList(newState);
   }
 
-  saveSelectedRecipe = () => {
+  const saveSelectedRecipe = () => {
     const saveItem = async (item: {
       _id: string;
       name: string;
@@ -152,31 +160,31 @@ export class RecipeList extends Component {
         );
       }
       if (data) console.log(JSON.stringify(data));
-      this.setState({ ...this.state, alertMessage: data.message });
+      setRecipeList({ ...recipeList, alertMessage: data.message });
       setTimeout(() => {
-        this.setState({ ...this.state, alertMessage: undefined });
+        setRecipeList({ ...recipeList, alertMessage: undefined });
       }, 3000);
     };
 
-    const foundItem = this.state.content.find(
-      i => i._id === this.state.selectedId
+    const foundItem = recipeList.content.find(
+      i => i._id === recipeList.selectedId
     );
     if (!foundItem) return;
     saveItem(foundItem);
   };
 
-  handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newState = { ...this.state };
+  const handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = { ...recipeList };
     newState.selectedId = event.target.value;
-    this.setState(newState);
+    setRecipeList(newState);
   };
 
-  handleChangeRecipe = (
+  const handleChangeRecipe = (
     event: React.ChangeEvent<HTMLSelectElement>,
     idx: number
   ) => {
     console.log(event.target.value);
-    const newState = { ...this.state };
+    const newState = { ...recipeList };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
@@ -191,10 +199,10 @@ export class RecipeList extends Component {
       foundItem.ingredients[idx].quantity = Number(event.target.value);
     else if (event.target.name === "name")
       foundItem.ingredients[idx].ingredient.name = event.target.value;
-    this.setState(newState);
+    setRecipeList(newState);
   };
-  handleRemoveRecipeLine = (idx: number) => {
-    const newState = { ...this.state };
+  const handleRemoveRecipeLine = (idx: number) => {
+    const newState = { ...recipeList };
 
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
@@ -202,11 +210,11 @@ export class RecipeList extends Component {
     if (!foundItem) return;
     foundItem.ingredients = [...foundItem.ingredients];
     foundItem.ingredients.splice(idx, 1);
-    this.setState(newState);
+    setRecipeList(newState);
   };
 
-  handleAddRecipeLine = () => {
-    const newState = { ...this.state };
+  const handleAddRecipeLine = () => {
+    const newState = { ...recipeList };
     const foundItem = newState.content.find(
       el => el._id === newState.selectedId
     );
@@ -215,12 +223,12 @@ export class RecipeList extends Component {
       quantity: 1,
       ingredient: { _id: "0", type: "type", name: "New Item", unit: "" }
     });
-    this.setState(newState);
+    setRecipeList(newState);
   };
 
-  render() {
-    const foundItem = this.state.content.find(
-      el => el._id === this.state.selectedId
+  {
+    const foundItem = recipeList.content.find(
+      el => el._id === recipeList.selectedId
     );
     return (
       <div>
@@ -228,9 +236,9 @@ export class RecipeList extends Component {
           <select
             className="recipeList"
             size={10}
-            onChange={e => this.handleItemSelect(e)}
+            onChange={e => handleItemSelect(e)}
           >
-            {this.state.content.map(item => (
+            {recipeList.content.map(item => (
               <option value={item._id} key={item.name}>
                 {`${item.name}`}
               </option>
@@ -239,35 +247,35 @@ export class RecipeList extends Component {
           {foundItem && (
             <RecipeForm
               item={foundItem}
-              onChange={this.handleChangeRecipe}
-              onAddLine={this.handleAddRecipeLine}
-              onRemoveLine={this.handleRemoveRecipeLine}
-              ingData={this.state.ingData}
+              onChange={handleChangeRecipe}
+              onAddLine={handleAddRecipeLine}
+              onRemoveLine={handleRemoveRecipeLine}
+              ingData={recipeList.ingData}
             />
           )}
           <div className="recipeButtons">
             <Button
               color="success"
               className="newRecipe"
-              onClick={e => this.handleNewRecipe()}
+              onClick={e => handleNewRecipe()}
             >
               New Recipe
             </Button>
-            <Button color="warning" onClick={e => this.saveSelectedRecipe()}>
+            <Button color="warning" onClick={e => saveSelectedRecipe()}>
               Save Current Recipe
             </Button>
           </div>
         </div>
-        {this.state.alertMessage && (
+        {recipeList.alertMessage && (
           <UncontrolledAlert
             color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+              recipeList.alertMessage.includes("ERROR:") ? "danger" : "info"
             }
           >
-            {this.state.alertMessage}
+            {recipeList.alertMessage}
           </UncontrolledAlert>
         )}
       </div>
     );
   }
-}
+};
