@@ -1,38 +1,36 @@
 "use strict;";
 import "./LoginForm.css";
 import React from "react";
-import { Input, Label, Form } from "reactstrap";
+import { Input, Form, Button } from "reactstrap";
 import { AuthConsumer } from "./AuthContext";
 
 const LoginForm = () => {
   return (
-    <div className="container">
+    <div className="login-wrapper">
       <AuthConsumer>
         {({ loggedIn, onSubmit, onChange }) => (
-          <div>
+          <>
             {loggedIn || (
               <>
-                <h2>Login Here</h2>
+                <h3>Sign In</h3>
                 <Form onSubmit={onSubmit}>
-                  <Label htmlFor="email">Email</Label>
                   <Input
                     onChange={onChange}
                     name="email"
                     type="email"
                     placeholder="Email Address"
                   ></Input>
-                  <Label htmlFor="password">Password</Label>
                   <Input
                     onChange={onChange}
                     name="password"
                     type="password"
                     placeholder="Password"
                   ></Input>
-                  <Input type="submit" value="Login" />
+                  <Button type="submit">Sign In</Button>
                 </Form>
               </>
             )}
-          </div>
+          </>
         )}
       </AuthConsumer>
     </div>

@@ -1,9 +1,18 @@
-.container {
-    display: grid;
-    align-content: center;
-    justify-content: center;
-    border-style: dotted;
-    border-width: .5px;
-  }
-  
-  
+.login-wrapper {
+  display: grid;
+  border-style: dashed;
+  border-width: 0.5px;
+  border-radius: 10px;
+  border-color: rgb(143, 155, 167);
+  margin: auto;
+  padding: 25px;
+}
+
+.login-wrapper input {
+  margin-top: 7px;
+  margin-bottom: 5px;
+}
+
+.login-wrapper button { 
+  margin-top: 15px;
+}

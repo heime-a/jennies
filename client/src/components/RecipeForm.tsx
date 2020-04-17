@@ -1,10 +1,9 @@
 "use strict;";
 //@ts-check
 import React from "react";
-import { Table, Input, Button, Label } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { Button, Input, Label, Table } from "reactstrap";
 import { Recipe, RecipeLine } from "./RecipeList";
-//import { Col, Form, FormGroup, Label, Input } from 'reactstrap'; maybe needed for forms
 //TODO: Remove Trailing spaces from recipe names
 
 export default function RecipeForm({

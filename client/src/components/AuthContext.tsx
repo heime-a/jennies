@@ -21,7 +21,7 @@ class AuthProvider extends Component {
   state: AuthProviderState = {
     email: "",
     password: "",
-    loggedIn: isLoggedIn()
+    loggedIn: isLoggedIn(),
   };
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,20 +31,24 @@ class AuthProvider extends Component {
   };
 
   logout = () => {
-    console.log(this);
+    console.log("logout pressed", this);
     this.setState({ loggedIn: false });
   };
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
-      .then(data => {
+      .then((data) => {
+        console.log(data.message);
         if (data.success) {
           window.localStorage.setItem(apiUrl() + "token", data.token);
           this.setState({ loggedIn: true });
+        } else {
+          window.localStorage.removeItem(apiUrl() + "token");
+          this.setState({ loggedIn: false });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.stack);
       });
   };
@@ -56,7 +60,7 @@ class AuthProvider extends Component {
           loggedIn: this.state.loggedIn,
           onSubmit: this.onSubmit,
           logout: this.logout,
-          onChange: this.onChange
+          onChange: this.onChange,
         }}
       >
         {this.props.children}
