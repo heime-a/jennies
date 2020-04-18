@@ -2,7 +2,7 @@
 //@ts-check
 import "./WorkOrderList.css";
 import React, { Component } from "react";
-import { Button, Input, Label, UncontrolledAlert } from "reactstrap";
+import { Button, Input, Label, Alert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 
@@ -32,12 +32,12 @@ class WorkOrderList extends Component {
         startDate: "1980-01-01",
         status: "In Process",
         actualHours: 5,
-        actualYield: 100
-      }
+        actualYield: 100,
+      },
     ],
     selectedWoNumber: "",
     alertMessage: "",
-    recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"]
+    recipeNames: ["Chocolate Macaroons", "Vanilla Macaroons"],
   };
 
   async componentDidMount() {
@@ -70,7 +70,7 @@ class WorkOrderList extends Component {
       startDate,
       status,
       actualHours,
-      actualYield
+      actualYield,
     }: Workorder) => {
       let data;
       if (_id.includes("new")) {
@@ -80,7 +80,7 @@ class WorkOrderList extends Component {
           startDate,
           status,
           actualHours,
-          actualYield
+          actualYield,
         });
       } else {
         data = await postOrPutData(
@@ -91,7 +91,7 @@ class WorkOrderList extends Component {
             startDate,
             status,
             actualHours,
-            actualYield
+            actualYield,
           },
           "PUT"
         );
@@ -104,7 +104,7 @@ class WorkOrderList extends Component {
     };
 
     const selectedItem = this.state.content.find(
-      i => this.state.selectedWoNumber === i.woNumber
+      (i) => this.state.selectedWoNumber === i.woNumber
     );
     if (!selectedItem) return null;
     saveItem(selectedItem);
@@ -119,7 +119,7 @@ class WorkOrderList extends Component {
     };
 
     const newState = { ...this.state };
-    const newWoNumber = getUniqWo(this.state.content.map(i => i.woNumber));
+    const newWoNumber = getUniqWo(this.state.content.map((i) => i.woNumber));
     newState.content.push({
       _id: newWoNumber,
       woNumber: newWoNumber,
@@ -127,7 +127,7 @@ class WorkOrderList extends Component {
       startDate: "1980-01-01",
       status: "Draft",
       actualHours: 8,
-      actualYield: 100
+      actualYield: 100,
     });
     this.setState(newState);
   };
@@ -140,7 +140,7 @@ class WorkOrderList extends Component {
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const idx = this.state.content.findIndex(
-      el => el.woNumber === this.state.selectedWoNumber
+      (el) => el.woNumber === this.state.selectedWoNumber
     );
     const newState = { ...this.state };
     if (e.target.name === "recipe.name")
@@ -151,7 +151,7 @@ class WorkOrderList extends Component {
 
   render() {
     const foundItem = this.state.content.find(
-      el => el.woNumber === this.state.selectedWoNumber
+      (el) => el.woNumber === this.state.selectedWoNumber
     );
     return (
       <div>
@@ -180,20 +180,28 @@ class WorkOrderList extends Component {
           </div>
         </div>
         {this.state.alertMessage && (
-          <UncontrolledAlert
+          <Alert
             color={
               this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
             }
           >
             {this.state.alertMessage}
-          </UncontrolledAlert>
+          </Alert>
         )}
       </div>
     );
   }
 }
 
-function WorkOrderForm({ item, recipeNames, onChange }: {item: Workorder; recipeNames: Array<string> ; onChange: any;}) {
+function WorkOrderForm({
+  item,
+  recipeNames,
+  onChange,
+}: {
+  item: Workorder;
+  recipeNames: Array<string>;
+  onChange: any;
+}) {
   const { recipe, status, actualHours, actualYield, startDate } = item;
 
   //TODO: Work order date default and date edit
@@ -210,7 +218,7 @@ function WorkOrderForm({ item, recipeNames, onChange }: {item: Workorder; recipe
     <div id="woForm">
       <Label>Recipe</Label>
       <select name="recipe.name" value={recipe.name} onChange={onChange}>
-        {recipeNames.map(i => (
+        {recipeNames.map((i) => (
           <option key={i}>{i}</option>
         ))}
       </select>

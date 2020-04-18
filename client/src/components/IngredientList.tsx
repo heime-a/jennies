@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, UncontrolledAlert } from "reactstrap";
+import { Button, Alert } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import IngredientForm from "./IngredientForm";
@@ -21,7 +21,7 @@ export class IngredientList extends Component {
     content: [{ _id: "1", name: "", type: "", unit: "" }],
     selectedId: "",
     newItemsIndex: 0,
-    alertMessage: undefined
+    alertMessage: undefined,
   };
 
   async componentDidMount() {
@@ -41,7 +41,10 @@ export class IngredientList extends Component {
     this.setState(newState);
   };
 
-  handleFormChange = (event: React.ChangeEvent<HTMLInputElement>, item: Ingredient) => {
+  handleFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    item: Ingredient
+  ) => {
     const change: IngredientListState = { ...this.state };
     const idx = this.state.content.indexOf(item);
     change.content[idx][event.target.name] = event.target.value;
@@ -59,7 +62,7 @@ export class IngredientList extends Component {
         data = await postOrPutData(`${url}`, {
           name: item.name,
           type: item.type,
-          unit: item.unit
+          unit: item.unit,
         });
       } else {
         data = await postOrPutData(
@@ -78,7 +81,7 @@ export class IngredientList extends Component {
     const newState: IngredientListState = { ...this.state };
     console.log("saveSelected");
     const selectedItem = newState.content.find(
-      el => el._id === this.state.selectedId
+      (el) => el._id === this.state.selectedId
     );
     saveItem(selectedItem);
     this.setState(newState);
@@ -98,7 +101,7 @@ export class IngredientList extends Component {
 
   render() {
     const foundItem = this.state.content.find(
-      el => el._id === this.state.selectedId
+      (el) => el._id === this.state.selectedId
     );
     return (
       <div className="ingredientGrid">
@@ -107,7 +110,7 @@ export class IngredientList extends Component {
           className="ingredientList"
           onChange={this.handleItemSelect}
         >
-          {this.state.content.map(item => (
+          {this.state.content.map((item) => (
             <option
               className="listItem"
               value={item._id}
@@ -118,7 +121,7 @@ export class IngredientList extends Component {
         {foundItem && (
           <IngredientForm
             item={foundItem}
-            onChange={e => this.handleFormChange(e, foundItem)}
+            onChange={(e) => this.handleFormChange(e, foundItem)}
           />
         )}
         <div className="ingButtons">
@@ -138,13 +141,13 @@ export class IngredientList extends Component {
           </Button>
         </div>
         {this.state.alertMessage && (
-          <UncontrolledAlert
+          <Alert
             color={
               this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
             }
           >
             {this.state.alertMessage}
-          </UncontrolledAlert>
+          </Alert>
         )}
       </div>
     );

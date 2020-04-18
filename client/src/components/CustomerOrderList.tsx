@@ -1,7 +1,7 @@
 "use strict;";
 import "./CustomerOrderList.css";
 import React, { Component } from "react";
-import { Button, UncontrolledAlert } from "reactstrap";
+import { Button, Alert } from "reactstrap";
 import CustomerOrderForm, { FormChangeEvent } from "./CustomerOrderForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
@@ -52,15 +52,15 @@ class CustomerOrderList extends Component {
           {
             name: "New LineItem",
             quantity: 0,
-            unitCost: 2.99
-          }
+            unitCost: 2.99,
+          },
         ],
-        customer: { name: "Test2", address: "test3" }
-      }
+        customer: { name: "Test2", address: "test3" },
+      },
     ],
     selectedId: "",
     productNames: ["macaroon", "cholate"],
-    alertMessage: ""
+    alertMessage: "",
   };
 
   async componentDidMount() {
@@ -94,10 +94,10 @@ class CustomerOrderList extends Component {
         {
           name: "New LineItem",
           quantity: 0,
-          unitCost: 2.99
-        }
+          unitCost: 2.99,
+        },
       ],
-      customer: { name: "Test2", address: "test3" }
+      customer: { name: "Test2", address: "test3" },
     });
     this.setState(newState);
   }
@@ -109,7 +109,7 @@ class CustomerOrderList extends Component {
         data = await postOrPutData(`${apiUrl()}/customerOrders`, {
           coNumber: order.coNumber,
           items: order.items,
-          customer: order.customer
+          customer: order.customer,
         });
       } else {
         data = await postOrPutData(
@@ -117,7 +117,7 @@ class CustomerOrderList extends Component {
           {
             coNumber: order.coNumber,
             items: order.items,
-            customer: order.customer
+            customer: order.customer,
           },
           "PUT"
         );
@@ -130,7 +130,7 @@ class CustomerOrderList extends Component {
     };
 
     const foundItem = this.state.content.find(
-      i => this.state.selectedId === i._id
+      (i) => this.state.selectedId === i._id
     );
     if (!foundItem) return;
     saveItem(foundItem);
@@ -147,7 +147,7 @@ class CustomerOrderList extends Component {
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
     if (!foundItem) return;
     if (event.target.name === "quantity")
@@ -164,7 +164,7 @@ class CustomerOrderList extends Component {
     const newState = { ...this.state };
 
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
 
     if (!foundItem) return;
@@ -177,20 +177,20 @@ class CustomerOrderList extends Component {
   handleAddCoLine = () => {
     const newState = { ...this.state };
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
     if (!foundItem) return;
     foundItem.items.push({
       name: "New Item",
       quantity: 1,
-      unitCost: 0.01
+      unitCost: 0.01,
     });
     this.setState(newState);
   };
 
   render() {
     const foundOrder = this.state.content.find(
-      el => el._id === this.state.selectedId
+      (el) => el._id === this.state.selectedId
     );
     return (
       <div>
@@ -198,7 +198,7 @@ class CustomerOrderList extends Component {
           <select
             size={10}
             className="customerOrderList delete"
-            onChange={e => this.handleItemSelect(e)}
+            onChange={(e) => this.handleItemSelect(e)}
           >
             {this.state.content.map((order, idx) => (
               <option value={order._id} key={idx}>
@@ -219,7 +219,7 @@ class CustomerOrderList extends Component {
             <Button
               color="success"
               className="newPO"
-              onClick={e => this.newCustomerOrder()}
+              onClick={(e) => this.newCustomerOrder()}
             >
               New Customer Order
             </Button>
@@ -233,13 +233,13 @@ class CustomerOrderList extends Component {
           </div>
         </div>
         {this.state.alertMessage && (
-          <UncontrolledAlert
+          <Alert
             color={
               this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
             }
           >
             {this.state.alertMessage}
-          </UncontrolledAlert>
+          </Alert>
         )}
       </div>
     );

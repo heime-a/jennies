@@ -2,7 +2,7 @@
 //@ts-check
 import "./RecipeList.css";
 import React, { useState, useEffect } from "react";
-import { Button, UncontrolledAlert } from "reactstrap";
+import { Button, Alert } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
@@ -42,21 +42,21 @@ export const RecipeList = () => {
               _id: "",
               name: "New Item",
               type: "N/A",
-              unit: "N/A"
+              unit: "N/A",
             },
-            quantity: 0
-          }
-        ]
-      }
+            quantity: 0,
+          },
+        ],
+      },
     ],
     selectedId: "",
     ingData: {
       newItem: {
         unit: "Oz.",
-        avgCost: 0.01
-      }
+        avgCost: 0.01,
+      },
     },
-    alertMessage: ""
+    alertMessage: "",
   });
 
   useEffect(() => {
@@ -124,12 +124,12 @@ export const RecipeList = () => {
             _id: "foo",
             name: "New Item",
             type: "N/A",
-            unit: "N/A"
+            unit: "N/A",
           },
-          quantity: 0
-        }
+          quantity: 0,
+        },
       ],
-      manHours: 0
+      manHours: 0,
     });
     setRecipeList(newState);
   }
@@ -146,7 +146,7 @@ export const RecipeList = () => {
         data = await postOrPutData(`${apiUrl()}/recipes`, {
           name: item.name,
           ingredients: item.ingredients,
-          manHours: item.manHours
+          manHours: item.manHours,
         });
       } else {
         data = await postOrPutData(
@@ -154,7 +154,7 @@ export const RecipeList = () => {
           {
             name: item.name,
             ingredients: item.ingredients,
-            manHours: item.manHours
+            manHours: item.manHours,
           },
           "PUT"
         );
@@ -167,7 +167,7 @@ export const RecipeList = () => {
     };
 
     const foundItem = recipeList.content.find(
-      i => i._id === recipeList.selectedId
+      (i) => i._id === recipeList.selectedId
     );
     if (!foundItem) return;
     saveItem(foundItem);
@@ -187,7 +187,7 @@ export const RecipeList = () => {
     const newState = { ...recipeList };
 
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
     if (!foundItem) return;
     if (event.target.name === "manHours") {
@@ -205,7 +205,7 @@ export const RecipeList = () => {
     const newState = { ...recipeList };
 
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
     if (!foundItem) return;
     foundItem.ingredients = [...foundItem.ingredients];
@@ -216,19 +216,19 @@ export const RecipeList = () => {
   const handleAddRecipeLine = () => {
     const newState = { ...recipeList };
     const foundItem = newState.content.find(
-      el => el._id === newState.selectedId
+      (el) => el._id === newState.selectedId
     );
     if (!foundItem) return;
     foundItem.ingredients.push({
       quantity: 1,
-      ingredient: { _id: "0", type: "type", name: "New Item", unit: "" }
+      ingredient: { _id: "0", type: "type", name: "New Item", unit: "" },
     });
     setRecipeList(newState);
   };
 
   {
     const foundItem = recipeList.content.find(
-      el => el._id === recipeList.selectedId
+      (el) => el._id === recipeList.selectedId
     );
     return (
       <div>
@@ -236,9 +236,9 @@ export const RecipeList = () => {
           <select
             className="recipeList"
             size={10}
-            onChange={e => handleItemSelect(e)}
+            onChange={(e) => handleItemSelect(e)}
           >
-            {recipeList.content.map(item => (
+            {recipeList.content.map((item) => (
               <option value={item._id} key={item.name}>
                 {`${item.name}`}
               </option>
@@ -257,23 +257,23 @@ export const RecipeList = () => {
             <Button
               color="success"
               className="newRecipe"
-              onClick={e => handleNewRecipe()}
+              onClick={(e) => handleNewRecipe()}
             >
               New Recipe
             </Button>
-            <Button color="warning" onClick={e => saveSelectedRecipe()}>
+            <Button color="warning" onClick={(e) => saveSelectedRecipe()}>
               Save Current Recipe
             </Button>
           </div>
         </div>
         {recipeList.alertMessage && (
-          <UncontrolledAlert
+          <Alert
             color={
               recipeList.alertMessage.includes("ERROR:") ? "danger" : "info"
             }
           >
             {recipeList.alertMessage}
-          </UncontrolledAlert>
+          </Alert>
         )}
       </div>
     );
