@@ -108,7 +108,7 @@ router.post('/signin', async (req, res) => {
 
       return res.send({
         success: true,
-        message: 'Valid sign in',
+        message: 'Login Successful',
         // eslint-disable-next-line no-underscore-dangle
         token: doc._id,
       });
@@ -144,11 +144,9 @@ router.get('/verify', async (req, res, next) => {
   }
 });
 
-router.get('/logout', async (req, res) => {
+router.post('/logout', async (req, res) => {
   // Get the token
-  const { query } = req;
-  const { token } = query;
-  // ?token=test
+  const { token } = req.body;
 
   // Verify the token is one of a kind and it's not deleted.
   try {
