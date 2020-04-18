@@ -28,6 +28,10 @@ input[type="text"] {
   justify-content: center;
   color: black;
 }
+.App-header .logout-wrapper  {
+  display: grid;
+  margin: auto;  
+}
 
 .App-link {
   color: #61dafb;

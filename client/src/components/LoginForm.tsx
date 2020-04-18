@@ -1,14 +1,14 @@
 "use strict;";
 import "./LoginForm.css";
 import React from "react";
-import { Input, Form, Button } from "reactstrap";
+import { Input, Form, Button, Alert } from "reactstrap";
 import { AuthConsumer } from "./AuthContext";
 
 const LoginForm = () => {
   return (
     <div className="login-wrapper">
       <AuthConsumer>
-        {({ loggedIn, onSubmit, onChange }) => (
+        {({ loggedIn, onSubmit, onChange, lastAuthMessage }) => (
           <>
             {loggedIn || (
               <>
@@ -29,6 +29,13 @@ const LoginForm = () => {
                   <Button type="submit">Sign In</Button>
                 </Form>
               </>
+            )}
+            {lastAuthMessage && (
+              <Alert
+                color={lastAuthMessage.toUpperCase().includes("ERROR:") ? "danger" : "info"}
+              >
+                {lastAuthMessage}
+              </Alert>
             )}
           </>
         )}

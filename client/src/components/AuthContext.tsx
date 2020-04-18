@@ -8,6 +8,7 @@ const AuthContext = React.createContext<{
   logout?: () => void;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  lastAuthMessage?: string;
 }>({});
 
 interface AuthProviderState {
@@ -15,6 +16,7 @@ interface AuthProviderState {
   email: string;
   password: string;
   loggedIn: boolean;
+  lastAuthMessage: string;
 }
 
 class AuthProvider extends Component {
@@ -22,6 +24,7 @@ class AuthProvider extends Component {
     email: "",
     password: "",
     loggedIn: isLoggedIn(),
+    lastAuthMessage: "",
   };
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,9 +33,18 @@ class AuthProvider extends Component {
     this.setState(newState);
   };
 
-  logout = () => {
+  logout = async () => {
     console.log("logout pressed", this);
-    this.setState({ loggedIn: false });
+    try {
+      const token = localStorage.getItem(apiUrl() + "token");
+      localStorage.removeItem(apiUrl() + "token");
+      const logoutUrl = `${apiUrl()}/auth/logout`;
+      console.log(logoutUrl);
+      await postOrPutData(logoutUrl, { token });
+      this.setState({ loggedIn: false, lastAuthMessage: "" });
+    } catch (err) {
+      console.log("Problem logging out", err);
+    }
   };
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,10 +54,10 @@ class AuthProvider extends Component {
         console.log(data.message);
         if (data.success) {
           window.localStorage.setItem(apiUrl() + "token", data.token);
-          this.setState({ loggedIn: true });
+          this.setState({ loggedIn: true, lastAuthMessage: data.message });
         } else {
           window.localStorage.removeItem(apiUrl() + "token");
-          this.setState({ loggedIn: false });
+          this.setState({ loggedIn: false, lastAuthMessage: data.message });
         }
       })
       .catch((err) => {
@@ -61,6 +73,7 @@ class AuthProvider extends Component {
           onSubmit: this.onSubmit,
           logout: this.logout,
           onChange: this.onChange,
+          lastAuthMessage: this.state.lastAuthMessage,
         }}
       >
         {this.props.children}

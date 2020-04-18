@@ -9,7 +9,7 @@ function postOrPutData(url = ``, data = {}, method = "POST") {
         headers: { "Content-Type": "application/json; charset=utf-8" },
         referrer: "no-referrer",
         body: JSON.stringify(data) // body data type must match "Content-Type" header
-    }).then(response => response.json()).catch(err => console.log(err)); // returns a promise
+    }).then(response => response.json()).catch(err => console.log('putOrPost Error ' + err)); // returns a promise
 }
 
 export default postOrPutData;

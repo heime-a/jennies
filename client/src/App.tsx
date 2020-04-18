@@ -15,7 +15,7 @@ import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
-  NavLink as RRNavLink
+  NavLink as RRNavLink,
 } from "react-router-dom";
 import "./App.css";
 import { AuthProvider, AuthConsumer } from "./components/AuthContext";
@@ -37,7 +37,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavbarToggler
+  NavbarToggler,
 } from "reactstrap";
 
 function LogOut() {
@@ -46,9 +46,11 @@ function LogOut() {
       {({ loggedIn, logout }) => (
         <>
           {loggedIn && (
-            <Button color="warning" onClick={logout}>
-              Log Out
-            </Button>
+            <div className="logout-wrapper">
+              <Button color="warning" onClick={logout}>
+                Log Out
+              </Button>
+            </div>
           )}
         </>
       )}
@@ -68,7 +70,7 @@ class App extends Component {
       "Manufacturing",
       "Product Inventory",
       "Customer Orders",
-      "LogOut"
+      "LogOut",
     ];
     return (
       <div className="App">
@@ -99,7 +101,7 @@ class MyApp extends Component<{ items: Array<string> }, MyAppState> {
 
   resize() {
     this.setState({
-      hamburgerVisible: window.innerWidth <= 760
+      hamburgerVisible: window.innerWidth <= 760,
     });
   }
 
@@ -125,7 +127,7 @@ class MyApp extends Component<{ items: Array<string> }, MyAppState> {
               navbar
             >
               <Nav className="ml-auto" navbar>
-                {this.props.items.map(item => (
+                {this.props.items.map((item) => (
                   <NavItem key={item}>
                     <NavLink
                       to={`/${item}`}
