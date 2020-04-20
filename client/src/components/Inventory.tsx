@@ -1,6 +1,7 @@
 "use strict;";
 //@ts-check
 //TODO: Put ingredient inventory in its own 'Card'
+import "./inventory.css";
 import React, { Component } from "react";
 import { Table, Card } from "reactstrap";
 import apiUrl from "../common/apiurl.js";
@@ -9,8 +10,8 @@ class Inventory extends Component {
   state = {
     content: [
       { name: "Item1", quantity: 10, avgCost: 0 },
-      { name: "Item2", quantity: 11, avgCost: 0 }
-    ]
+      { name: "Item2", quantity: 11, avgCost: 0 },
+    ],
   };
 
   async componentDidMount() {
@@ -35,7 +36,7 @@ class Inventory extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.content.map(item => (
+            {this.state.content.map((item) => (
               <tr key={item.name}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
