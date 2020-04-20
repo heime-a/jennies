@@ -2,7 +2,8 @@ body { font: 14px/1.4 Helvetica, sans-serif; letter-spacing: 0.3px;}
 #coListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin: 5px;
+  grid-gap: 10px;
+  margin: 17px;
 }
 
 #customerOrderGrid { 

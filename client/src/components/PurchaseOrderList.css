@@ -4,7 +4,7 @@
 #poListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin: 5px;
+  margin: 17px;
 }
 
 .newPO {
@@ -15,8 +15,11 @@
 }
 #purchaseOrderGrid {
   margin: 5px;
+  margin-left: 17px;
 }
-
+.table { 
+  margin: 10px;
+}
 td button {
   visibility: hidden !important;
   color: red;

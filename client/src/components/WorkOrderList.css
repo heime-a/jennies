@@ -2,7 +2,8 @@
 #workOrderList {
     display: grid;
     grid-template-columns: 4fr 6fr;
-    margin: 5px;
+    grid-gap: 10px;
+    margin: 17px;
 }
 
 #woForm {

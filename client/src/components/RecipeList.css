@@ -1,11 +1,13 @@
 .newRecipe {
   margin: 5px;
+  margin-left: 17px;
 }
 
 #recipeListGrid {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin: 5px;
+  grid-gap: 10px;
+  margin: 17px;
 }
 
 #recipeTop {

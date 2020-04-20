@@ -1,6 +1,6 @@
 .ingredientList {
-  margin: 2px;
   border: 1px groove rgb(221, 224, 215);
+  margin-right: 25px;
 }
 .inputForm {
   float: left;
@@ -15,14 +15,17 @@
 }
 
 .ingredientGrid {
+  margin: 17px;
   display: grid;
   grid-template-columns: 2fr 6fr;
+  grid-gap: 10px;
 }
 .ingredientList {
   list-style-type: none;
 }
 .newIngredient {
   align-self: start;
+  margin-left: 10px;
 }
 
 .ingButtons {
@@ -30,5 +33,5 @@
 }
 
 button + button {
-  margin: .5rem;
+  margin: 0.5rem;
 }

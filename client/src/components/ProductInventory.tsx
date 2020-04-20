@@ -1,17 +1,17 @@
 "use strict;";
-//@ts-check
+import "./ProductInventory.css";
 import React, { Component } from "react";
 import { Table } from "reactstrap";
 import apiUrl from "../common/apiurl.js";
 
 //TODO: Put Product inventory in its own card
 class Inventory extends Component {
-    state = {
-      content: [
-        { name: "Item1", quantity: 10, unitCost: 99 },
-        { name: "Item2", quantity: 11, unitCost: 99 }
-      ]
-    };
+  state = {
+    content: [
+      { name: "Item1", quantity: 10, unitCost: 99 },
+      { name: "Item2", quantity: 11, unitCost: 99 },
+    ],
+  };
 
   async componentDidMount() {
     const response = await fetch(`${apiUrl()}/productInventory`);
@@ -25,22 +25,24 @@ class Inventory extends Component {
 
   render() {
     return (
-      <Table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>On Hand</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.state.content.map(item => (
-            <tr key={item.name}>
-              <td>{item.name}</td>
-              <td>{item.quantity}</td>
+      <div className="card">
+        <Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>On Hand</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {this.state.content.map((item) => (
+              <tr key={item.name}>
+                <td>{item.name}</td>
+                <td>{item.quantity}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
     );
   }
 }
