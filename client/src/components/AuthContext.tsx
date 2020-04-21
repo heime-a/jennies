@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import apiUrl from "../common/apiurl.js";
 import postOrPutData from "../common/postOrPutData.js";
 import isLoggedIn from "../common/isLoggedIn";
+import { withRouter }  from "react-router-dom";
 
 const AuthContext = React.createContext<{
   loggedIn?: boolean;
@@ -12,52 +13,58 @@ const AuthContext = React.createContext<{
 }>({});
 
 interface AuthProviderState {
-  [index: string]: string | boolean;
+  [index: string] : string | boolean;
   email: string;
   password: string;
   loggedIn: boolean;
   lastAuthMessage: string;
 }
+interface AuthProviderProps { 
 
-class AuthProvider extends Component {
-  state: AuthProviderState = {
+}
+
+function AuthProvider(props: any): any  {
+
+  const [state,setState] = useState<AuthProviderState>({
     email: "",
     password: "",
     loggedIn: isLoggedIn(),
     lastAuthMessage: "",
-  };
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  });
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let newState = { ...this.state };
+    let newState = { ...state };
     newState[name] = value;
-    this.setState(newState);
+    setState(newState);
   };
 
-  logout = async () => {
-    console.log("logout pressed", this);
+  const logout = async () => {
+    console.log("logout pressed", state);
     try {
       const token = localStorage.getItem(apiUrl() + "token");
       localStorage.removeItem(apiUrl() + "token");
       const logoutUrl = `${apiUrl()}/auth/logout`;
       console.log(logoutUrl);
       await postOrPutData(logoutUrl, { token });
-      this.setState({ loggedIn: false, lastAuthMessage: "" });
+      setState({ loggedIn: false, lastAuthMessage: "", email: "",password: "", });
+      // this.props.history.push('/Login');
     } catch (err) {
       console.log("Problem logging out", err);
     }
   };
-  onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    postOrPutData(`${apiUrl()}/auth/signin`, this.state, "POST")
+    postOrPutData(`${apiUrl()}/auth/signin`, state, "POST")
       .then((data) => {
         console.log(data.message);
         if (data.success) {
           window.localStorage.setItem(apiUrl() + "token", data.token);
-          this.setState({ loggedIn: true, lastAuthMessage: data.message });
+          setState({ ...state, loggedIn: true, lastAuthMessage: data.message });
         } else {
           window.localStorage.removeItem(apiUrl() + "token");
-          this.setState({ loggedIn: false, lastAuthMessage: data.message });
+          setState({ ...state, loggedIn: false, lastAuthMessage: data.message });
         }
       })
       .catch((err) => {
@@ -65,23 +72,21 @@ class AuthProvider extends Component {
       });
   };
 
-  render() {
     return (
       <AuthContext.Provider
         value={{
-          loggedIn: this.state.loggedIn,
-          onSubmit: this.onSubmit,
-          logout: this.logout,
-          onChange: this.onChange,
-          lastAuthMessage: this.state.lastAuthMessage,
+          loggedIn: state.loggedIn,
+          onSubmit,
+          logout,
+          onChange,
+          lastAuthMessage: state.lastAuthMessage,
         }}
       >
-        {this.props.children}
+        {props.children}
       </AuthContext.Provider>
     );
-  }
 }
 
 const AuthConsumer = AuthContext.Consumer;
 
-export { AuthProvider, AuthConsumer };
+export { AuthProvider,  AuthConsumer };
