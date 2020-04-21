@@ -1,8 +1,6 @@
 node_modules/
 .vscode/
-package-lock.json
 README.md
-package-lock.json
 ._*
 */._*
 .DS_STORE
