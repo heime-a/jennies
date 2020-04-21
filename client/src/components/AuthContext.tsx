@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import apiUrl from "../common/apiurl.js";
 import postOrPutData from "../common/postOrPutData.js";
 import isLoggedIn from "../common/isLoggedIn";
-import { withRouter }  from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const AuthContext = React.createContext<{
   loggedIn?: boolean;
@@ -13,19 +13,16 @@ const AuthContext = React.createContext<{
 }>({});
 
 interface AuthProviderState {
-  [index: string] : string | boolean;
+  [index: string]: string | boolean;
   email: string;
   password: string;
   loggedIn: boolean;
   lastAuthMessage: string;
 }
-interface AuthProviderProps { 
+interface AuthProviderProps {}
 
-}
-
-function AuthProvider(props: any): any  {
-
-  const [state,setState] = useState<AuthProviderState>({
+function AuthProvider(props: any): any {
+  const [state, setState] = useState<AuthProviderState>({
     email: "",
     password: "",
     loggedIn: isLoggedIn(),
@@ -47,8 +44,13 @@ function AuthProvider(props: any): any  {
       const logoutUrl = `${apiUrl()}/auth/logout`;
       console.log(logoutUrl);
       await postOrPutData(logoutUrl, { token });
-      setState({ loggedIn: false, lastAuthMessage: "", email: "",password: "", });
-      // this.props.history.push('/Login');
+      setState({
+        loggedIn: false,
+        lastAuthMessage: "",
+        email: "",
+        password: "",
+      });
+      props.history.push("/Login");
     } catch (err) {
       console.log("Problem logging out", err);
     }
@@ -64,7 +66,11 @@ function AuthProvider(props: any): any  {
           setState({ ...state, loggedIn: true, lastAuthMessage: data.message });
         } else {
           window.localStorage.removeItem(apiUrl() + "token");
-          setState({ ...state, loggedIn: false, lastAuthMessage: data.message });
+          setState({
+            ...state,
+            loggedIn: false,
+            lastAuthMessage: data.message,
+          });
         }
       })
       .catch((err) => {
@@ -72,21 +78,21 @@ function AuthProvider(props: any): any  {
       });
   };
 
-    return (
-      <AuthContext.Provider
-        value={{
-          loggedIn: state.loggedIn,
-          onSubmit,
-          logout,
-          onChange,
-          lastAuthMessage: state.lastAuthMessage,
-        }}
-      >
-        {props.children}
-      </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider
+      value={{
+        loggedIn: state.loggedIn,
+        onSubmit,
+        logout,
+        onChange,
+        lastAuthMessage: state.lastAuthMessage,
+      }}
+    >
+      {props.children}
+    </AuthContext.Provider>
+  );
 }
 
-const AuthConsumer = AuthContext.Consumer;
+export const AuthConsumer = AuthContext.Consumer;
 
-export { AuthProvider,  AuthConsumer };
+export default withRouter(AuthProvider);
