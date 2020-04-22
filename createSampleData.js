@@ -127,9 +127,9 @@ async function run() {
   co2.customer = { name: 'heime', address: '1234789012' };
   await co2.save();
 
-  user = new User();
+  const user = new User();
   user.email = 'user@example.com';
-  user.password =  user.generateHash("abc123");
+  user.password = user.generateHash('abc123');
   await user.save();
 
   console.log('Seed Data created correctly exiting express...');
