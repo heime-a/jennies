@@ -3,7 +3,7 @@
 //TODO: Put ingredient inventory in its own 'Card'
 import "./inventory.css";
 import React, { Component } from "react";
-import { Table, Card } from "reactstrap";
+import { Table } from "reactstrap";
 import apiUrl from "../common/apiurl.js";
 
 class Inventory extends Component {
@@ -26,8 +26,7 @@ class Inventory extends Component {
 
   render() {
     return (
-      <Card>
-        <Table>
+        <Table striped bordered>
           <thead>
             <tr>
               <th>Name</th>
@@ -45,7 +44,6 @@ class Inventory extends Component {
             ))}
           </tbody>
         </Table>
-      </Card>
     );
   }
 }

@@ -25,8 +25,7 @@ class Inventory extends Component {
 
   render() {
     return (
-      <div className="card">
-        <Table>
+        <Table striped bordered>
           <thead>
             <tr>
               <th>Name</th>
@@ -42,7 +41,6 @@ class Inventory extends Component {
             ))}
           </tbody>
         </Table>
-      </div>
     );
   }
 }
