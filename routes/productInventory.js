@@ -6,7 +6,7 @@ const common = require('../common/common');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'productInventory',
     content: await common.getCurrentProductInventory(),

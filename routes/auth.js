@@ -59,7 +59,7 @@ router.post('/signup', async (req, res) => {
   } catch (err) {
     return res.send({
       success: false,
-      message: 'Error: Server error',
+      message: `Error: Server error: ${err.stack}`,
     });
   }
 });
@@ -106,7 +106,8 @@ router.post('/signin', async (req, res) => {
         });
       }
 
-      return res.send({
+      // eslint-disable-next-line no-underscore-dangle
+      return res.cookie('token', JSON.stringify(doc._id)).send({
         success: true,
         message: 'Login Successful',
         // eslint-disable-next-line no-underscore-dangle
@@ -121,13 +122,10 @@ router.post('/signin', async (req, res) => {
       message: 'Error: server error',
     });
   }
-
 });
 
 router.get('/verify', async (req, res, next) => {
-  // Get the token
   const { token } = req.query;
-  // ?token=test
 
   // Verify the token is one of a kind and it's not deleted.
   try {
@@ -165,4 +163,5 @@ router.post('/logout', async (req, res) => {
     });
   }
 });
+
 module.exports = router;

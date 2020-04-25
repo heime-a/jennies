@@ -24,8 +24,9 @@ router.get('/manufactUsage', async (req, res) => {
   });
 });
 
-router.get('/', async (req, res) => {
-  //  response.map(({ _id, total }) => ({ name: _id[0], quantity: total }))
+router.get('/', common.isAuthenticated, async (req, res) => {
+  // eslint-disable-next-line no-console
+  console.log('Cookies: ', req.cookies);
   res.json({
     message: 'Inventory ',
     content: await common.getCurrentInventory(),
