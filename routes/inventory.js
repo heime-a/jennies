@@ -25,8 +25,6 @@ router.get('/manufactUsage', common.isAuthenticated, async (req, res) => {
 });
 
 router.get('/', common.isAuthenticated, async (req, res) => {
-  // eslint-disable-next-line no-console
-  console.log('Cookies: ', req.cookies);
   res.json({
     message: 'Inventory ',
     content: await common.getCurrentInventory(),

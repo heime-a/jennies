@@ -11,10 +11,10 @@ async function postOrPutData(url = ``, data = {}, method = "POST") {
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
         const jsresp = await response.json();
-        if(jsresp.message.includes('Error')) { 
-            throw "Not Authorized"
+        if (jsresp.message.includes('Error')) {
+            throw `Not Authorized ${jsresp.message}`;
         }
-        return await response.json();
+        return jsresp;
     }
     catch (err) {
         return console.log('putOrPost Error ' + err);
