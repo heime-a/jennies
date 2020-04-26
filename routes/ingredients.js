@@ -3,13 +3,14 @@
 'use strict;';
 
 const express = require('express');
+const common = require('../common/common');
 const Ingredient = require('../models/ingredient');
 
 const router = express.Router();
 
 
 /* GET ingredients listing. */
-router.get('/', async (req, res) => {
+router.get('/', common.isAuthenticated, async (req, res) => {
   const ings = await Ingredient.find({});
   res.json({
     message: 'All Ingredients',
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', common.isAuthenticated, async (req, res) => {
   const { name, type, unit } = req.body;
   console.log(`post ingredient ${name} ${type} ${unit}`);
   const ing = new Ingredient({ name, type, unit });
@@ -29,7 +30,7 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', common.isAuthenticated, async (req, res) => {
   const { name, type, unit } = req.body;
   const ing = await Ingredient.findByIdAndUpdate(req.params.id, { name, type, unit });
   res.json({
@@ -38,7 +39,7 @@ router.put('/:id', async (req, res) => {
   });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', common.isAuthenticated, async (req, res) => {
   console.log('delete');
   await Ingredient.findByIdAndRemove(req.params.id);
   res.json({ message: `record ${req.params.id} removed` });

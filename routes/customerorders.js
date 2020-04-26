@@ -3,13 +3,14 @@
 'use strict;';
 
 const express = require('express');
+const common = require('../common/common');
 const CustomerOrder = require('../models/customerorders');
 const Recipe = require('../models/recipe');
 
 const router = express.Router();
 
 /* GET CustomerOrders listing. */
-router.get('/', async (req, res) => {
+router.get('/', common.isAuthenticated, async (req, res) => {
   const allPos = await CustomerOrder.find({});
   res.json({
     message: 'All Customer Orders',
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', common.isAuthenticated, async (req, res) => {
   const { coNumber, customer, items } = req.body;
   const customerOrder = new CustomerOrder();
   customerOrder.coNumber = coNumber;
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', common.isAuthenticated, async (req, res) => {
   const { coNumber, customer, items } = req.body;
   console.log(`Saving: ${req.params.id} ${coNumber} ${customer} ${items}`);
   const customerOrder = {};

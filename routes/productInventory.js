@@ -13,14 +13,14 @@ router.get('/', common.isAuthenticated, async (req, res) => {
   });
 });
 
-router.get('/aggCustomerOrders', async (req, res) => {
+router.get('/aggCustomerOrders', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'customerOrders',
     content: await common.getAggregateCustomerOrders(),
   });
 });
 
-router.get('/aggProduction', async (req, res) => {
+router.get('/aggProduction', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'production',
     content: await common.getAggregateWOProduction(),
