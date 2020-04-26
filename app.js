@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(cookieParser());
 
-mongoose.connect(dburl, { useNewUrlParser: true });
+mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
 console.log(`Connecting to ${dburl}`);
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
