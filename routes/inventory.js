@@ -10,7 +10,7 @@ const common = require('../common/common');
 const router = express.Router();
 
 
-router.get('/purchTotals', common.isAuthenticated,  async (req, res) => {
+router.get('/purchTotals', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'PurchTotals',
     content: await common.getPurchases(),

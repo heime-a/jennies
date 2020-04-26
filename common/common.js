@@ -5,8 +5,8 @@ const CustomerOrder = require('../models/customerorders');
 const UserSession = require('../models/usersession');
 
 module.exports.isAuthenticated = async (req, res, next) => {
-  const token = JSON.parse(req.cookies.token);
   try {
+    const token = JSON.parse(req.cookies.token);
     const result = await UserSession.findOne({ _id: token, isDeleted: false });
     if (result) next();
     else res.send({ message: 'Error', content: 'Route not Authenticated: No session found' });
