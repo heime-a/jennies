@@ -12,7 +12,7 @@ async function postOrPutData(url = ``, data = {}, method = "POST") {
         });
         const jsresp = await response.json();
         if (jsresp.message.includes('Error')) {
-            throw `Not Authorized ${jsresp.message}`;
+            console.log `Not Authorized ${jsresp.message}`;
         }
         return jsresp;
     }
