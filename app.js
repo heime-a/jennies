@@ -10,10 +10,9 @@ const secret = process.env.SECRET || 'some secret passphrase here for local deve
 const dburl = process.env.DBURL || 'mongodb://127.0.0.1/jennies';
 const createError = require('http-errors');
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
-
+const cookieParser = require('cookie-parser');
 
 const indexRouter = require('./routes/index');
 const purchaseOrdersRouter = require('./routes/purchaseorders');
@@ -27,14 +26,12 @@ const authRouter = require('./routes/auth.js');
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.use(cookieParser());
 
-mongoose.connect(dburl, { useNewUrlParser: true });
+mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
 console.log(`Connecting to ${dburl}`);
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);

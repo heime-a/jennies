@@ -10,22 +10,21 @@ const common = require('../common/common');
 const router = express.Router();
 
 
-router.get('/purchTotals', async (req, res) => {
+router.get('/purchTotals', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'PurchTotals',
     content: await common.getPurchases(),
   });
 });
 
-router.get('/manufactUsage', async (req, res) => {
+router.get('/manufactUsage', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'ManufactUsage',
     content: await common.getUsedIngredients(),
   });
 });
 
-router.get('/', async (req, res) => {
-  //  response.map(({ _id, total }) => ({ name: _id[0], quantity: total }))
+router.get('/', common.isAuthenticated, async (req, res) => {
   res.json({
     message: 'Inventory ',
     content: await common.getCurrentInventory(),

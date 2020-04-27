@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/node": "^12.7.9",
+    "@types/node": "^12.12.37",
     "@types/react": "^16.9.4",
     "@types/react-bootstrap-typeahead": "^3.4.5",
     "@types/react-dom": "^16.9.1",
@@ -12,6 +12,7 @@
     "babel-loader": "^8.1.0",
     "bootstrap": "^4.4.1",
     "cross-env": "^5.2.1",
+    "express": "^4.17.1",
     "nodemon": "^1.19.3",
     "react": "^16.13.1",
     "react-bootstrap-typeahead": "^3.4.7",
@@ -22,6 +23,7 @@
     "tslint": "^5.20.1",
     "typescript": "^3.6.3"
   },
+  "proxy": "http://localhost:3001",
   "scripts": {
     "start": "cross-env REACT_APP_STAGE=dev react-scripts start",
     "build": "react-scripts build",

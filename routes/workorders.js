@@ -24,7 +24,7 @@ function validateWorkOrder(recipeIngredients, inventory) {
   return true;
 }
 
-router.get('/', async (req, res) => {
+router.get('/', common.isAuthenticated, async (req, res) => {
   const allworkorders = await WorkOrder.find({}).populate('recipe');
 
   res.json({
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', common.isAuthenticated, async (req, res) => {
   const {
     woNumber, recipe, startDate, status, actualHours, actualYield,
   } = req.body;
@@ -71,7 +71,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', common.isAuthenticated, async (req, res) => {
   const {
     woNumber, recipe, startDate, status, actualHours, actualYield,
   } = req.body;

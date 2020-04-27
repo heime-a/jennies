@@ -3,6 +3,7 @@
 'use strict;';
 
 const express = require('express');
+const common = require('../common/common');
 const PurchaseOrder = require('../models/purchaseorders');
 const Ingredient = require('../models/ingredient');
 
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', common.isAuthenticated, async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
   const purchaseorder = new PurchaseOrder();
   purchaseorder.poNumber = poNumber;
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', common.isAuthenticated, async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
   console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${ingredients}`);
   const purchaseorder = {};

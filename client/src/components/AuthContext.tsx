@@ -59,7 +59,7 @@ function AuthProvider(props: any): any {
     e.preventDefault();
 
     postOrPutData(`${apiUrl()}/auth/signin`, state, "POST")
-      .then((data) => {
+      .then((data:any) => {
         console.log(data.message);
         if (data.success) {
           window.localStorage.setItem(apiUrl() + "token", data.token);
@@ -73,7 +73,7 @@ function AuthProvider(props: any): any {
           });
         }
       })
-      .catch((err) => {
+      .catch((err: { stack: Object}) => {
         console.log(err.stack);
       });
   };

@@ -1,6 +1,7 @@
 'use strict;';
 
 const express = require('express');
+const common = require('../common/common');
 const Ingredient = require('../models/ingredient');
 const Recipe = require('../models/recipe');
 
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', common.isAuthenticated, async (req, res) => {
   const { name, manHours, ingredients } = req.body;
   const recipe = new Recipe();
   recipe.name = name;
@@ -49,7 +50,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', common.isAuthenticated, async (req, res) => {
   const { name, manHours, ingredients } = req.body;
   console.log(`Saving: ${req.params.id} ${name} ${manHours} ${ingredients}`);
   const recipe = {};

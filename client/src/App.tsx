@@ -28,6 +28,7 @@ import WorkOrderList from "./components/WorkOrderList";
 import CustomerOrders from "./components/CustomerOrderList";
 import isLoggedIn from "./common/isLoggedIn";
 import LoginForm from "./components/LoginForm";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 import {
   Button,
@@ -74,17 +75,19 @@ class App extends Component {
     ];
     return (
       <div className="App">
-        <Router>
-          <AuthProvider>
-            <AuthConsumer>
-              {({ loggedIn }) => (
-                <div className="App-header">
-                  <MyApp items={loggedIn ? menuItems : ["Login"]} />
-                </div>
-              )}
-            </AuthConsumer>
-          </AuthProvider>
-        </Router>
+        <ErrorBoundary>
+          <Router>
+            <AuthProvider>
+              <AuthConsumer>
+                {({ loggedIn }) => (
+                  <div className="App-header">
+                    <MyApp items={loggedIn ? menuItems : ["Login"]} />
+                  </div>
+                )}
+              </AuthConsumer>
+            </AuthProvider>
+          </Router>
+        </ErrorBoundary>
       </div>
     );
   }

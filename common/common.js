@@ -1,7 +1,19 @@
 const PurchaseOrder = require('../models/purchaseorders');
 const WorkOrder = require('../models/workorder');
-
 const CustomerOrder = require('../models/customerorders');
+
+const UserSession = require('../models/usersession');
+
+module.exports.isAuthenticated = async (req, res, next) => {
+  try {
+    const token = JSON.parse(req.cookies.token);
+    const result = await UserSession.findOne({ _id: token, isDeleted: false });
+    if (result) next();
+    else res.send({ message: 'Error', content: 'Route not Authenticated: No session found' });
+  } catch (err) {
+    res.send({ message: 'Error', content: `Route not Authenticated: ${err.stack}` });
+  }
+};
 
 module.exports.getPurchases = async () => {
   const response = await PurchaseOrder.aggregate([
