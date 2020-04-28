@@ -65,6 +65,7 @@ module.exports = app;
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
+// eslint-disable-next-line func-names
 (async function () {
   try {
     console.log(`Connecting to ${dburl}`);
@@ -76,7 +77,4 @@ app.get('*', (req, res) => {
     console.error(`Could not Connect to mongodb at ${dburl} Exiting server...`);
     process.exit(1);
   }
-
-})();
-
-
+}());
