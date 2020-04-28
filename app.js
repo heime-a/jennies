@@ -65,7 +65,7 @@ app.get('*', (req, res) => {
 (async function () {
   try {
     console.log(`Connecting to ${dburl}`);
-    await mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
     console.log(`Connected to ${dburl}`);
     app.listen(port, () => console.log(`SimplErp listening on ${port}`));
   }
