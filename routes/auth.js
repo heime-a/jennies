@@ -107,7 +107,7 @@ router.post('/signin', async (req, res) => {
       }
 
       // eslint-disable-next-line no-underscore-dangle
-      return res.cookie('token', JSON.stringify(doc._id)).send({
+      return res.cookie('token', JSON.stringify(doc._id), { httpOnly: true }).send({
         success: true,
         message: 'Login Successful',
         // eslint-disable-next-line no-underscore-dangle
