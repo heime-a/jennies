@@ -25,6 +25,7 @@ export interface Order {
   };
 }
 interface CustomerOrderListState {
+  loading: boolean,
   content: {
     _id: string;
     coNumber: string;
@@ -44,6 +45,7 @@ interface CustomerOrderListState {
 }
 class CustomerOrderList extends Component {
   state: CustomerOrderListState = {
+    loading: true,
     content: [
       {
         _id: "1",
@@ -79,6 +81,7 @@ class CustomerOrderList extends Component {
       newState.productNames = jsonMessage.content.map(
         (item: { name: string }) => item.name
       );
+      newState.loading = false;
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -192,6 +195,9 @@ class CustomerOrderList extends Component {
     const foundOrder = this.state.content.find(
       (el) => el._id === this.state.selectedId
     );
+
+    if (this.state.loading)
+      return (<>Loading...</>)
     return (
       <div>
         <div id="coListGrid">

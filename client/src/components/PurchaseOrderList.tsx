@@ -23,6 +23,7 @@ export interface Po {
   };
 }
 interface PurchaseOrderListState {
+  loading: Boolean;
   content: Array<Po>;
   selectedId: string;
   ingData: {
@@ -32,6 +33,7 @@ interface PurchaseOrderListState {
 }
 class PurchaseOrderList extends Component {
   state: PurchaseOrderListState = {
+    loading: true,
     content: [
       {
         _id: "1",
@@ -88,6 +90,7 @@ class PurchaseOrderList extends Component {
         },
         {}
       );
+      newState.loading = false;
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -219,53 +222,56 @@ class PurchaseOrderList extends Component {
     const foundItem = this.state.content.find(
       (el) => el._id === this.state.selectedId
     );
-    return (
-      <div>
-        <div id="poListGrid">
-          <select
-            size={10}
-            className="purchaseOrderList delete"
-            onChange={(e) => this.handleItemSelect(e)}
-          >
-            {this.state.content.map((item) => (
-              <option value={item._id} key={item.poNumber}>
-                {`${item.poNumber} ${item.supplier.name}`}
-              </option>
-            ))}
-          </select>
-          {foundItem && (
-            <PurchaseOrderForm
-              item={foundItem}
-              onChange={this.handleChangePO}
-              onAddLine={this.handleAddPoLine}
-              onRemoveLine={this.handleRemovePoLine}
-              ingData={this.state.ingData}
-            />
-          )}
-          <div className="poButtons delete">
-            <Button
-              color="success"
-              className="newPO"
-              onClick={(e) => this.newPurchaseOrder()}
+    if (this.state.loading)
+      return (<>Loading...</>)
+    else
+      return (
+        <div>
+          <div id="poListGrid">
+            <select
+              size={10}
+              className="purchaseOrderList delete"
+              onChange={(e) => this.handleItemSelect(e)}
             >
-              New Purchase Order
+              {this.state.content.map((item) => (
+                <option value={item._id} key={item.poNumber}>
+                  {`${item.poNumber} ${item.supplier.name}`}
+                </option>
+              ))}
+            </select>
+            {foundItem && (
+              <PurchaseOrderForm
+                item={foundItem}
+                onChange={this.handleChangePO}
+                onAddLine={this.handleAddPoLine}
+                onRemoveLine={this.handleRemovePoLine}
+                ingData={this.state.ingData}
+              />
+            )}
+            <div className="poButtons delete">
+              <Button
+                color="success"
+                className="newPO"
+                onClick={(e) => this.newPurchaseOrder()}
+              >
+                New Purchase Order
             </Button>
-            <Button color="warning" onClick={this.saveSelectedPO}>
-              Save Current
+              <Button color="warning" onClick={this.saveSelectedPO}>
+                Save Current
             </Button>
+            </div>
           </div>
+          {this.state.alertMessage && (
+            <Alert
+              color={
+                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+              }
+            >
+              {this.state.alertMessage}
+            </Alert>
+          )}
         </div>
-        {this.state.alertMessage && (
-          <Alert
-            color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
-          >
-            {this.state.alertMessage}
-          </Alert>
-        )}
-      </div>
-    );
+      );
   }
 }
 

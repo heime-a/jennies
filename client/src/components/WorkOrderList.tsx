@@ -17,6 +17,7 @@ interface Workorder {
   actualYield: number;
 }
 interface WorkOrderListState {
+  loading: Boolean;
   content: Array<Workorder>;
   selectedWoNumber: string;
   alertMessage: string;
@@ -24,6 +25,7 @@ interface WorkOrderListState {
 }
 class WorkOrderList extends Component {
   state: WorkOrderListState = {
+    loading: true,
     content: [
       {
         _id: "test001",
@@ -56,6 +58,7 @@ class WorkOrderList extends Component {
       newState.recipeNames = ingJson.content.map(
         (item: { name: string }) => item.name
       );
+      newState.loading = false;
       this.setState(newState);
     } else {
       console.log("json message failed");
@@ -153,43 +156,46 @@ class WorkOrderList extends Component {
     const foundItem = this.state.content.find(
       (el) => el.woNumber === this.state.selectedWoNumber
     );
-    return (
-      <div>
-        <div id="workOrderList">
-          <select size={10} onChange={this.handleItemSelect}>
-            {this.state.content.map(({ woNumber, status, startDate }) => (
-              <option value={woNumber} key={woNumber}>
-                {startDate} {woNumber} {status}
-              </option>
-            ))}
-          </select>
-          {foundItem && (
-            <WorkOrderForm
-              onChange={this.handleChange}
-              item={foundItem}
-              recipeNames={this.state.recipeNames}
-            />
-          )}
-          <div>
-            <Button color="success" onClick={this.handleNewWorkOrder}>
-              New
+    if (this.state.loading)
+      return (<>Loading...</>)
+    else
+      return (
+        <div>
+          <div id="workOrderList">
+            <select size={10} onChange={this.handleItemSelect}>
+              {this.state.content.map(({ woNumber, status, startDate }) => (
+                <option value={woNumber} key={woNumber}>
+                  {startDate} {woNumber} {status}
+                </option>
+              ))}
+            </select>
+            {foundItem && (
+              <WorkOrderForm
+                onChange={this.handleChange}
+                item={foundItem}
+                recipeNames={this.state.recipeNames}
+              />
+            )}
+            <div>
+              <Button color="success" onClick={this.handleNewWorkOrder}>
+                New
             </Button>
-            <Button color="warning" onClick={this.saveWorkOrder}>
-              Save Current
+              <Button color="warning" onClick={this.saveWorkOrder}>
+                Save Current
             </Button>
+            </div>
           </div>
+          {this.state.alertMessage && (
+            <Alert
+              color={
+                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+              }
+            >
+              {this.state.alertMessage}
+            </Alert>
+          )}
         </div>
-        {this.state.alertMessage && (
-          <Alert
-            color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
-          >
-            {this.state.alertMessage}
-          </Alert>
-        )}
-      </div>
-    );
+      );
   }
 }
 
