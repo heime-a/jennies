@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
+import { Button, Alert, Spinner } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import IngredientForm from "./IngredientForm";
@@ -107,7 +107,7 @@ export class IngredientList extends Component {
     );
 
     if (this.state.loading)
-      return (<>Loading...</>)
+      return (<div id="ingredientGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     else
       return (
         <div className="ingredientGrid">

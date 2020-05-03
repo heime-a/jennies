@@ -1,11 +1,12 @@
 "use strict;";
 import "./PurchaseOrderList.css";
-import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { Button, Alert, Spinner } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import { Ingredient } from "./IngredientList";
+
 
 //TODO: printing layout for purchaseorders  started
 export interface LineItem {
@@ -23,7 +24,7 @@ export interface Po {
   };
 }
 interface PurchaseOrderListState {
-  loading: Boolean;
+  loading: boolean;
   content: Array<Po>;
   selectedId: string;
   ingData: {
@@ -31,8 +32,8 @@ interface PurchaseOrderListState {
   };
   alertMessage?: string;
 }
-class PurchaseOrderList extends Component {
-  state: PurchaseOrderListState = {
+function PurchaseOrderList() {
+  const [poState, setPoState] = useState<PurchaseOrderListState>({
     loading: true,
     content: [
       {
@@ -64,10 +65,15 @@ class PurchaseOrderList extends Component {
     ingData: {
       sugar: "ounces",
     },
-  };
+  });
 
-  async componentDidMount() {
-    const newState: PurchaseOrderListState = { ...this.state };
+  
+  useEffect(() => {
+    loadContent();
+  }, []);
+
+  async function loadContent() {
+    const newState: PurchaseOrderListState = { ...poState };
 
     let response = await fetch(`${apiUrl()}/purchaseOrders`);
     let jsonMessage = await response.json();
@@ -91,13 +97,13 @@ class PurchaseOrderList extends Component {
         {}
       );
       newState.loading = false;
-      this.setState(newState);
+      setPoState(newState);
     } else {
       console.log("json message failed");
     }
   }
 
-  newPurchaseOrder() {
+  function newPurchaseOrder() {
     const getUniqPo = (poNums: Array<string>) => {
       const maxPo = Math.max(
         ...poNums.map((i) => Number(i.replace(/\D*/, "")))
@@ -105,9 +111,9 @@ class PurchaseOrderList extends Component {
       return `new${maxPo + 1}`;
     };
 
-    const newState = { ...this.state };
+    const newState = { ...poState };
     const newPoNumber = getUniqPo(
-      this.state.content.map((i) => i.poNumber.toString())
+      poState.content.map((i) => i.poNumber.toString())
     );
 
     newState.content.push({
@@ -127,10 +133,10 @@ class PurchaseOrderList extends Component {
       ],
       supplier: { name: "Test2", address: "address" },
     });
-    this.setState(newState);
+    setPoState(newState);
   }
 
-  saveSelectedPO = () => {
+  const saveSelectedPO = () => {
     const saveItem = async (item?: Po) => {
       let data;
       if (!item) return;
@@ -152,30 +158,30 @@ class PurchaseOrderList extends Component {
         );
       }
       if (data) console.log(JSON.stringify(data));
-      this.setState({ ...this.state, alertMessage: data.message });
+      setPoState({ ...poState, alertMessage: data.message });
       setTimeout(() => {
-        this.setState({ ...this.state, alertMessage: undefined });
+        setPoState({ ...poState, alertMessage: undefined });
       }, 3000);
     };
 
-    const foundItem = this.state.content.find(
-      (i) => this.state.selectedId === i._id
+    const foundItem = poState.content.find(
+      (i) => poState.selectedId === i._id
     );
     saveItem(foundItem);
   };
 
-  handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newState = { ...this.state };
+  const handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState = { ...poState };
     newState.selectedId = event.target.value;
-    this.setState(newState);
+    setPoState(newState);
   };
 
-  handleChangePO = (
+  const handleChangePO = (
     event: React.ChangeEvent<HTMLSelectElement>,
     idx: number
   ) => {
     console.log(event.target.value);
-    const newState = { ...this.state };
+    const newState = { ...poState };
 
     const foundItem = newState.content.find(
       (el) => el._id === newState.selectedId
@@ -187,11 +193,11 @@ class PurchaseOrderList extends Component {
         foundItem.ingredients[idx].ingredient.name = event.target.value;
       if (event.target.name === "unitCost")
         foundItem.ingredients[idx].unitCost = Number(event.target.value);
-      this.setState(newState);
+      setPoState(newState);
     }
   };
-  handleRemovePoLine = (idx: number) => {
-    const newState = { ...this.state };
+  const handleRemovePoLine = (idx: number) => {
+    const newState = { ...poState };
 
     const foundItem = newState.content.find(
       (el) => el._id === newState.selectedId
@@ -199,12 +205,12 @@ class PurchaseOrderList extends Component {
     if (foundItem) {
       foundItem.ingredients = [...foundItem.ingredients];
       foundItem.ingredients.splice(idx, 1);
-      this.setState(newState);
+      setPoState(newState);
     }
   };
 
-  handleAddPoLine = () => {
-    const newState = { ...this.state };
+  const handleAddPoLine = () => {
+    const newState = { ...poState };
     const foundItem = newState.content.find(
       (el) => el._id === newState.selectedId
     );
@@ -214,65 +220,63 @@ class PurchaseOrderList extends Component {
         unitCost: 0.01,
         ingredient: { _id: "", name: "New Item", type: "type", unit: "Oz" },
       });
-      this.setState(newState);
+      setPoState(newState);
     }
   };
 
-  render() {
-    const foundItem = this.state.content.find(
-      (el) => el._id === this.state.selectedId
-    );
-    if (this.state.loading)
-      return (<>Loading...</>)
-    else
-      return (
-        <div>
-          <div id="poListGrid">
-            <select
-              size={10}
-              className="purchaseOrderList delete"
-              onChange={(e) => this.handleItemSelect(e)}
-            >
-              {this.state.content.map((item) => (
-                <option value={item._id} key={item.poNumber}>
-                  {`${item.poNumber} ${item.supplier.name}`}
-                </option>
-              ))}
-            </select>
-            {foundItem && (
-              <PurchaseOrderForm
-                item={foundItem}
-                onChange={this.handleChangePO}
-                onAddLine={this.handleAddPoLine}
-                onRemoveLine={this.handleRemovePoLine}
-                ingData={this.state.ingData}
-              />
-            )}
-            <div className="poButtons delete">
-              <Button
-                color="success"
-                className="newPO"
-                onClick={(e) => this.newPurchaseOrder()}
-              >
-                New Purchase Order
-            </Button>
-              <Button color="warning" onClick={this.saveSelectedPO}>
-                Save Current
-            </Button>
-            </div>
-          </div>
-          {this.state.alertMessage && (
-            <Alert
-              color={
-                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-              }
-            >
-              {this.state.alertMessage}
-            </Alert>
+  const foundItem = poState.content.find(
+    (el) => el._id === poState.selectedId
+  );
+  if (poState.loading)
+    return (<div id="poListGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+  else
+    return (
+      <div>
+        <div id="poListGrid">
+          <select
+            size={10}
+            className="purchaseOrderList delete"
+            onChange={(e) => handleItemSelect(e)}
+          >
+            {poState.content.map((item) => (
+              <option value={item._id} key={item.poNumber}>
+                {`${item.poNumber} ${item.supplier.name}`}
+              </option>
+            ))}
+          </select>
+          {foundItem && (
+            <PurchaseOrderForm
+              item={foundItem}
+              onChange={handleChangePO}
+              onAddLine={handleAddPoLine}
+              onRemoveLine={handleRemovePoLine}
+              ingData={poState.ingData}
+            />
           )}
+          <div className="poButtons delete">
+            <Button
+              color="success"
+              className="newPO"
+              onClick={(e) => newPurchaseOrder()}
+            >
+              New Purchase Order
+            </Button>
+            <Button color="warning" onClick={saveSelectedPO}>
+              Save Current
+            </Button>
+          </div>
         </div>
-      );
-  }
+        {poState.alertMessage && (
+          <Alert
+            color={
+              poState.alertMessage.includes("ERROR:") ? "danger" : "info"
+            }
+          >
+            {poState.alertMessage}
+          </Alert>
+        )}
+      </div>
+    );
 }
 
 export default PurchaseOrderList;

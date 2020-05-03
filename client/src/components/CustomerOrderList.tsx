@@ -1,7 +1,7 @@
 "use strict;";
 import "./CustomerOrderList.css";
 import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
+import { Button, Alert, Spinner } from "reactstrap";
 import CustomerOrderForm, { FormChangeEvent } from "./CustomerOrderForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
@@ -197,7 +197,7 @@ class CustomerOrderList extends Component {
     );
 
     if (this.state.loading)
-      return (<>Loading...</>)
+      return (<div id="workOrderList"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     return (
       <div>
         <div id="coListGrid">
