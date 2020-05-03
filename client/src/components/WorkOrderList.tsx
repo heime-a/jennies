@@ -2,7 +2,7 @@
 //@ts-check
 import "./WorkOrderList.css";
 import React, { Component } from "react";
-import { Button, Input, Label, Alert } from "reactstrap";
+import { Button, Input, Label, Alert, Spinner } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 
@@ -157,7 +157,7 @@ class WorkOrderList extends Component {
       (el) => el.woNumber === this.state.selectedWoNumber
     );
     if (this.state.loading)
-      return (<>Loading...</>)
+      return (<div id="workOrderList"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     else
       return (
         <div>

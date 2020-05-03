@@ -2,11 +2,12 @@
 //@ts-check
 import "./RecipeList.css";
 import React, { useState, useEffect } from "react";
-import { Button, Alert } from "reactstrap";
+import { Button, Alert, Spinner } from "reactstrap";
 import RecipeForm from "./RecipeForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import { Ingredient } from "./IngredientList";
+
 
 export interface RecipeLine {
   ingredient: Ingredient;
@@ -235,7 +236,7 @@ export const RecipeList = () => {
       (el) => el._id === recipeList.selectedId
     );
     if (recipeList.loading)
-      return (<>Loading...</>)
+      return (<div id="recipeListGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     else
       return (
         <>
