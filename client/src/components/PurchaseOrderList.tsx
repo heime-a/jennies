@@ -1,11 +1,12 @@
 "use strict;";
 import "./PurchaseOrderList.css";
 import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
+import { Button, Alert, Spinner } from "reactstrap";
 import PurchaseOrderForm from "./PurchaseOrderForm";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import { Ingredient } from "./IngredientList";
+
 
 //TODO: printing layout for purchaseorders  started
 export interface LineItem {
@@ -223,7 +224,7 @@ class PurchaseOrderList extends Component {
       (el) => el._id === this.state.selectedId
     );
     if (this.state.loading)
-      return (<>Loading...</>)
+      return (<div id="poListGrid"><Spinner style={{ width: '10rem', height: '10rem' }} color="secondary" /></div>)
     else
       return (
         <div>
