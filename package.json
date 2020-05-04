@@ -21,8 +21,10 @@
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
+    "jest": "^25.5.2",
     "mongoose": "^5.9.10",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
@@ -35,6 +37,7 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-standard": "^4.0.1",
+    "mongo-unit": "^2.0.1"
   }
 }
