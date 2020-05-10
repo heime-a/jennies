@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Alert } from "reactstrap";
+import { Button, Alert, Spinner } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import IngredientForm from "./IngredientForm";
@@ -11,6 +11,7 @@ export interface Ingredient {
   unit: string;
 }
 interface IngredientListState {
+  loading: Boolean;
   content: Array<Ingredient>;
   selectedId: string;
   newItemsIndex: number;
@@ -18,6 +19,7 @@ interface IngredientListState {
 }
 export class IngredientList extends Component {
   state: IngredientListState = {
+    loading: true,
     content: [{ _id: "1", name: "", type: "", unit: "" }],
     selectedId: "",
     newItemsIndex: 0,
@@ -28,7 +30,7 @@ export class IngredientList extends Component {
     const response = await fetch(`${apiUrl()}/ingredients`);
     const jsonMessage = await response.json();
     if (jsonMessage) {
-      this.setState({ content: jsonMessage.content });
+      this.setState({ loading: false, content: jsonMessage.content });
     } else {
       console.log("json message failed");
     }
@@ -103,53 +105,57 @@ export class IngredientList extends Component {
     const foundItem = this.state.content.find(
       (el) => el._id === this.state.selectedId
     );
-    return (
-      <div className="ingredientGrid">
-        <select
-          size={10}
-          className="ingredientList"
-          onChange={this.handleItemSelect}
-        >
-          {this.state.content.map((item) => (
-            <option
-              className="listItem"
-              value={item._id}
-              key={item._id}
-            >{`${item.name} ${item.type} ${item.unit}`}</option>
-          ))}
-        </select>
-        {foundItem && (
-          <IngredientForm
-            item={foundItem}
-            onChange={(e) => this.handleFormChange(e, foundItem)}
-          />
-        )}
-        <div className="ingButtons">
-          <Button
-            color="success"
-            className="newIngredient"
-            onClick={() => this.newIngredient()}
+
+    if (this.state.loading)
+      return (<div id="ingredientGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+    else
+      return (
+        <div className="ingredientGrid">
+          <select
+            size={10}
+            className="ingredientList"
+            onChange={this.handleItemSelect}
           >
-            New Ingredient
+            {this.state.content.map((item) => (
+              <option
+                className="listItem"
+                value={item._id}
+                key={item._id}
+              >{`${item.name} ${item.type} ${item.unit}`}</option>
+            ))}
+          </select>
+          {foundItem && (
+            <IngredientForm
+              item={foundItem}
+              onChange={(e) => this.handleFormChange(e, foundItem)}
+            />
+          )}
+          <div className="ingButtons">
+            <Button
+              color="success"
+              className="newIngredient"
+              onClick={() => this.newIngredient()}
+            >
+              New Ingredient
           </Button>
-          <Button
-            color="warning"
-            className="saveIngredient"
-            onClick={() => this.saveSelected()}
-          >
-            Save Selected
+            <Button
+              color="warning"
+              className="saveIngredient"
+              onClick={() => this.saveSelected()}
+            >
+              Save Selected
           </Button>
+          </div>
+          {this.state.alertMessage && (
+            <Alert
+              color={
+                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+              }
+            >
+              {this.state.alertMessage}
+            </Alert>
+          )}
         </div>
-        {this.state.alertMessage && (
-          <Alert
-            color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
-          >
-            {this.state.alertMessage}
-          </Alert>
-        )}
-      </div>
-    );
+      );
   }
 }
