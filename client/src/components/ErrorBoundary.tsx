@@ -1,12 +1,10 @@
-import React from "react";
+import React, { ErrorInfo } from "react";
 
 export default class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { error: null, errorInfo: null };
-    }
+    state: { error:Error | null , errorInfo: ErrorInfo | null } = { error: null, errorInfo: null };
 
-    componentDidCatch(error, errorInfo) {
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         // Catch errors in any components below and re-render with error message
         this.setState({
             error: error,
@@ -24,7 +22,7 @@ export default class ErrorBoundary extends React.Component {
                     <details style={{ whiteSpace: 'pre-wrap' }}>
                         {this.state.error && this.state.error.toString()}
                         <br />
-                        {this.state.errorInfo.componentStack}
+                        {this.state.errorInfo && this.state.errorInfo.componentStack}
                     </details>
                 </div>
             );
