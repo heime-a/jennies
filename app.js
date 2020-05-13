@@ -31,8 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(cookieParser());
 
-mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
-console.log(`Connecting to ${dburl}`);
 app.use('/', indexRouter);
 app.use('/purchaseOrders', purchaseOrdersRouter);
 app.use('/ingredients', ingredientsRouter);
@@ -63,4 +61,21 @@ module.exports = app;
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
-app.listen(port, () => console.log(`SimplErp listening on ${port}`));
+// eslint-disable-next-line func-names
+(async function () {
+  try {
+    console.log(`Connecting to ${dburl}`);
+    await mongoose.connect(dburl,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+      });
+    console.log(`Connected to ${dburl}`);
+    app.listen(port, () => console.log(`SimplErp listening on ${port}`));
+  }
+  catch (err) {
+    console.error(`Could not Connect to mongodb at ${dburl} Exiting server...`);
+    process.exit(1);
+  }
+}());
