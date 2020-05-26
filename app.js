@@ -1,6 +1,8 @@
 const app = require('./server.js')
 const port = process.env.PORT || 5000;
 const dburl = process.env.DBURL || 'mongodb://127.0.0.1/jennies';
+const mongoose = require('mongoose');
+
 // eslint-disable-next-line func-names
 (async function () {
   try {
