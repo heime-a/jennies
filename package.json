@@ -4,11 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "start": "npm run server",
-    "server": "node app.js",
+    "server": "DBURL=mongodb://172.27.208.1/jennies node app.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently -n server,client \"nodemon app.js\" \"npm run client\"",
+    "dev": "concurrently -n server,client \"DBURL=mongodb://172.27.208.1/jennies nodemon app.js\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "monitor": "nodemon"
   },
@@ -21,7 +22,8 @@
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
-    "jest": "^25.5.2",
+    "jest": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
     "mongoose": "^5.9.10",
     "nodemon": "^1.19.4",
     "supertest": "^4.0.2"
