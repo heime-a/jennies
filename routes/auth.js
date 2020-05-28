@@ -121,27 +121,10 @@ router.post('/signin', async (req, res) => {
   }
 });
 
-router.get('/verify', async (req, res, next) => {
-  const { token } = req.query;
-
-  try {
-    const session = await UserSession.findOne({ _id: token, isDeleted: false });
-    return res.send({
-      success: true,
-      message: 'Good',
-    });
-  } catch (err) {
-    return res.send({
-      success: false,
-      message: `Error: Server error ${err.stack}`,
-    });
-  }
-});
 
 router.post('/logout', async (req, res) => {
   // Get the token
   const token = JSON.parse(req.cookies.token);
-  // Verify the token is one of a kind and it's not deleted.
   try {
     await UserSession.findOneAndUpdate(
       { _id: token, isDeleted: false },
