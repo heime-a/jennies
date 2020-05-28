@@ -33,9 +33,6 @@ router.post('/signup', async (req, res) => {
 
   email = email.toLowerCase().trim();
 
-  // Steps:
-  // 1. Verify email doesn't exist
-  // 2. Save
   const prevUser = await User.findOne({ email });
   if (prevUser && prevUser.length > 0) {
     return res.send({
@@ -44,7 +41,7 @@ router.post('/signup', async (req, res) => {
     });
   }
 
-  // Save the new user
+
   const newUser = new User();
 
   newUser.email = email;
@@ -127,7 +124,6 @@ router.post('/signin', async (req, res) => {
 router.get('/verify', async (req, res, next) => {
   const { token } = req.query;
 
-  // Verify the token is one of a kind and it's not deleted.
   try {
     const session = await UserSession.findOne({ _id: token, isDeleted: false });
     return res.send({
@@ -144,8 +140,7 @@ router.get('/verify', async (req, res, next) => {
 
 router.post('/logout', async (req, res) => {
   // Get the token
-  const { token } = req.body;
-
+  const token = JSON.parse(req.cookies.token);
   // Verify the token is one of a kind and it's not deleted.
   try {
     await UserSession.findOneAndUpdate(
@@ -154,7 +149,7 @@ router.post('/logout', async (req, res) => {
     );
     return res.send({
       success: true,
-      message: 'Good',
+      message: 'Logout Success.',
     });
   } catch (err) {
     return res.send({
