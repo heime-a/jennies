@@ -7,9 +7,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "npm run server",
-    "server": "DBURL=mongodb://172.27.208.1/jennies node app.js",
+    "server": "node app.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently -n server,client \"DBURL=mongodb://172.27.208.1/jennies nodemon app.js\" \"npm run client\"",
+    "dev": "concurrently -n server,client \"nodemon app.js\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "monitor": "nodemon"
   },
