@@ -44,6 +44,7 @@ router.post('/', common.isAuthenticated, async (req, res) => {
   try {
     await purchaseorder.save();
     res.json({
+      success: true,
       message: 'Successfully Saved new record',
       data: JSON.stringify(purchaseorder),
     });
@@ -57,7 +58,6 @@ router.post('/', common.isAuthenticated, async (req, res) => {
 
 router.put('/:id', common.isAuthenticated, async (req, res) => {
   const { poNumber, supplier, ingredients } = req.body;
-  console.log(`Saving: ${req.params.id} ${poNumber} ${supplier} ${ingredients}`);
   const purchaseorder = {};
   purchaseorder.poNumber = poNumber;
   purchaseorder.supplier = supplier;
@@ -75,21 +75,22 @@ router.put('/:id', common.isAuthenticated, async (req, res) => {
       });
     } else {
       res.json({
+        success: false,
         message: 'ERROR: ingredient not found',
         data: JSON.stringify(req.body),
       });
     }
   }
   try {
-    console.log(`before save ${JSON.stringify(purchaseorder.ingredients)}`);
     const updatedPO = await PurchaseOrder.findByIdAndUpdate(req.params.id, purchaseorder);
-    console.log(`after  save ${JSON.stringify(updatedPO)}`);
     res.json({
+      success: true,
       message: 'Successfuly Updated record',
       data: JSON.stringify(updatedPO),
     });
   } catch (err) {
-    res.json({
+    res.json(404, {
+      success: false,
       message: `ERROR: Record not updated: ${err.stack}`,
       data: JSON.stringify(purchaseorder),
     });
