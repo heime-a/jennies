@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --runInBand",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "start": "npm run server",
@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "jest": "^26.0.1",
+    "leaked-handles": "^5.2.0",
     "mongodb-memory-server": "^6.6.1",
     "mongoose": "^5.9.10",
     "nodemon": "^1.19.4",
