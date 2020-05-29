@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest --runInBand",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "start": "npm run server",
     "server": "node app.js",
     "client": "npm start --prefix client",
