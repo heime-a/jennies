@@ -20,8 +20,7 @@ const dburl = process.env.DBURL || 'mongodb://127.0.0.1/jennies';
     console.log(`Connected to ${dburl}`);
     // eslint-disable-next-line no-console
     app.listen(port, () => console.log(`SimplErp listening on ${port}`));
-  }
-  catch (err) {
+  } catch (err) {
     // eslint-disable-next-line no-console
     console.error(`Could not Connect to mongodb at ${dburl} Exiting server...`);
     process.exit(1);
