@@ -5,14 +5,6 @@ const UserSession = require('../models/usersession');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const allUsers = await User.find({});
-  res.json({
-    message: 'All User Objects',
-    content: allUsers,
-  });
-});
-
 router.post('/signup', async (req, res) => {
   let { email } = req.body;
   const { password } = req.body;
@@ -34,7 +26,8 @@ router.post('/signup', async (req, res) => {
   email = email.toLowerCase().trim();
 
   const prevUser = await User.findOne({ email });
-  if (prevUser && prevUser.length > 0) {
+
+  if (prevUser) {
     return res.send({
       success: false,
       message: 'Error: Account already exists.',

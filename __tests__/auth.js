@@ -53,7 +53,10 @@ it('cant sign up with a blank email', async () => {
     let res = await request.post('/auth/signup').send({ email: '', password: 'abc123' });
     expect(res.body.success).toBeFalsy()
 })
-
+it('cant sign up a duplicate user', async () => {
+    const res = await request.post('/auth/signup').send({ email: 'user@example.com', password: 'abc123' });
+    expect(res.body.success).toBeFalsy()
+})
 describe('testing restricted routes', () => {
 
     let authenticatedSession;

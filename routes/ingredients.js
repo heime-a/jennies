@@ -21,7 +21,6 @@ router.get('/', common.isAuthenticated, async (req, res) => {
 
 router.post('/', common.isAuthenticated, async (req, res) => {
   const { name, type, unit } = req.body;
-  console.log(`post ingredient ${name} ${type} ${unit}`);
   const ing = new Ingredient({ name, type, unit });
   await ing.save();
   res.json({
@@ -40,7 +39,6 @@ router.put('/:id', common.isAuthenticated, async (req, res) => {
 });
 
 router.delete('/:id', common.isAuthenticated, async (req, res) => {
-  console.log('delete');
   await Ingredient.findByIdAndRemove(req.params.id);
   res.json({ message: `record ${req.params.id} removed` });
 });

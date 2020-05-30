@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "start": "npm run server",
     "server": "node app.js",
     "client": "npm start --prefix client",
@@ -16,6 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^25.2.3",
+    "@types/supertest": "^2.0.9",
     "bcrypt": "^3.0.8",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -23,6 +26,7 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "jest": "^26.0.1",
+    "leaked-handles": "^5.2.0",
     "mongodb-memory-server": "^6.6.1",
     "mongoose": "^5.9.10",
     "nodemon": "^1.19.4",

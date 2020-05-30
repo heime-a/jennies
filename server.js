@@ -3,7 +3,7 @@
 'use strict;';
 
 require('dotenv').config();
-
+require('leaked-handles');
 
 const port = process.env.PORT || 5000;
 const secret = process.env.SECRET || 'some secret passphrase here for local development';

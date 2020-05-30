@@ -7,13 +7,13 @@ const UserSession = require('../models/usersession');
 module.exports.isAuthenticated = async (req, res, next) => {
   try {
     const token = JSON.parse(req.cookies.token);
-   
+
     const result = await UserSession.findOne({ _id: token, isDeleted: false });
-    
+
     if (result) next();
-    else res.send(401,{ message: 'Error', content: 'Route not Authenticated: No session found' });
+    else res.status(401).send({ message: 'Error', content: 'Route not Authenticated: No session found' });
   } catch (err) {
-    res.send(401, { message: 'Error', content: `Route not Authenticated: ${err.stack}` });
+    res.status(401).send({ message: 'Error', content: `Route not Authenticated: ${err.stack}` });
   }
 };
 
