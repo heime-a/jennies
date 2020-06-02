@@ -1,9 +1,12 @@
 module.exports = {
-    "parserOptions" : {
+    "parserOptions": {
         "ecmaVersion": 8
     },
     "extends": "airbnb-base",
-    "rules":{
+    "rules": {
         "linebreak-style": 0
-      }
+    },
+    "env": {
+        "jest": true
+    }
 };
