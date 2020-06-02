@@ -34,7 +34,10 @@ const createDB = async () => {
 };
 
 const destroyDB = () => {
+  // eslint-disable-next-line no-console
+  console.log('Mongo disconnecting');
   disconnect();
+
 };
 
 module.exports = {

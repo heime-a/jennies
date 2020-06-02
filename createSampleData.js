@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const mongoose = require('mongoose');
 const Ingredient = require('./models/ingredient');
 const Purchaseorder = require('./models/purchaseorders');
