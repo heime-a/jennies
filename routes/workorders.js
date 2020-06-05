@@ -57,7 +57,6 @@ router.post('/', common.isAuthenticated, async (req, res) => {
   } else {
     try {
       const savedWo = await wo.save();
-      console.log(savedWo);
       res.json({
         message: 'WorkOrder Saved',
         content: savedWo,
@@ -87,7 +86,6 @@ router.put('/:id', common.isAuthenticated, async (req, res) => {
 
   try {
     const updatedWO = await WorkOrder.findOneAndUpdate({ _id: req.params.id }, wo);
-    console.log(updatedWO);
     res.json({
       message: `Updated work order ${updatedWO.woNumber}`,
       content: updatedWO,
