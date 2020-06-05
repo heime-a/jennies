@@ -27,6 +27,7 @@ const disconnect = async () => { await mongoose.connection.close(); };
 const createDB = async () => {
   try {
     const url = await server.getConnectionString();
+    console.log(url);
     await connect(url);
   } catch (err) {
     throw err;
@@ -37,7 +38,6 @@ const destroyDB = () => {
   // eslint-disable-next-line no-console
   console.log('Mongo disconnecting');
   disconnect();
-
 };
 
 module.exports = {
