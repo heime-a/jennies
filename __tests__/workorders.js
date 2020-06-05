@@ -86,6 +86,17 @@ describe('Restricted workorder routes', () => {
   it('can get the workorders', async () => {
     const res = await authenticatedSession.get('/workorders');
     expect(res.status).toBe(200);
-    expect(res.body.cote);
+    expect(res.body.content).toHaveLength(1);
+  });
+
+  it('can update a workorder', async () => {
+    let res = await authenticatedSession.get('/workorders');
+    expect(res.status).toBe(200);
+    expect(res.body.content).toHaveLength(1);
+    const wo = res.body.content[0];
+    wo.actualYield = 42;
+    // eslint-disable-next-line no-underscore-dangle
+    res = await authenticatedSession.put(`/workorders/${wo._id}`).send(wo);
+    expect(res.status).toBe(200);
   });
 });
