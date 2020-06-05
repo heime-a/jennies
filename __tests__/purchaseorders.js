@@ -21,7 +21,6 @@ beforeAll(async () => {
   purchaseorder.poNumber = 'HA0001';
   purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Eggs' }), quantity: 5, unitCost: 29.95 });
   purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Flour' }), quantity: 10, unitCost: 1.99 });
-  // purchaseorder.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Sugar' }), quantity: 5, unitCost: 1.00 });
 
   purchaseorder.supplier = { name: 'heime', address: '123456' };
   await purchaseorder.save();
@@ -44,7 +43,7 @@ beforeAll(async () => {
   });
   await purchaseorder.save();
 });
-
+afterAll(async (done) => { hlp.destroyDB(); done(); });
 describe('Restricted ingredient routes', () => {
   let authenticatedSession;
 
@@ -79,6 +78,7 @@ describe('Restricted ingredient routes', () => {
   it('can update a purchase order and have correct inventory', async () => {
     const po = await Purchaseorder.where('{ poNumber: "HA0001" }').findOne().populate('ingredients.ingredient');
     po.ingredients.push({ ingredient: await Ingredient.findOne({ name: 'Sugar' }), quantity: 5, unitCost: 1.00 });
+    // eslint-disable-next-line no-underscore-dangle
     const res = await authenticatedSession.put(`/purchaseorders/${po._id}`).send({ poNumber: po.poNumber, ingredients: po.ingredients, supplier: po.supplier });
     expect(res.status).toBe(200);
     expect(res.body.success).toBe(true);

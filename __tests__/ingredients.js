@@ -16,7 +16,7 @@ beforeAll(async () => {
     new Ingredient({ name: 'Coconut Shredded', type: 'Food', unit: 'Lbs' }).save(),
   ]);
 });
-
+afterAll(async (done) => { hlp.destroyDB(); done(); });
 describe('Restricted ingredient routes', () => {
   let authenticatedSession;
 

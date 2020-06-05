@@ -14,7 +14,7 @@ beforeAll(async (done) => {
   await user.save();
   done();
 });
-afterAll(async (done) => { await hlp.destroyDB(); done(); });
+afterAll(async (done) => { hlp.destroyDB(); done(); });
 
 
 it('can authorize a valid user', async (done) => {
