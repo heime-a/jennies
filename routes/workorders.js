@@ -17,7 +17,7 @@ function validateWorkOrder(recipeIngredients, inventory) {
     const itm = inventory.find(el => el.name === i.ingredient.name);
     if (itm === undefined || i.quantity > itm.quantity) {
       // eslint-disable-next-line no-console
-      console.log(`Not Enough ${itm.name}`);
+      console.log(`Not Enough ${i.ingredient.name}`);
       return false;
     }
   }
