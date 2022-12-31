@@ -9,7 +9,7 @@
     "@types/react-dom": "^16.9.1",
     "@types/react-router-dom": "^4.3.5",
     "@types/reactstrap": "^8.4.2",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "bootstrap": "^4.4.1",
     "cross-env": "^5.2.1",
     "express": "^4.17.1",
@@ -18,7 +18,7 @@
     "react-bootstrap-typeahead": "^3.4.7",
     "react-dom": "^16.13.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^5.0.1",
     "reactstrap": "^8.4.1",
     "tslint": "^5.20.1",
     "typescript": "^3.6.3"
