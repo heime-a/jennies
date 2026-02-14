@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Alert, Spinner } from "reactstrap";
 import postOrPutData from "../common/postOrPutData";
 import apiUrl from "../common/apiurl.js";
 import IngredientForm from "./IngredientForm";
+
 export interface Ingredient {
   [index: string]: string;
   _id: string;
@@ -10,152 +11,132 @@ export interface Ingredient {
   type: string;
   unit: string;
 }
-interface IngredientListState {
-  loading: Boolean;
-  content: Array<Ingredient>;
-  selectedId: string;
-  newItemsIndex: number;
-  alertMessage?: string;
-}
-export class IngredientList extends Component {
-  state: IngredientListState = {
-    loading: true,
-    content: [{ _id: "1", name: "", type: "", unit: "" }],
-    selectedId: "",
-    newItemsIndex: 0,
-    alertMessage: undefined,
+
+export function IngredientList() {
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState<Ingredient[]>([]);
+  const [selectedId, setSelectedId] = useState("");
+  const [newItemsIndex, setNewItemsIndex] = useState(0);
+  const [alertMessage, setAlertMessage] = useState<string | undefined>();
+
+  useEffect(() => {
+    const loadIngredients = async () => {
+      const response = await fetch(`${apiUrl()}/ingredients`);
+      const jsonMessage = await response.json();
+      if (jsonMessage) {
+        setLoading(false);
+        setContent(jsonMessage.content);
+      }
+    };
+    loadIngredients();
+  }, []);
+
+  const handleItemSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedId(event.target.value);
   };
 
-  async componentDidMount() {
-    const response = await fetch(`${apiUrl()}/ingredients`);
-    const jsonMessage = await response.json();
-    if (jsonMessage) {
-      this.setState({ loading: false, content: jsonMessage.content });
-    } else {
-      console.log("json message failed");
-    }
-  }
-
-  handleItemSelect = (event: { target: { value: string } }) => {
-    //console.log(event.target.attributes.itemid.value);
-    const newState = { ...this.state };
-    newState.selectedId = event.target.value;
-    this.setState(newState);
-  };
-
-  handleFormChange = (
+  const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     item: Ingredient
   ) => {
-    const change: IngredientListState = { ...this.state };
-    const idx = this.state.content.indexOf(item);
-    change.content[idx][event.target.name] = event.target.value;
-    this.setState(change);
-  };
-
-  saveSelected = () => {
-    const saveItem = async (item?: Ingredient) => {
-      const url = `${apiUrl()}/ingredients`;
-      let data;
-
-      if (!item) return;
-
-      if (item._id.includes("new")) {
-        data = await postOrPutData(`${url}`, {
-          name: item.name,
-          type: item.type,
-          unit: item.unit,
-        });
-      } else {
-        data = await postOrPutData(
-          `${url}/${item._id}`,
-          { name: item.name, type: item.type, unit: item.unit },
-          "PUT"
-        );
-      }
-      if (data) console.log(JSON.stringify(data));
-      this.setState({ ...this.state, alertMessage: data.message });
-      setTimeout(() => {
-        this.setState({ ...this.state, alertMessage: undefined });
-      }, 3000);
-    };
-
-    const newState: IngredientListState = { ...this.state };
-    console.log("saveSelected");
-    const selectedItem = newState.content.find(
-      (el) => el._id === this.state.selectedId
+    const idx = content.indexOf(item);
+    const updated = content.map((ing, i) =>
+      i === idx ? { ...ing, [event.target.name]: event.target.value } : ing
     );
-    saveItem(selectedItem);
-    this.setState(newState);
+    setContent(updated);
   };
 
-  newIngredient = () => {
-    const state = { ...this.state };
-    state.content.push({
-      _id: `new${state.newItemsIndex}`,
-      name: "New Ingredient Here",
-      type: "None",
-      unit: "None",
-    });
-    state.newItemsIndex++;
-    this.setState(state);
-  };
+  const saveSelected = async () => {
+    const selectedItem = content.find((el) => el._id === selectedId);
+    if (!selectedItem) return;
 
-  render() {
-    const foundItem = this.state.content.find(
-      (el) => el._id === this.state.selectedId
-    );
+    const url = `${apiUrl()}/ingredients`;
+    let data;
 
-    if (this.state.loading)
-      return (<div id="ingredientGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
-    else
-      return (
-        <div className="ingredientGrid">
-          <select
-            size={10}
-            className="ingredientList"
-            onChange={this.handleItemSelect}
-          >
-            {this.state.content.map((item) => (
-              <option
-                className="listItem"
-                value={item._id}
-                key={item._id}
-              >{`${item.name} ${item.type} ${item.unit}`}</option>
-            ))}
-          </select>
-          {foundItem && (
-            <IngredientForm
-              item={foundItem}
-              onChange={(e) => this.handleFormChange(e, foundItem)}
-            />
-          )}
-          <div className="ingButtons">
-            <Button
-              color="success"
-              className="newIngredient"
-              onClick={() => this.newIngredient()}
-            >
-              New Ingredient
-          </Button>
-            <Button
-              color="warning"
-              className="saveIngredient"
-              onClick={() => this.saveSelected()}
-            >
-              Save Selected
-          </Button>
-          </div>
-          {this.state.alertMessage && (
-            <Alert
-              color={
-                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-              }
-            >
-              {this.state.alertMessage}
-            </Alert>
-          )}
-        </div>
+    if (selectedItem._id.includes("new")) {
+      data = await postOrPutData(url, {
+        name: selectedItem.name,
+        type: selectedItem.type,
+        unit: selectedItem.unit,
+      });
+    } else {
+      data = await postOrPutData(
+        `${url}/${selectedItem._id}`,
+        { name: selectedItem.name, type: selectedItem.type, unit: selectedItem.unit },
+        "PUT"
       );
+    }
+    if (data) setAlertMessage(data.message);
+    setTimeout(() => setAlertMessage(undefined), 3000);
+  };
+
+  const newIngredient = () => {
+    setContent([
+      ...content,
+      {
+        _id: `new${newItemsIndex}`,
+        name: "New Ingredient Here",
+        type: "None",
+        unit: "None",
+      },
+    ]);
+    setNewItemsIndex(newItemsIndex + 1);
+  };
+
+  const foundItem = content.find((el) => el._id === selectedId);
+
+  if (loading) {
+    return (
+      <div id="ingredientGrid">
+        <Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" />
+      </div>
+    );
   }
+
+  return (
+    <div className="ingredientGrid">
+      <select
+        size={10}
+        className="ingredientList"
+        onChange={handleItemSelect}
+      >
+        {content.map((item) => (
+          <option
+            className="listItem"
+            value={item._id}
+            key={item._id}
+          >{`${item.name} ${item.type} ${item.unit}`}</option>
+        ))}
+      </select>
+      {foundItem && (
+        <IngredientForm
+          item={foundItem}
+          onChange={(e) => handleFormChange(e, foundItem)}
+        />
+      )}
+      <div className="ingButtons">
+        <Button
+          color="success"
+          className="newIngredient"
+          onClick={newIngredient}
+        >
+          New Ingredient
+        </Button>
+        <Button
+          color="warning"
+          className="saveIngredient"
+          onClick={saveSelected}
+        >
+          Save Selected
+        </Button>
+      </div>
+      {alertMessage && (
+        <Alert
+          color={alertMessage.includes("ERROR:") ? "danger" : "info"}
+        >
+          {alertMessage}
+        </Alert>
+      )}
+    </div>
+  );
 }
