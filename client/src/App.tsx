@@ -1,4 +1,3 @@
-"use strict;";
 //TODO: Add modal dialogs for search functions in PO
 //TODO: use componentunmount to free react resources / save state when exiting screen ?
 //TODO: Global transaction number scheme
@@ -30,6 +29,7 @@ import CustomerOrders from "./components/CustomerOrderList";
 import isLoggedIn from "./common/isLoggedIn";
 import LoginForm from "./components/LoginForm";
 import ErrorBoundary from "./components/ErrorBoundary";
+import jenniesLogo from "./assets/jennies.jpg";
 
 import {
   Button,
@@ -116,7 +116,7 @@ class MyApp extends Component<{ items: Array<string> }, MyAppState> {
       <>
         <Navbar color="light" expand="md">
           <NavbarBrand href="/">
-            <img src={require("./assets/jennies.jpg")} alt="Jennies Logo" />
+            <img src={jenniesLogo} alt="Jennies Logo" />
           </NavbarBrand>
           <NavbarToggler
             onClick={() => {

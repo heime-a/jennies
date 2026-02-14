@@ -1,4 +1,3 @@
-"use strict;";
 //@ts-check
 import React, { ReactElement } from "react";
 import { Table, Input, Button } from "reactstrap";

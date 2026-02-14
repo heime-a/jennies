@@ -1,4 +1,3 @@
-"use strict;";
 //@ts-check
 import "./RecipeList.css";
 import React, { useState, useEffect } from "react";

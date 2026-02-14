@@ -1,4 +1,3 @@
-"use strict;";
 import "./ProductInventory.css";
 import React, { Component } from "react";
 import { Table } from "reactstrap";

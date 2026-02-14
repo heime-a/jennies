@@ -1,4 +1,3 @@
-"use strict;";
 import "./PurchaseOrderList.css";
 import React, { useState, useEffect } from "react";
 import { Button, Alert, Spinner } from "reactstrap";

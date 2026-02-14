@@ -1,4 +1,3 @@
-"use strict;";
 //@ts-check
 import "./WorkOrderList.css";
 import React, { Component } from "react";

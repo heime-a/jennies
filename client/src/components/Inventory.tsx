@@ -1,4 +1,3 @@
-"use strict;";
 //@ts-check
 //TODO: Put ingredient inventory in its own 'Card'
 import "./inventory.css";

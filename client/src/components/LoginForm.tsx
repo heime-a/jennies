@@ -1,4 +1,3 @@
-"use strict;";
 import "./LoginForm.css";
 import React from "react";
 import { Input, Form, Button, Alert } from "reactstrap";

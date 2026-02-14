@@ -1,4 +1,3 @@
-"use strict;";
 import "./CustomerOrderList.css";
 import React, { Component } from "react";
 import { Button, Alert, Spinner } from "reactstrap";

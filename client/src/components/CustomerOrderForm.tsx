@@ -1,11 +1,9 @@
-"use strict;";
 //@ts-check
 import React from "react";
 import { Table, Input, Button } from "reactstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Order, Item } from "./CustomerOrderList";
 import CustomerOrderList from "./CustomerOrderList";
-import { on } from "cluster";
 
 export interface FormChangeEvent {
   target: { name: string; value: string };

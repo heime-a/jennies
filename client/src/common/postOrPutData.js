@@ -11,13 +11,14 @@ async function postOrPutData(url = ``, data = {}, method = "POST") {
             body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
         const jsresp = await response.json();
-        if (jsresp.message.includes('Error')) {
-            console.log `Not Authorized ${jsresp.message}`;
+        if (jsresp.message && jsresp.message.includes('Error')) {
+            console.log(`Not Authorized ${jsresp.message}`);
         }
         return jsresp;
     }
     catch (err) {
-        return console.log('putOrPost Error ' + err);
+        console.log('putOrPost Error ' + err);
+        return { success: false, message: 'Error: Network error - is the server running?' };
     } // returns a promise
 }
 
