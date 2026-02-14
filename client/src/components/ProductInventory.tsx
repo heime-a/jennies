@@ -13,17 +13,18 @@ function ProductInventory() {
 
   useEffect(() => {
     const loadProducts = async () => {
-      const response = await fetch(`${apiUrl()}/productInventory`);
+      const response = await fetch(`${apiUrl()}/productInventory`, { credentials: 'include' });
       const jsonMessage = await response.json();
-      if (jsonMessage) {
-        setContent(jsonMessage.content);
-      }
+      setContent(Array.isArray(jsonMessage.content) ? jsonMessage.content : []);
     };
     loadProducts();
   }, []);
 
   return (
-    <Table striped bordered>
+    <>
+      <h2 className="page-title">Product Inventory</h2>
+      <div className="page-content product-inventory-page">
+        <Table striped bordered>
       <thead>
         <tr>
           <th>Name</th>
@@ -38,7 +39,9 @@ function ProductInventory() {
           </tr>
         ))}
       </tbody>
-    </Table>
+      </Table>
+      </div>
+    </>
   );
 }
 

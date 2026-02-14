@@ -1,37 +1,31 @@
-.ingredientList {
-  border: 1px groove rgb(221, 224, 215);
-  margin-right: 25px;
-}
 .inputForm {
-  float: left;
-  border-radius: 2%;
-  border: 1px groove rgb(221, 224, 215);
-
-  margin: 2px;
-  padding: 5px;
-}
-.newIngredient {
-  margin: 0px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow);
 }
 
 .ingredientGrid {
-  margin: 17px;
   display: grid;
-  grid-template-columns: 2fr 6fr;
-  grid-gap: 10px;
-}
-.ingredientList {
-  list-style-type: none;
-}
-.newIngredient {
-  align-self: start;
-  margin-left: 10px;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-md);
 }
 
 .ingButtons {
   grid-row-start: 2;
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
 }
 
-button + button {
-  margin: 0.5rem;
+.ingButtons .btn {
+  padding: 6px 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .ingredientGrid {
+    grid-template-columns: 1fr;
+  }
 }

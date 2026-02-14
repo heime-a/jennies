@@ -74,7 +74,7 @@ function PurchaseOrderList() {
   async function loadContent() {
     const newState: PurchaseOrderListState = { ...poState };
 
-    let response = await fetch(`${apiUrl()}/purchaseOrders`);
+    let response = await fetch(`${apiUrl()}/purchaseOrders`, { credentials: 'include' });
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -82,7 +82,7 @@ function PurchaseOrderList() {
       console.log("json message failed");
     }
 
-    response = await fetch(`${apiUrl()}/ingredients`);
+    response = await fetch(`${apiUrl()}/ingredients`, { credentials: 'include' });
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce(
@@ -227,54 +227,54 @@ function PurchaseOrderList() {
     (el) => el._id === poState.selectedId
   );
   if (poState.loading)
-    return (<div id="poListGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+    return (<div className="page-content"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
   else
     return (
-      <div>
-        <div id="poListGrid">
-          <select
-            size={10}
-            className="purchaseOrderList delete"
-            onChange={(e) => handleItemSelect(e)}
-          >
-            {poState.content.map((item) => (
-              <option value={item._id} key={item.poNumber}>
-                {`${item.poNumber} ${item.supplier.name}`}
-              </option>
-            ))}
-          </select>
-          {foundItem && (
-            <PurchaseOrderForm
-              item={foundItem}
-              onChange={handleChangePO}
-              onAddLine={handleAddPoLine}
-              onRemoveLine={handleRemovePoLine}
-              ingData={poState.ingData}
-            />
-          )}
-          <div className="poButtons delete">
-            <Button
-              color="success"
-              className="newPO"
-              onClick={(e) => newPurchaseOrder()}
-            >
-              New Purchase Order
-            </Button>
-            <Button color="warning" onClick={saveSelectedPO}>
-              Save Current
-            </Button>
+      <>
+        <h2 className="page-title">Purchase Orders</h2>
+        <div className="page-content">
+          <div id="poListGrid">
+            <ul className="styled-list">
+              {poState.content.map((item) => (
+                <li
+                  className={item._id === poState.selectedId ? "active" : ""}
+                  key={item.poNumber}
+                  onClick={() => setPoState({ ...poState, selectedId: item._id })}
+                >{`${item.poNumber} — ${item.supplier.name}`}</li>
+              ))}
+            </ul>
+            {foundItem && (
+              <PurchaseOrderForm
+                item={foundItem}
+                onChange={handleChangePO}
+                onAddLine={handleAddPoLine}
+                onRemoveLine={handleRemovePoLine}
+                ingData={poState.ingData}
+              />
+            )}
+            <div className="poButtons delete">
+              <Button
+                color="success"
+                onClick={(e) => newPurchaseOrder()}
+              >
+                New Purchase Order
+              </Button>
+              <Button color="warning" onClick={saveSelectedPO}>
+                Save Current
+              </Button>
+            </div>
           </div>
+          {poState.alertMessage && (
+            <Alert
+              color={
+                poState.alertMessage.includes("ERROR:") ? "danger" : "info"
+              }
+            >
+              {poState.alertMessage}
+            </Alert>
+          )}
         </div>
-        {poState.alertMessage && (
-          <Alert
-            color={
-              poState.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
-          >
-            {poState.alertMessage}
-          </Alert>
-        )}
-      </div>
+      </>
     );
 }
 

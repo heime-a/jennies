@@ -67,14 +67,14 @@ class CustomerOrderList extends Component {
   async componentDidMount() {
     const newState = { ...this.state };
 
-    let response = await fetch(`${apiUrl()}/customerOrders`);
+    let response = await fetch(`${apiUrl()}/customerOrders`, { credentials: 'include' });
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
     } else {
       console.log("json message failed");
     }
-    response = await fetch(`${apiUrl()}/recipes`);
+    response = await fetch(`${apiUrl()}/recipes`, { credentials: 'include' });
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.productNames = jsonMessage.content.map(
@@ -196,57 +196,57 @@ class CustomerOrderList extends Component {
     );
 
     if (this.state.loading)
-      return (<div id="workOrderList"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+      return (<div className="page-content"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     return (
-      <div>
-        <div id="coListGrid">
-          <select
-            size={10}
-            className="customerOrderList delete"
-            onChange={(e) => this.handleItemSelect(e)}
-          >
-            {this.state.content.map((order, idx) => (
-              <option value={order._id} key={idx}>
-                {`${order.coNumber} ${order.customer.name}`}
-              </option>
-            ))}
-          </select>
-          {foundOrder && (
-            <CustomerOrderForm
-              order={foundOrder}
-              onChange={this.handleChangeCO}
-              onAddLine={this.handleAddCoLine}
-              onRemoveLine={this.handleRemoveCoLine}
-              productNames={this.state.productNames}
-            />
-          )}
-          <div className="coButtons delete">
-            <Button
-              color="success"
-              className="newPO"
-              onClick={(e) => this.newCustomerOrder()}
-            >
-              New Customer Order
-            </Button>
-            <Button
-              className="delete"
-              color="warning"
-              onClick={this.saveSelectedCO}
-            >
-              Save Current
-            </Button>
+      <>
+        <h2 className="page-title">Customer Orders</h2>
+        <div className="page-content">
+          <div id="coListGrid">
+            <ul className="styled-list">
+              {this.state.content.map((order, idx) => (
+                <li
+                  className={order._id === this.state.selectedId ? "active" : ""}
+                  key={idx}
+                  onClick={() => this.setState({ selectedId: order._id })}
+                >{`${order.coNumber} — ${order.customer.name}`}</li>
+              ))}
+            </ul>
+            {foundOrder && (
+              <CustomerOrderForm
+                order={foundOrder}
+                onChange={this.handleChangeCO}
+                onAddLine={this.handleAddCoLine}
+                onRemoveLine={this.handleRemoveCoLine}
+                productNames={this.state.productNames}
+              />
+            )}
+            <div className="coButtons delete">
+              <Button
+                color="success"
+                onClick={(e) => this.newCustomerOrder()}
+              >
+                New Customer Order
+              </Button>
+              <Button
+                className="delete"
+                color="warning"
+                onClick={this.saveSelectedCO}
+              >
+                Save Current
+              </Button>
+            </div>
           </div>
+          {this.state.alertMessage && (
+            <Alert
+              color={
+                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+              }
+            >
+              {this.state.alertMessage}
+            </Alert>
+          )}
         </div>
-        {this.state.alertMessage && (
-          <Alert
-            color={
-              this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-            }
-          >
-            {this.state.alertMessage}
-          </Alert>
-        )}
-      </div>
+      </>
     );
   }
 }

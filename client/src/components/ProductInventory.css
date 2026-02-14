@@ -1,3 +1,6 @@
-.table { 
-    margin: 40px;
+.product-inventory-page .table {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }

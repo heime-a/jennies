@@ -14,17 +14,18 @@ function Inventory() {
 
   useEffect(() => {
     const loadInventory = async () => {
-      const response = await fetch(`${apiUrl()}/inventory`);
+      const response = await fetch(`${apiUrl()}/inventory`, { credentials: 'include' });
       const jsonMessage = await response.json();
-      if (jsonMessage) {
-        setContent(jsonMessage.content);
-      }
+      setContent(Array.isArray(jsonMessage.content) ? jsonMessage.content : []);
     };
     loadInventory();
   }, []);
 
   return (
-    <Table striped bordered>
+    <>
+      <h2 className="page-title">Ingredient Inventory</h2>
+      <div className="page-content inventory-page">
+        <Table striped bordered>
       <thead>
         <tr>
           <th>Name</th>
@@ -41,7 +42,9 @@ function Inventory() {
           </tr>
         ))}
       </tbody>
-    </Table>
+      </Table>
+      </div>
+    </>
   );
 }
 

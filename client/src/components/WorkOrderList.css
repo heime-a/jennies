@@ -1,17 +1,37 @@
-
 #workOrderList {
-    display: grid;
-    grid-template-columns: 4fr 6fr;
-    grid-gap: 10px;
-    margin: 17px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-md);
 }
 
 #woForm {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  margin: 5px;
+  gap: var(--spacing-sm);
+  align-items: center;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow);
+}
+
+#woForm label {
+  font-weight: 500;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+#workOrderList .btn {
+  padding: 6px 16px;
+  font-size: 13px;
 }
 
 button + button {
-  margin: .5rem
+  margin-left: var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+  #workOrderList {
+    grid-template-columns: 1fr;
+  }
 }

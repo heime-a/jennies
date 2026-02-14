@@ -1,44 +1,53 @@
-@import url("https://fonts.googleapis.com/css?family=Staatliches");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
 .navbar-brand,
 .navbar-nav a {
-  font-family: "Staatliches", cursive;
-  font-size: 17px;
-  color: #8c968e;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary-light);
+  letter-spacing: 0.3px;
+}
+
+.navbar-nav a:hover,
+.navbar-nav a.selected {
+  color: var(--color-accent);
+  background: var(--color-accent-light);
+  border-radius: var(--radius);
 }
 
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E") !important;
 }
-.App {
-  font-size: 12px;
+
+.navbar {
+  box-shadow: var(--shadow);
+  background: var(--color-surface) !important;
+  padding: var(--spacing-sm) var(--spacing-lg);
 }
-input[type="text"] {
-  font-size: 12px;
+
+.navbar-brand img {
+  max-height: 40px;
 }
 
 .App {
+  font-size: 14px;
   text-align: left;
 }
 
 .App-header {
-  background-color: white;
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-content: center;
-  color: black;
-}
-.App-header .logout-wrapper  {
-  display: grid;
-  margin: auto;  
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: calc(100vh - 60px);
 }
 
-.App-link {
-  color: #61dafb;
+.App-header .logout-wrapper {
+  display: grid;
+  margin: auto;
 }
 
 .listItem:hover {
-  color: rgb(180, 180, 230);
+  color: var(--color-accent);
 }
 
 table td {
@@ -46,5 +55,6 @@ table td {
 }
 
 .selected {
-  background: rgba(155, 104, 160, 0.219);
+  background: var(--color-accent-light);
 }
+

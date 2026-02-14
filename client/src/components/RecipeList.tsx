@@ -68,7 +68,7 @@ export const RecipeList = () => {
   async function loadContent() {
     const newState = { ...recipeList };
 
-    let response = await fetch(`${apiUrl()}/recipes`);
+    let response = await fetch(`${apiUrl()}/recipes`, { credentials: 'include' });
     let jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
@@ -76,7 +76,7 @@ export const RecipeList = () => {
       console.log("json message failed");
     }
 
-    response = await fetch(`${apiUrl()}/ingredients`);
+    response = await fetch(`${apiUrl()}/ingredients`, { credentials: 'include' });
     jsonMessage = await response.json();
 
     if (jsonMessage) {
@@ -96,7 +96,7 @@ export const RecipeList = () => {
       console.log("json message failed");
     }
 
-    response = await fetch(`${apiUrl()}/inventory`);
+    response = await fetch(`${apiUrl()}/inventory`, { credentials: 'include' });
     jsonMessage = await response.json();
     if (jsonMessage) {
       newState.ingData = jsonMessage.content.reduce(
@@ -235,53 +235,53 @@ export const RecipeList = () => {
       (el) => el._id === recipeList.selectedId
     );
     if (recipeList.loading)
-      return (<div id="recipeListGrid"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+      return (<div className="page-content"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     else
       return (
         <>
-          <div id="recipeListGrid">
-            <select
-              className="recipeList"
-              size={10}
-              onChange={(e) => handleItemSelect(e)}
-            >
-              {recipeList.content.map((item) => (
-                <option value={item._id} key={item.name}>
-                  {`${item.name}`}
-                </option>
-              ))}
-            </select>
-            {foundItem && (
-              <RecipeForm
-                item={foundItem}
-                onChange={handleChangeRecipe}
-                onAddLine={handleAddRecipeLine}
-                onRemoveLine={handleRemoveRecipeLine}
-                ingData={recipeList.ingData}
-              />
-            )}
-            <div className="recipeButtons">
-              <Button
-                color="success"
-                className="newRecipe"
-                onClick={(e) => handleNewRecipe()}
-              >
-                New Recipe
-            </Button>
-              <Button color="warning" onClick={(e) => saveSelectedRecipe()}>
-                Save Current Recipe
-            </Button>
+          <h2 className="page-title">Recipes</h2>
+          <div className="page-content">
+            <div id="recipeListGrid">
+              <ul className="styled-list">
+                {recipeList.content.map((item) => (
+                  <li
+                    className={item._id === recipeList.selectedId ? "active" : ""}
+                    key={item.name}
+                    onClick={() => setRecipeList({ ...recipeList, selectedId: item._id })}
+                  >{item.name}</li>
+                ))}
+              </ul>
+              {foundItem && (
+                <RecipeForm
+                  item={foundItem}
+                  onChange={handleChangeRecipe}
+                  onAddLine={handleAddRecipeLine}
+                  onRemoveLine={handleRemoveRecipeLine}
+                  ingData={recipeList.ingData}
+                />
+              )}
+              <div className="recipeButtons">
+                <Button
+                  color="success"
+                  onClick={(e) => handleNewRecipe()}
+                >
+                  New Recipe
+                </Button>
+                <Button color="warning" onClick={(e) => saveSelectedRecipe()}>
+                  Save Current Recipe
+                </Button>
+              </div>
             </div>
+            {recipeList.alertMessage && (
+              <Alert
+                color={
+                  recipeList.alertMessage.includes("ERROR:") ? "danger" : "info"
+                }
+              >
+                {recipeList.alertMessage}
+              </Alert>
+            )}
           </div>
-          {recipeList.alertMessage && (
-            <Alert
-              color={
-                recipeList.alertMessage.includes("ERROR:") ? "danger" : "info"
-              }
-            >
-              {recipeList.alertMessage}
-            </Alert>
-          )}
         </>
       );
   }

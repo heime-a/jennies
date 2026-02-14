@@ -1,20 +1,32 @@
-body { font: 14px/1.4 Helvetica, sans-serif; letter-spacing: 0.3px;}
 #coListGrid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 10px;
-  margin: 17px;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-md);
 }
 
-#customerOrderGrid { 
-  margin: 5px;
+#customerOrderGrid {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow);
 }
 
-.newCO {
-  margin: 2px;
-}
 .coButtons {
   grid-row-start: 2;
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+.coButtons .btn {
+  padding: 6px 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  #coListGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media print {

@@ -2,6 +2,7 @@ import "./LoginForm.css";
 import React from "react";
 import { Input, Form, Button, Alert } from "reactstrap";
 import { AuthContext } from "./AuthContext";
+import jenniesLogo from "../assets/jennies.jpg";
 
 const LoginForm = () => {
   return (
@@ -11,6 +12,9 @@ const LoginForm = () => {
           <>
             {loggedIn || (
               <>
+                <div style={{ textAlign: "center", marginBottom: "16px" }}>
+                  <img src={jenniesLogo} alt="Jennies Logo" style={{ maxHeight: "60px" }} />
+                </div>
                 <h3>Sign In</h3>
                 <Form onSubmit={onSubmit}>
                   <Input

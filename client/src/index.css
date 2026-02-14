@@ -1,9 +1,33 @@
+:root {
+  --color-primary: #5a6e5c;
+  --color-primary-light: #8c968e;
+  --color-accent: #7b5e80;
+  --color-accent-light: rgba(155, 104, 160, 0.15);
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #dee2e6;
+  --color-text: #212529;
+  --color-text-muted: #6c757d;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,3 +36,71 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* Shared styled list component — replaces native <select> */
+.styled-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  max-height: 360px;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.styled-list li {
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.15s ease;
+  font-size: 13px;
+}
+
+.styled-list li:last-child {
+  border-bottom: none;
+}
+
+.styled-list li:hover {
+  background-color: var(--color-bg);
+}
+
+.styled-list li.active {
+  background-color: var(--color-accent-light);
+  font-weight: 500;
+  border-left: 3px solid var(--color-accent);
+}
+
+/* Page titles */
+.page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* Content wrapper */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Editable table cells */
+.table td input.form-control {
+  background-color: #fefefe;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.table td input.form-control:focus {
+  background-color: #fff;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-light);
+}
+

@@ -1,20 +1,29 @@
-.newRecipe {
-  margin: 5px;
-  margin-left: 17px;
-}
-
 #recipeListGrid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 10px;
-  margin: 17px;
+  grid-template-columns: 280px 1fr;
+  gap: var(--spacing-md);
 }
 
 #recipeTop {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  margin: 5px;
+  margin: var(--spacing-sm);
 }
+
 .recipeButtons {
   grid-row-start: 2;
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+.recipeButtons .btn {
+  padding: 6px 16px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  #recipeListGrid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -44,14 +44,14 @@ class WorkOrderList extends Component {
   async componentDidMount() {
     const newState = { ...this.state };
 
-    const response = await fetch(`${apiUrl()}/workorders`);
+    const response = await fetch(`${apiUrl()}/workorders`, { credentials: 'include' });
     const jsonMessage = await response.json();
     if (jsonMessage) {
       newState.content = jsonMessage.content;
     } else {
       console.log("json message failed");
     }
-    const ingResponse = await fetch(`${apiUrl()}/recipes`);
+    const ingResponse = await fetch(`${apiUrl()}/recipes`, { credentials: 'include' });
     const ingJson = await ingResponse.json();
     if (ingJson) {
       newState.recipeNames = ingJson.content.map(
@@ -156,44 +156,49 @@ class WorkOrderList extends Component {
       (el) => el.woNumber === this.state.selectedWoNumber
     );
     if (this.state.loading)
-      return (<div id="workOrderList"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
+      return (<div className="page-content"><Spinner color="secondary" style={{ width: '10rem', height: '10rem' }} type="grow" /></div>)
     else
       return (
-        <div>
-          <div id="workOrderList">
-            <select size={10} onChange={this.handleItemSelect}>
-              {this.state.content.map(({ woNumber, status, startDate }) => (
-                <option value={woNumber} key={woNumber}>
-                  {startDate} {woNumber} {status}
-                </option>
-              ))}
-            </select>
-            {foundItem && (
-              <WorkOrderForm
-                onChange={this.handleChange}
-                item={foundItem}
-                recipeNames={this.state.recipeNames}
-              />
-            )}
-            <div>
-              <Button color="success" onClick={this.handleNewWorkOrder}>
-                New
-            </Button>
-              <Button color="warning" onClick={this.saveWorkOrder}>
-                Save Current
-            </Button>
+        <>
+          <h2 className="page-title">Manufacturing</h2>
+          <div className="page-content">
+            <div id="workOrderList">
+              <ul className="styled-list">
+                {this.state.content.map(({ woNumber, status, startDate }) => (
+                  <li
+                    className={woNumber === this.state.selectedWoNumber ? "active" : ""}
+                    key={woNumber}
+                    onClick={() => this.setState({ selectedWoNumber: woNumber })}
+                  >{startDate} — {woNumber} ({status})</li>
+                ))}
+              </ul>
+              {foundItem && (
+                <WorkOrderForm
+                  onChange={this.handleChange}
+                  item={foundItem}
+                  recipeNames={this.state.recipeNames}
+                />
+              )}
+              <div>
+                <Button color="success" onClick={this.handleNewWorkOrder}>
+                  New
+                </Button>
+                <Button color="warning" onClick={this.saveWorkOrder}>
+                  Save Current
+                </Button>
+              </div>
             </div>
+            {this.state.alertMessage && (
+              <Alert
+                color={
+                  this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
+                }
+              >
+                {this.state.alertMessage}
+              </Alert>
+            )}
           </div>
-          {this.state.alertMessage && (
-            <Alert
-              color={
-                this.state.alertMessage.includes("ERROR:") ? "danger" : "info"
-              }
-            >
-              {this.state.alertMessage}
-            </Alert>
-          )}
-        </div>
+        </>
       );
   }
 }
