@@ -1,6 +1,6 @@
 import React, { ErrorInfo } from "react";
 
-export default class ErrorBoundary extends React.Component {
+export default class ErrorBoundary extends React.Component<React.PropsWithChildren<{}>> {
     state: { error:Error | null , errorInfo: ErrorInfo | null } = { error: null, errorInfo: null };
 
 

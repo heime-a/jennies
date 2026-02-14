@@ -92,7 +92,7 @@ function ProductLine({
           options={productNames}
           defaultInputValue={item.name}
           onChange={val =>
-            onChange({ target: { name: "name", value: val[0] } }, idx)
+            onChange({ target: { name: "name", value: val[0] as string } }, idx)
           }
         />
       </td>
@@ -116,4 +116,3 @@ function ProductLine({
     </tr>
   );
 }
-//

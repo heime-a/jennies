@@ -25,6 +25,7 @@
     "nodemon": "^1.19.4"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-config-airbnb-base": "^13.2.0",
