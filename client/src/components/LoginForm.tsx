@@ -2,12 +2,12 @@
 import "./LoginForm.css";
 import React from "react";
 import { Input, Form, Button, Alert } from "reactstrap";
-import { AuthConsumer } from "./AuthContext";
+import { AuthContext } from "./AuthContext";
 
 const LoginForm = () => {
   return (
     <div className="login-wrapper">
-      <AuthConsumer>
+      <AuthContext.Consumer>
         {({ loggedIn, onSubmit, onChange, lastAuthMessage }) => (
           <>
             {loggedIn || (
@@ -39,7 +39,7 @@ const LoginForm = () => {
             )}
           </>
         )}
-      </AuthConsumer>
+      </AuthContext.Consumer>
     </div>
   );
 };

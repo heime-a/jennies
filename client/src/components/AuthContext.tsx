@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import apiUrl from "../common/apiurl.js";
 import postOrPutData from "../common/postOrPutData.js";
 import isLoggedIn from "../common/isLoggedIn";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const AuthContext = React.createContext<{
-  loggedIn?: boolean;
-  logout?: () => void;
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  lastAuthMessage?: string;
-}>({});
+export const AuthContext = React.createContext<{
+  loggedIn: boolean;
+  logout: () => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  lastAuthMessage: string;
+}>({
+  loggedIn: false,
+  logout: () => {},
+  onSubmit: () => {},
+  onChange: () => {},
+  lastAuthMessage: "",
+});
 
 interface AuthProviderState {
   [index: string]: string | boolean;
@@ -22,6 +28,7 @@ interface AuthProviderState {
 interface AuthProviderProps {}
 
 function AuthProvider(props: any): any {
+  const navigate = useNavigate();
   const [state, setState] = useState<AuthProviderState>({
     email: "",
     password: "",
@@ -50,7 +57,7 @@ function AuthProvider(props: any): any {
         email: "",
         password: "",
       });
-      props.history.push("/Login");
+      navigate("/Login");
     } catch (err) {
       console.log("Problem logging out", err);
     }
@@ -95,4 +102,4 @@ function AuthProvider(props: any): any {
 
 export const AuthConsumer = AuthContext.Consumer;
 
-export default withRouter(AuthProvider);
+export default AuthProvider;

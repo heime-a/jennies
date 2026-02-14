@@ -14,11 +14,12 @@
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
+  Routes,
   Route,
   NavLink as RRNavLink,
 } from "react-router-dom";
 import "./App.css";
-import AuthProvider, { AuthConsumer } from "./components/AuthContext";
+import AuthProvider, { AuthContext } from "./components/AuthContext";
 import { IngredientList } from "./components/IngredientList";
 import PurchaseOrderList from "./components/PurchaseOrderList";
 import Inventory from "./components/Inventory";
@@ -43,7 +44,7 @@ import {
 
 function LogOut() {
   return (
-    <AuthConsumer>
+    <AuthContext.Consumer>
       {({ loggedIn, logout }) => (
         <>
           {loggedIn && (
@@ -55,7 +56,7 @@ function LogOut() {
           )}
         </>
       )}
-    </AuthConsumer>
+    </AuthContext.Consumer>
   );
 }
 
@@ -78,13 +79,13 @@ class App extends Component {
         <ErrorBoundary>
           <Router>
             <AuthProvider>
-              <AuthConsumer>
+              <AuthContext.Consumer>
                 {({ loggedIn }) => (
                   <div className="App-header">
                     <MyApp items={loggedIn ? menuItems : ["Login"]} />
                   </div>
                 )}
-              </AuthConsumer>
+              </AuthContext.Consumer>
             </AuthProvider>
           </Router>
         </ErrorBoundary>
@@ -145,15 +146,17 @@ class MyApp extends Component<{ items: Array<string> }, MyAppState> {
             </Nav>
           </Collapse>
         </Navbar>
-        <Route path="/Login" exact component={LoginForm} />
-        <Route path="/Ingredients" exact component={IngredientList} />
-        <Route path="/Purchasing" exact component={PurchaseOrderList} />
-        <Route path="/Inventory" exact component={Inventory} />
-        <Route path="/Recipe" exact component={RecipeList} />
-        <Route path="/Manufacturing" exact component={WorkOrderList} />
-        <Route path="/Product Inventory" exact component={ProductInventory} />
-        <Route path="/Customer Orders" exact component={CustomerOrders} />
-        <Route path="/LogOut" exact component={LogOut} />
+        <Routes>
+          <Route path="/Login" element={<LoginForm />} />
+          <Route path="/Ingredients" element={<IngredientList />} />
+          <Route path="/Purchasing" element={<PurchaseOrderList />} />
+          <Route path="/Inventory" element={<Inventory />} />
+          <Route path="/Recipe" element={<RecipeList />} />
+          <Route path="/Manufacturing" element={<WorkOrderList />} />
+          <Route path="/Product Inventory" element={<ProductInventory />} />
+          <Route path="/Customer Orders" element={<CustomerOrders />} />
+          <Route path="/LogOut" element={<LogOut />} />
+        </Routes>
       </>
     );
   }
