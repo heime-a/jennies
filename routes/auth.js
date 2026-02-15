@@ -96,23 +96,13 @@ router.post('/signin', async (req, res) => {
     const userSession = new UserSession();
     // eslint-disable-next-line no-underscore-dangle
     userSession.userId = user._id;
-    userSession.save((err, doc) => {
-      if (err) {
-        // eslint-disable-next-line no-console
-        console.log(err);
-        return res.send({
-          success: false,
-          message: 'Error: server error',
-        });
-      }
-
+    const doc = await userSession.save();
+    // eslint-disable-next-line no-underscore-dangle
+    return res.cookie('token', JSON.stringify(doc._id), { httpOnly: true }).send({
+      success: true,
+      message: 'Login Successful',
       // eslint-disable-next-line no-underscore-dangle
-      return res.cookie('token', JSON.stringify(doc._id), { httpOnly: true }).send({
-        success: true,
-        message: 'Login Successful',
-        // eslint-disable-next-line no-underscore-dangle
-        token: doc._id,
-      });
+      token: doc._id,
     });
   } catch (err) {
     // eslint-disable-next-line no-console
