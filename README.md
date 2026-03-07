@@ -1,6 +1,6 @@
-# Jennies - MERN Stack ERP System
+# Jennies - Modern ERP System with Bun & MongoDB
 
-A full-stack ERP (Enterprise Resource Planning) system built with the MERN stack, designed for prepared food manufacturing operations.
+A full-stack ERP (Enterprise Resource Planning) system built for prepared food manufacturing operations, now optimized with **Bun**.
 
 ## 🎯 Overview
 
@@ -9,17 +9,15 @@ Jennies is a comprehensive business management solution that helps prepared food
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Node.js** with Express.js
+- **Bun** (High-performance JS runtime)
+- **Express.js**
 - **MongoDB** with Mongoose ODM
 - **Authentication**: bcrypt for password hashing
-- **CORS** enabled for cross-origin requests
 
 ### Frontend
 - **React 18.3** with TypeScript
-- **React Router** v6 for navigation
-- **Reactstrap** and Bootstrap 5 for UI components
-- **React Bootstrap Typeahead** for enhanced form controls
 - **Vite** for fast development and optimized builds
+- **React Router** v6, **Reactstrap**, and **Bootstrap 5**
 
 ## 📁 Project Structure
 
@@ -29,7 +27,6 @@ jennies/
 ├── models/           # MongoDB/Mongoose data models
 ├── routes/           # Express API routes
 ├── common/           # Shared utilities and helpers
-├── bin/              # Binary/executable files
 ├── app.js            # Express server configuration
 └── createSampleData.js  # Sample data generation script
 ```
@@ -37,9 +34,8 @@ jennies/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn package manager
+- **Bun** (v1.0 or higher) - [Install Bun](https://bun.sh)
+- **MongoDB** (v7.0 recommended)
 
 ### Installation
 
@@ -49,97 +45,59 @@ jennies/
    cd jennies
    ```
 
-2. **Install server dependencies**
+2. **Install dependencies**
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Install client dependencies**
    ```bash
    cd client
-   npm install
+   bun install
    cd ..
    ```
 
-4. **Configure environment variables**
-   Create a `.env` file in the root directory with your configuration:
-   ```env
-   MONGODB_URI=your_mongodb_connection_string
-   PORT=5000
-   NODE_ENV=development
-   ```
+### Running MongoDB
+
+If you installed MongoDB via the system package manager (apt), you can manage it with `systemctl`:
+
+- **Start MongoDB**: `sudo systemctl start mongod`
+- **Check Status**: `sudo systemctl status mongod`
+- **Stop MongoDB**: `sudo systemctl stop mongod`
+- **Enable on Boot**: `sudo systemctl enable mongod`
 
 ### Running the Application
 
-**Development mode** (runs both server and client concurrently):
+**Development mode** (runs both server and client concurrently with hot-reloading):
 ```bash
-npm run dev
+bun run dev
 ```
 
-**Server only**:
+**Server only** (with auto-reload):
 ```bash
-npm start
+bun run monitor
 ```
 
-**Client only**:
-```bash
-npm run client
-```
-
-The server will start on `http://localhost:5000` and the React app on `http://localhost:5173` (Vite default).
+The server runs on `http://localhost:3000` (default) and the React app on `http://localhost:5173`.
 
 ## 📊 Sample Data
 
-To populate the database with sample data for testing:
+To populate the database with sample data (Ingredients, Recipes, Work Orders, etc.):
 ```bash
-node createSampleData.js
+bun createSampleData.js
 ```
+*Note: This will drop the existing `jennies` database.*
 
-## 📜 Available Scripts
-
-### Root Directory
-- `npm start` - Start the production server
-- `npm run dev` - Run server and client in development mode
-- `npm run server` - Run server only
-- `npm run client` - Run client only
-- `npm run monitor` - Run server with nodemon (auto-restart)
-
-### Client Directory
-- `npm start` - Start Vite dev server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-
-## 🔧 Development
-
-This project uses:
-- **ESLint** for code linting (Airbnb style guide)
-- **Nodemon** for automatic server restarts during development
-- **Concurrently** to run multiple npm scripts simultaneously
-
-## 🚢 Deployment
-
-The project is configured for Heroku deployment with a post-build script that automatically builds the client application:
-
-```bash
-npm run heroku-postbuild
-```
-
-## 📝 License
-
-ISC
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+## 📜 Available Scripts (Root)
+- `bun run dev` - Run server (watch mode) and client concurrently
+- `bun run server` - Run server only
+- `bun run monitor` - Run server with built-in watch mode
+- `bun run client` - Run client only
 
 ## 👤 Author
 
 **heime-a**
 - GitHub: [@heime-a](https://github.com/heime-a)
-
-## ⭐ Show your support
-
-Give a ⭐️ if this project helped you!
 
 ---
 

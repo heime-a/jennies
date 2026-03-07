@@ -1,53 +1,99 @@
-@import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
-
 #poListGrid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--spacing-md);
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
 }
 
 .poButtons {
   grid-row-start: 2;
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
 }
 
 .poButtons .btn {
-  padding: 6px 16px;
+  padding: 0.625rem 1.25rem;
   font-size: 13px;
+  box-shadow: var(--shadow-sm);
+}
+
+.poButtons .btn-success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.poButtons .btn-warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
+.poButtons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 #purchaseOrderGrid {
   background: var(--color-surface);
   border-radius: var(--radius);
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow);
 }
 
-td button {
-  visibility: hidden !important;
-  color: red;
-  background-color: white;
+#purchaseOrderGrid h4 {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-accent-light);
+}
+
+.table-responsive {
+  margin-top: var(--spacing-md);
+}
+
+td button.btn-remove {
+  opacity: 0;
+  color: var(--color-danger);
+  background: transparent;
   border: none;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
 }
 
-tr:hover td button {
-  visibility: initial !important;
+tr:hover td button.btn-remove {
+  opacity: 1;
 }
 
-@media (max-width: 768px) {
+td button.btn-remove:hover {
+  background-color: rgba(176, 74, 74, 0.1);
+}
+
+@media (max-width: 992px) {
   #poListGrid {
     grid-template-columns: 1fr;
+  }
+  
+  .poButtons {
+    grid-row-start: auto;
   }
 }
 
 @media print {
-  .delete {
+  .main-navbar, .poButtons, .styled-list, .btn-add-line, .btn-remove {
     display: none !important;
   }
+  
   #poListGrid {
     grid-template-columns: 1fr;
-    margin: 5px;
+  }
+  
+  #purchaseOrderGrid {
+    box-shadow: none;
+    border: none;
+    padding: 0;
   }
 }

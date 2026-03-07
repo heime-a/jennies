@@ -6,11 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run server",
-    "server": "node app.js",
+    "server": "bun app.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently -n server,client \"nodemon app.js\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "monitor": "nodemon"
+    "dev": "concurrently -n server,client \"bun --watch app.js\" \"npm run client\"",
+    "heroku-postbuild": "cd client && bun install --only=dev && bun install && bun run build",
+    "monitor": "bun --watch app.js"
   },
   "author": "",
   "license": "ISC",

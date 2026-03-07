@@ -1,31 +1,58 @@
-.inputForm {
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  padding: var(--spacing-md);
-  box-shadow: var(--shadow);
-}
-
 .ingredientGrid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--spacing-md);
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.inputForm {
+  padding: var(--spacing-lg);
 }
 
 .ingButtons {
   grid-row-start: 2;
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
 }
 
 .ingButtons .btn {
-  padding: 6px 16px;
+  padding: 0.625rem 1.25rem;
   font-size: 13px;
+  box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 768px) {
+.ingButtons .btn-success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.ingButtons .btn-warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
+.ingButtons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.alert {
+  grid-column: 1 / -1;
+  margin-top: var(--spacing-md);
+  border-radius: var(--radius);
+  border: none;
+  box-shadow: var(--shadow-sm);
+  font-weight: 500;
+}
+
+@media (max-width: 992px) {
   .ingredientGrid {
     grid-template-columns: 1fr;
+  }
+  
+  .ingButtons {
+    grid-row-start: auto;
   }
 }

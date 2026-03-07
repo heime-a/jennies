@@ -1,29 +1,94 @@
 #recipeListGrid {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--spacing-md);
-}
-
-#recipeTop {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  margin: var(--spacing-sm);
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
 }
 
 .recipeButtons {
   grid-row-start: 2;
   display: flex;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
 }
 
 .recipeButtons .btn {
-  padding: 6px 16px;
+  padding: 0.625rem 1.25rem;
   font-size: 13px;
+  box-shadow: var(--shadow-sm);
 }
 
-@media (max-width: 768px) {
+.recipeButtons .btn-success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.recipeButtons .btn-warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
+}
+
+.recipeButtons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+#recipeFormCard {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow);
+}
+
+.recipe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-accent-light);
+}
+
+.recipe-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.recipe-stats {
+  display: flex;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  background: var(--color-bg);
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+@media (max-width: 992px) {
   #recipeListGrid {
     grid-template-columns: 1fr;
+  }
+  
+  .recipeButtons {
+    grid-row-start: auto;
   }
 }
